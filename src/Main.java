@@ -2,10 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         JFrame frame = new JFrame("Test");
         Panel panel = new Panel();
@@ -23,18 +24,20 @@ public class Main {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                panel.onKeyReleased(e.getKeyCode());
+                try {
+                    panel.onKeyReleased(e.getKeyCode());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
         frame.setContentPane(panel);
         frame.setUndecorated(true);
-        frame.setSize(768, 768);
+        frame.setSize(1280, 768);
         frame.setLocationRelativeTo((Component)null);
         frame.setDefaultCloseOperation(3);
         frame.setResizable(false);
         frame.setVisible(true);
     }
-
-
 }

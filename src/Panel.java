@@ -1,8 +1,11 @@
-import javax.imageio.ImageIO;
+import com.mesi.animation.*;
+import com.mesi.equipement.*;
+
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Panel extends JPanel {
 
@@ -10,14 +13,19 @@ public class Panel extends JPanel {
 
     private Integer offsetX = 0, offsetY = 0;
     private Integer stride = 4, strideX = 0, strideY = 0;
-    private Integer direction = 40;
+    private ArrayList direction = new ArrayList() {{ add(40); }};
     private Integer originX = 5, originY = 5;
     private boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
     private Integer animX = 0, animY = 2;
 
+    Animation test = new WhiteCharacterAnimation(Hair.BLOND, Head.ROBE_HOOD, Torso.TSHIRT, Hands.NONE, Legs.SKIRT, Feet.LEATHER_BOOTS, LeftHand.NONE);
+    /*Animation test = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, LeftHand.NONE);*/
+    /*Animation test = new WhiteCharacterAnimation(Hair.BROWN, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, LeftHand.SHIELD);*/
+    BufferedImage[] anim  = test.stand((Integer)direction.get(0));
+
     Perso perso = new Perso();
 
-    public Panel() {
+    public Panel() throws IOException {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -41,7 +49,7 @@ public class Panel extends JPanel {
         offsetY+=strideY;
 
         // Carreaux
-        for (int ax = 0; ax < 12; ax++) {
+        for (int ax = 0; ax < 20; ax++) {
             for (int ay = 0; ay < 12; ay++) {
                 g.setColor(Color.BLACK);
                 g.drawRect(ax*SIZE, ay*SIZE, SIZE, SIZE);
@@ -49,158 +57,90 @@ public class Panel extends JPanel {
         }
 
         g.setColor(Color.GREEN.darker().darker());
-        g.fillRect(2*SIZE, 6*SIZE, SIZE/2, SIZE/2);
+        g.fillRect(2*SIZE, 6*SIZE + SIZE/2, SIZE/2,SIZE/2);
 
-        System.out.println("Stride : " +strideX+ " / StrideY : " +strideY+ " / OffsetX : " +offsetX+ " / OffsetY : " +offsetY+ " / Direction : " +direction);
+        g.setColor(new Color(0, 0, 0, .5f));
+        g.fillOval(SIZE*originX + SIZE/4 + offsetX, SIZE*(originX+1) - SIZE/5 + offsetY, 32, 16);
 
-        // Personnage
-        try {
-            g.setColor(new Color(0, 0, 0, .5f));
-            g.fillOval(SIZE*originX + SIZE/4 + offsetX, SIZE*(originX+1) - SIZE/5 + offsetY, 32, 16);
-
-            Image img;
-            if (isMovingRight || isMovingLeft || isMovingUp || isMovingDown) {
-                switch (direction) {
-                    case 37:
-                        img = ImageIO.read(new File("res/images/BODY_male-0" + animX + "-01.png"));
-                        break;
-                    case 38:
-                        img = ImageIO.read(new File("res/images/BODY_male-0" + animY + "-00.png"));
-                        break;
-                    case 39:
-                        img = ImageIO.read(new File("res/images/BODY_male-0" + animX + "-03.png"));
-                        break;
-                    default:
-                        img = ImageIO.read(new File("res/images/BODY_male-0" + animY + "-02.png"));
-                }
-            } else {
-                switch (direction) {
-                    case 37:
-                        img = ImageIO.read(new File("res/images/BODY_male-00-01.png"));
-                        break;
-                    case 38:
-                        img = ImageIO.read(new File("res/images/BODY_male-00-00.png"));
-                        break;
-                    case 39:
-                        img = ImageIO.read(new File("res/images/BODY_male-00-03.png"));
-                        break;
-                    default:
-                        img = ImageIO.read(new File("res/images/BODY_male-00-02.png"));
-                }
+        if (isMovingRight || isMovingLeft || isMovingUp || isMovingDown) {
+            try {
+                anim = test.walkCycle((Integer)direction.get(0));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            g.drawImage(img, SIZE * originX + offsetX, SIZE * originY + offsetY, this);
-
-            if (offsetX%16 == 0) animX+=1;
-            if (offsetY%16 == 0) animY+=1;
-            if (animX == 9) animX = 0;
-            if (animY == 9) animY = 2;
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            if (direction.get(0).equals(37) || direction.get(0).equals(39)) {
+                g.drawImage(anim[animX], SIZE * originX + offsetX, SIZE * originY + offsetY, this);
+            } else {
+                g.drawImage(anim[animY], SIZE * originX + offsetX, SIZE * originY + offsetY, this);
+            }
+        } else {
+            g.drawImage(anim[0], SIZE * originX + offsetX, SIZE * originY + offsetY, this);
         }
 
+        if (offsetX%16 == 0) animX+=1;
+        if (offsetY%16 == 0) animY+=1;
+        if (animX == 9) animX = 0;
+        if (animY == 9) animY = 2;
+    }
+
+    public void setDirection(Integer keyCode) {
+        if (!isMovingLeft && !isMovingRight && !isMovingUp && !isMovingDown) {
+            direction.clear();
+            direction.add(keyCode);
+        } else {
+            direction.add(0, keyCode);
+        }
+    }
+
+    public void removeDirection(Object keyCode) {
+        if (direction.size() > 1)
+            direction.remove(keyCode);
     }
 
     public void onKeyPressed(int keyCode) {
-        direction = keyCode;
-        System.out.println("Press / Code : " +keyCode);
         if (keyCode == 37 && !isMovingLeft) {
             strideX-=stride;
+            setDirection(keyCode);
             isMovingLeft = true;
         }
         if (keyCode == 39 && !isMovingRight) {
             strideX+=stride;
+            setDirection(keyCode);
             isMovingRight = true;
         }
         if (keyCode == 38 && !isMovingUp) {
             strideY-=stride;
+            setDirection(keyCode);
             isMovingUp = true;
         }
         if (keyCode == 40 && !isMovingDown) {
             strideY+=stride;
+            setDirection(keyCode);
             isMovingDown = true;
         }
     }
 
-    public void onKeyReleased(int keyCode) {
-        System.out.println("Release / Code : " +keyCode);
+    public void onKeyReleased(int keyCode) throws IOException {
         if (keyCode == 37) {
             strideX+=stride;
+            removeDirection(keyCode);
             isMovingLeft = false;
         }
         if (keyCode == 39) {
             strideX-=stride;
+            removeDirection(keyCode);
             isMovingRight = false;
         }
         if (keyCode == 38) {
             strideY+=stride;
+            removeDirection(keyCode);
             isMovingUp = false;
         }
         if (keyCode == 40) {
             strideY-=stride;
+            removeDirection(keyCode);
             isMovingDown = false;
         }
+        if (!isMovingLeft && !isMovingRight && !isMovingUp && !isMovingDown) anim = test.stand((Integer)direction.get(0));
     }
-
-
-        /*
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-
-        for (int ax = 0; ax < 12; ax++) {
-            for (int ay = 0; ay < 12; ay++) {
-                g.setColor(Color.BLACK);
-                g.drawRect(ax*SIZE, ay*SIZE, SIZE, SIZE);
-            }
-        }
-
-        g.setColor(Color.GREEN.darker().darker());
-        g.fillRect(SIZE*1, SIZE*2, SIZE, SIZE);
-
-        g.setColor(Color.GREEN.darker().darker());
-        g.fillRect(SIZE*5, SIZE*8, SIZE, SIZE);
-
-        g.setColor(Color.GREEN.darker().darker());
-        g.fillRect(SIZE*7, SIZE*1, SIZE, SIZE);
-
-        g.setColor(Color.GREEN.darker().darker());
-        g.fillRect(SIZE*8, SIZE*5, SIZE, SIZE);
-
-        perso.paintComponent(g);
-
-        if (perso.isMoving()) {
-            perso = new Perso(perso.getX(), SIZE*5 + SIZE/2);
-            perso.moveLeft();
-            perso.moveRight();
-        }
-    }
-
-    public void onKeyPressed(int keyCode) {
-        System.out.println("Press / Code : " +keyCode);
-        if (keyCode == 37) {
-            perso.moveLeft();
-            perso.setMoving(true);
-        }
-        if (keyCode == 39) {
-            perso.moveRight();
-            perso.setMoving(true);
-        }
-        if (keyCode == 38) {
-            perso.moveUp();
-            perso.setMoving(true);
-        }
-        if (keyCode == 40) {
-            perso.moveDown();
-            perso.setMoving(true);
-        }
-    }
-
-    public void onKeyReleased(int keyCode) {
-        System.out.println("Release / Code : " +keyCode);
-        if (keyCode == 37 || keyCode == 39) {
-            perso.setMoving(false);
-        }
-    }*/
-
-
 }
