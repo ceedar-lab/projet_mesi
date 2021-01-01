@@ -10,8 +10,8 @@ public class BrownCharacterAnimation extends Animation {
 
     /**********  Constructors  **********/
 
-    public BrownCharacterAnimation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, LeftHand leftHand) throws IOException {
-        super(hair, head, torso, hands, legs, feet, leftHand);
+    public BrownCharacterAnimation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) throws IOException {
+        super(hair, head, torso, hands, legs, feet, rightHand, leftHand);
         setFileName("res/images/character-brown_skin.png");
         super.createNewCharacter();
     }

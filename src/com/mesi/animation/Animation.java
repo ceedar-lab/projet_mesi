@@ -21,18 +21,20 @@ public abstract class Animation {
     private Hands hands;
     private Legs legs;
     private Feet feet;
+    private RightHand rightHand;
     private LeftHand leftHand;
     private BufferedImage newCharacter;
 
     /**********  Constructors  **********/
 
-    public Animation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, LeftHand leftHand) {
+    public Animation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) {
         this.hair = hair;
         this.head = head;
         this.torso = torso;
         this.hands = hands;
         this.legs = legs;
         this.feet = feet;
+        this.rightHand = rightHand;
         this.leftHand = leftHand;
     }
 
@@ -78,6 +80,70 @@ public abstract class Animation {
         this.lastColIndex = lastColIndex;
     }
 
+    public Hair getHair() {
+        return hair;
+    }
+
+    public void setHair(Hair hair) {
+        this.hair = hair;
+    }
+
+    public Head getHead() {
+        return head;
+    }
+
+    public void setHead(Head head) {
+        this.head = head;
+    }
+
+    public Torso getTorso() {
+        return torso;
+    }
+
+    public void setTorso(Torso torso) {
+        this.torso = torso;
+    }
+
+    public Hands getHands() {
+        return hands;
+    }
+
+    public void setHands(Hands hands) {
+        this.hands = hands;
+    }
+
+    public Legs getLegs() {
+        return legs;
+    }
+
+    public void setLegs(Legs legs) {
+        this.legs = legs;
+    }
+
+    public Feet getFeet() {
+        return feet;
+    }
+
+    public void setFeet(Feet feet) {
+        this.feet = feet;
+    }
+
+    public RightHand getRightHand() {
+        return rightHand;
+    }
+
+    public void setRightHand(RightHand rightHand) {
+        this.rightHand = rightHand;
+    }
+
+    public LeftHand getLeftHand() {
+        return leftHand;
+    }
+
+    public void setLeftHand(LeftHand leftHand) {
+        this.leftHand = leftHand;
+    }
+
     /**********  Methods  **********/
 
     public BufferedImage createNewCharacter() throws IOException {
@@ -88,6 +154,7 @@ public abstract class Animation {
         BufferedImage charHands = (hands.getImageURL() != null) ? ImageIO.read(new File(hands.getImageURL())) : null;
         BufferedImage charLegs = (legs.getImageURL() != null) ? ImageIO.read(new File(legs.getImageURL())) : null;
         BufferedImage charFeet = (feet.getImageURL() != null) ? ImageIO.read(new File(feet.getImageURL())) : null;
+        BufferedImage charRightHand = (rightHand.getImageURL() != null) ? ImageIO.read(new File(rightHand.getImageURL())) : null;
         BufferedImage charLeftHand = (leftHand.getImageURL() != null) ? (head != head.METAL_HAT) ? ImageIO.read(new File(leftHand.getImageURL())) : ImageIO.read(new File(leftHand.getImageURL2())) : null;
         int width = 832;
         int height = 1344;
@@ -102,6 +169,7 @@ public abstract class Animation {
         g.drawImage(charHands, null, 0, 0);
         g.drawImage(charLegs, null, 0, 0);
         g.drawImage(charFeet, null, 0, 0);
+        g.drawImage(charRightHand, null, 0, 0);
         g.drawImage(charLeftHand, null, 0, 0);
         return this.newCharacter = newCharacter;
     }
@@ -158,5 +226,39 @@ public abstract class Animation {
                 setSpritesCoordinates(10, 10, 0, 8);
         }
         return this.loadSprites();
+    }
+
+    public BufferedImage[] hit(int direction, RightHand weapon) throws IOException {
+        if (weapon == RightHand.DAGGER || weapon == RightHand.SWORD) {
+            switch (direction) {
+                case 37: // left
+                    setSpritesCoordinates(13, 13, 0, 5);
+                    break;
+                case 38: // up
+                    setSpritesCoordinates(12, 12, 0, 5);
+                    break;
+                case 39: // right
+                    setSpritesCoordinates(15, 15, 0, 5);
+                    break;
+                default: // down
+                    setSpritesCoordinates(14, 14, 0, 5);
+            }
+            return this.loadSprites();
+        } else /*if (weapon == RightHand.SPEAR) */{
+            switch (direction) {
+                case 37: // left
+                    setSpritesCoordinates(5, 5, 0, 7);
+                    break;
+                case 38: // up
+                    setSpritesCoordinates(4, 4, 0, 7);
+                    break;
+                case 39: // right
+                    setSpritesCoordinates(7, 7, 0, 7);
+                    break;
+                default: // down
+                    setSpritesCoordinates(6, 6, 0, 7);
+            }
+            return this.loadSprites();
+        }
     }
 }

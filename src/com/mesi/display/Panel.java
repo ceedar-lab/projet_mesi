@@ -1,3 +1,5 @@
+package com.mesi.display;
+
 import com.mesi.animation.*;
 import com.mesi.equipement.*;
 
@@ -16,16 +18,20 @@ public class Panel extends JPanel {
     private ArrayList direction = new ArrayList() {{ add(40); }};
     private Integer originX = 5, originY = 5;
     private boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
+    private boolean isHiting = false;
     private Integer animX = 0, animY = 2;
+    private Integer clock = 0, fps = 0;
 
-    Animation test = new WhiteCharacterAnimation(Hair.BLOND, Head.ROBE_HOOD, Torso.TSHIRT, Hands.NONE, Legs.SKIRT, Feet.LEATHER_BOOTS, LeftHand.NONE);
-    /*Animation test = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, LeftHand.NONE);*/
-    /*Animation test = new WhiteCharacterAnimation(Hair.BROWN, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, LeftHand.SHIELD);*/
+    Animation test = new WhiteCharacterAnimation(Hair.BLOND, Head.ROBE_HOOD, Torso.TSHIRT, Hands.NONE, Legs.SKIRT, Feet.LEATHER_BOOTS, RightHand.DAGGER, LeftHand.NONE);
+    /*Animation test = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);*/
+    /*Animation test = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);*/
     BufferedImage[] anim  = test.stand((Integer)direction.get(0));
 
-    Perso perso = new Perso();
+    //Perso perso = new Perso();
 
     public Panel() throws IOException {
+        setBackground(new Color(0,0,0,0));
+        setBounds(0, 0, 1280, 768);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -49,10 +55,10 @@ public class Panel extends JPanel {
         offsetY+=strideY;
 
         // Carreaux
-        for (int ax = 0; ax < 20; ax++) {
-            for (int ay = 0; ay < 12; ay++) {
+        for (int ax = 0; ax < 40; ax++) {
+            for (int ay = 0; ay < 24; ay++) {
                 g.setColor(Color.BLACK);
-                g.drawRect(ax*SIZE, ay*SIZE, SIZE, SIZE);
+                g.drawRect(ax*SIZE/2, ay*SIZE/2, SIZE/2, SIZE/2);
             }
         }
 
@@ -62,7 +68,44 @@ public class Panel extends JPanel {
         g.setColor(new Color(0, 0, 0, .5f));
         g.fillOval(SIZE*originX + SIZE/4 + offsetX, SIZE*(originX+1) - SIZE/5 + offsetY, 32, 16);
 
-        if (isMovingRight || isMovingLeft || isMovingUp || isMovingDown) {
+        if (isHiting) {
+            System.out.println("hit / clock : " +clock+ " / fps : " +fps);
+
+            try {
+                anim = test.hit((Integer)direction.get(0), test.getRightHand());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (test.getRightHand() == RightHand.DAGGER || test.getRightHand() == RightHand.SWORD) {
+                g.drawImage(anim[fps], SIZE * originX + offsetX, SIZE * originY + offsetY, this);
+
+                clock++;
+
+                if (clock == 4) {
+                    fps++;
+                    clock = 0;
+                }
+                if (fps == 6) {
+                    fps = 0;
+                    isHiting = false;
+                }
+            } else {
+                g.drawImage(anim[fps], SIZE * originX + offsetX, SIZE * originY + offsetY, this);
+
+                clock++;
+
+                if (clock == 4) {
+                    fps++;
+                    clock = 0;
+                }
+                if (fps == 8) {
+                    fps = 0;
+                    isHiting = false;
+                }
+            }
+
+        } else if (isMovingRight || isMovingLeft || isMovingUp || isMovingDown) {
             try {
                 anim = test.walkCycle((Integer)direction.get(0));
             } catch (IOException e) {
@@ -76,6 +119,16 @@ public class Panel extends JPanel {
         } else {
             g.drawImage(anim[0], SIZE * originX + offsetX, SIZE * originY + offsetY, this);
         }
+
+        /*clock++;
+
+        if (clock == 4) {
+            animX++;
+            animY++;
+            clock = 0;
+        }
+        if (animX == 9) animX = 0;
+        if (animY == 9) animY = 2;*/
 
         if (offsetX%16 == 0) animX+=1;
         if (offsetY%16 == 0) animY+=1;
@@ -97,7 +150,8 @@ public class Panel extends JPanel {
             direction.remove(keyCode);
     }
 
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(int keyCode) throws IOException {
+        System.out.println("panel key");
         if (keyCode == 37 && !isMovingLeft) {
             strideX-=stride;
             setDirection(keyCode);
@@ -117,6 +171,9 @@ public class Panel extends JPanel {
             strideY+=stride;
             setDirection(keyCode);
             isMovingDown = true;
+        }
+        if (keyCode == 32) {
+            isHiting = true;
         }
     }
 
