@@ -1,18 +1,11 @@
 package com.mesi.params;
 
-public enum KeyMap {
+public class KeyMap {
 
-    LEFT(37),
-    RIGHT(39),
-    UP(38),
-    DOWN(40),
-    ESCAPE(27);
-
-    private final Integer keyCode;
-
-    KeyMap(Integer keyCode) { this.keyCode = keyCode; }
-
-    public Integer getKeyCode() {
-        return keyCode;
-    }
+    public static Integer LEFT = 37;
+    public static Integer RIGHT = 39;
+    public static Integer UP = 38;
+    public static Integer DOWN = 40;
+    public static Integer ESCAPE = 27;
+    public static Integer ATTACK = 32;
 }

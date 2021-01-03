@@ -1,3 +1,4 @@
+/*
 package com.mesi.display;
 
 import javax.imageio.ImageIO;
@@ -26,3 +27,4 @@ public class TestPan extends JPanel {
         g.drawImage(foliage, TILE_SIZE + TILE_SIZE/2, 4*TILE_SIZE + TILE_SIZE/2, this);
     }
 }
+*/

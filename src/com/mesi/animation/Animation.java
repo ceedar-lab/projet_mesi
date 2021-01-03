@@ -1,6 +1,7 @@
 package com.mesi.animation;
 
 import com.mesi.equipement.*;
+import com.mesi.params.Constant;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,7 +14,6 @@ public abstract class Animation {
     /**********  Attributes  **********/
 
     private String fileName;
-    private final Integer TILE_SIZE = 64;
     private Integer firstRowIndex, lastRowIndex, firstColIndex, lastColIndex;
     private Hair hair;
     private Head head;
@@ -180,7 +180,7 @@ public abstract class Animation {
 
         for (int i = firstRowIndex; i <= lastRowIndex; i++) {
             for (int j = firstColIndex; j <= lastColIndex; j++) {
-                sprites[index] = newCharacter.getSubimage(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                sprites[index] = newCharacter.getSubimage(j * Constant.SPRITE_SIZE, i * Constant.SPRITE_SIZE, Constant.SPRITE_SIZE, Constant.SPRITE_SIZE);
                 index++;
             }
         }

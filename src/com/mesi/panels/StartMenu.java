@@ -1,4 +1,4 @@
-package com.mesi.display;
+package com.mesi.panels;
 
 import com.mesi.MainZeldo;
 import com.mesi.params.Couleur;
@@ -52,7 +52,7 @@ public class StartMenu extends JPanel {
 
         btnNouvellePartie.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MainZeldo.state = MainZeldo.GameState.NEW_GAME;
+                MainZeldo.state = MainZeldo.GameState.GAME;
                 MainZeldo.onStateChange = 1;
             }
         });

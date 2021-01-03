@@ -1,4 +1,4 @@
-package com.mesi.display;
+package com.mesi.panels;
 
 import com.mesi.params.Couleur;
 
