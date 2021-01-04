@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Équipement de protection de jambes du héros.
+ */
 public enum Legs {
     NONE(null),
     METAL_PANTS("res/images/legs-pants_metal.png"),

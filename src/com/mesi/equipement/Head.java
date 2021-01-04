@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Équipement de protection de tête du héros.
+ */
 public enum Head {
 
     NONE(null),

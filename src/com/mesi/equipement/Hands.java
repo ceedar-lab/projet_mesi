@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Équipement de protection de mains du héros.
+ */
 public enum Hands {
 
     NONE(null),

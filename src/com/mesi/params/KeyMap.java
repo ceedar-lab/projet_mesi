@@ -1,5 +1,8 @@
 package com.mesi.params;
 
+/**
+ * Classe qui contient le paramétrages des touches.
+ */
 public class KeyMap {
 
     public static Integer LEFT = 37;

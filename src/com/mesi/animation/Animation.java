@@ -40,112 +40,23 @@ public abstract class Animation {
 
     /**********  Getters / Setters  **********/
 
-    public String getFileName() {
-        return fileName;
-    }
-
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public Integer getFirstRowIndex() {
-        return firstRowIndex;
-    }
-
-    public void setFirstRowIndex(Integer firstRowIndex) {
-        this.firstRowIndex = firstRowIndex;
-    }
-
-    public Integer getFirstColIndex() {
-        return firstColIndex;
-    }
-
-    public void setFirstColIndex(Integer firstColIndex) {
-        this.firstColIndex = firstColIndex;
-    }
-
-    public Integer getLastRowIndex() {
-        return lastRowIndex;
-    }
-
-    public void setLastRowIndex(Integer lastRowIndex) {
-        this.lastRowIndex = lastRowIndex;
-    }
-
-    public Integer getLastColIndex() {
-        return lastColIndex;
-    }
-
-    public void setLastColIndex(Integer lastColIndex) {
-        this.lastColIndex = lastColIndex;
-    }
-
-    public Hair getHair() {
-        return hair;
-    }
-
-    public void setHair(Hair hair) {
-        this.hair = hair;
-    }
-
-    public Head getHead() {
-        return head;
-    }
-
-    public void setHead(Head head) {
-        this.head = head;
-    }
-
-    public Torso getTorso() {
-        return torso;
-    }
-
-    public void setTorso(Torso torso) {
-        this.torso = torso;
-    }
-
-    public Hands getHands() {
-        return hands;
-    }
-
-    public void setHands(Hands hands) {
-        this.hands = hands;
-    }
-
-    public Legs getLegs() {
-        return legs;
-    }
-
-    public void setLegs(Legs legs) {
-        this.legs = legs;
-    }
-
-    public Feet getFeet() {
-        return feet;
-    }
-
-    public void setFeet(Feet feet) {
-        this.feet = feet;
     }
 
     public RightHand getRightHand() {
         return rightHand;
     }
 
-    public void setRightHand(RightHand rightHand) {
-        this.rightHand = rightHand;
-    }
-
-    public LeftHand getLeftHand() {
-        return leftHand;
-    }
-
-    public void setLeftHand(LeftHand leftHand) {
-        this.leftHand = leftHand;
-    }
-
     /**********  Methods  **********/
 
+    /**
+     * Création de l'image du personnage principal.
+     * Récupère les images du personnage et de son équipement en fonction des paramètres de la signatures du personnage, et les
+     * fusionne pour obtenir l'image finale.
+     * @return BufferedImage.
+     * @throws IOException
+     */
     public BufferedImage createNewCharacter() throws IOException {
         BufferedImage character = ImageIO.read(new File(fileName));
         BufferedImage charHair = (hair.getImageURL() != null && (head != head.METAL_HELMET && head != head.CHAIN_HOOD)) ? ImageIO.read(new File(hair.getImageURL())) : null;
@@ -174,6 +85,11 @@ public abstract class Animation {
         return this.newCharacter = newCharacter;
     }
 
+    /**
+     * Récupère les images du mouvement parmis la table de sprites en fonction des paramètres.
+     * @return BufferedImage[]
+     * @throws IOException
+     */
     public BufferedImage[] loadSprites() throws IOException {
         int index = 0;
         BufferedImage[] sprites = new BufferedImage[(lastRowIndex - firstRowIndex + 1) * (lastColIndex - firstColIndex + 1)];
@@ -187,6 +103,13 @@ public abstract class Animation {
         return sprites;
     }
 
+    /**
+     * Calcul les coordonnées des images à récupérer dans la tables de sprites.
+     * @param firstRowIndex
+     * @param lastRowIndex
+     * @param firstColIndex
+     * @param lastColIndex
+     */
     public void setSpritesCoordinates(Integer firstRowIndex, Integer lastRowIndex, Integer firstColIndex, Integer lastColIndex) {
         this.firstRowIndex = firstRowIndex;
         this.lastRowIndex = lastRowIndex;
@@ -194,6 +117,12 @@ public abstract class Animation {
         this.lastColIndex = lastColIndex;
     }
 
+    /**
+     * Récupère les sprites lorsque le personnage est debout.
+     * @param direction
+     * @return BufferedImage[]
+     * @throws IOException
+     */
     public BufferedImage[] stand(int direction) throws IOException {
         switch (direction) {
             case 37: // left
@@ -211,6 +140,12 @@ public abstract class Animation {
         return this.loadSprites();
     }
 
+    /**
+     * Récupère les sprites lorsque le personnage marche.
+     * @param direction
+     * @return BufferedImage[]
+     * @throws IOException
+     */
     public BufferedImage[] walkCycle(int direction) throws IOException {
         switch (direction) {
             case 37: // left
@@ -228,6 +163,13 @@ public abstract class Animation {
         return this.loadSprites();
     }
 
+    /**
+     * Récupère les sprites lorsque le personnage attaque.
+     * @param direction
+     * @param weapon
+     * @return BufferedImage[]
+     * @throws IOException
+     */
     public BufferedImage[] hit(int direction, RightHand weapon) throws IOException {
         if (weapon == RightHand.DAGGER || weapon == RightHand.SWORD) {
             switch (direction) {

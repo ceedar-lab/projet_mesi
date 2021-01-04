@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Équipement dans la main gauche du héros (bouclier).
+ */
 public enum LeftHand {
 
     NONE(null, null),

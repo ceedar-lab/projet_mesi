@@ -7,17 +7,25 @@ import java.awt.*;
 
 public class Tile extends JPanel {
 
+    /**********  Attributes  **********/
+
     private Integer x = 0;
     private Integer y = 0;
 
-    private boolean traversable = true;
+    private boolean traversable;
+    private boolean teleport;
 
-    public Tile(Integer x, Integer y, Boolean traversable) {
+    /**********  Constructors  **********/
+
+    public Tile(Integer x, Integer y) {
         if (traversable) setBackground(Color.RED);
         this.x = x;
         this.y = y;
-        this.traversable = traversable;
+        this.traversable = true;
+        this.teleport = false;
     }
+
+    /**********  Getters / Setters  **********/
 
     public int getX() {
         return x;
@@ -43,23 +51,45 @@ public class Tile extends JPanel {
         this.traversable = traversable;
     }
 
-    public Rectangle getBounds() {
+    public boolean isTeleport() {
+        return teleport;
+    }
+
+    public void setTeleport(boolean teleport) {
+        this.teleport = teleport;
+    }
+
+    /**********  Methods  **********/
+
+    /**
+     * Récupère toutes bornes de la case.
+     * @return Rectangle.
+     */
+    public Rectangle getTeleportBounds() {
         return new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
+    /**
+     * Récupère les bornes ouest de la case.
+     * @return Rectangle.
+     */
     public Rectangle getLeftBound() { return new Rectangle(x, y + Constant.BOUND_THICKNESS, Constant.BOUND_THICKNESS, Constant.TILE_SIZE - 2*Constant.BOUND_THICKNESS); }
 
+    /**
+     * Récupère les bornes est de la case.
+     * @return Rectangle.
+     */
     public Rectangle getRightBound() { return new Rectangle(x + Constant.TILE_SIZE - Constant.BOUND_THICKNESS, y + Constant.BOUND_THICKNESS, Constant.BOUND_THICKNESS, Constant.TILE_SIZE - 2*Constant.BOUND_THICKNESS); }
 
+    /**
+     * Récupère les bornes nord de la case.
+     * @return Rectangle.
+     */
     public Rectangle getUpperBound() { return new Rectangle(x + Constant.BOUND_THICKNESS, y, Constant.TILE_SIZE - 2*Constant.BOUND_THICKNESS , Constant.BOUND_THICKNESS); }
 
+    /**
+     * Récupère les bornes sud de la case.
+     * @return Rectangle.
+     */
     public Rectangle getLowerBound() { return new Rectangle(x + Constant.BOUND_THICKNESS, y + Constant.TILE_SIZE - Constant.BOUND_THICKNESS, Constant.TILE_SIZE - 2*Constant.BOUND_THICKNESS, Constant.BOUND_THICKNESS); }
-
-    /*public Rectangle getLeftBound() { return new Rectangle(x - Constant.BOUND_THICKNESS, y, Constant.BOUND_THICKNESS, Constant.TILE_SIZE); }
-
-    public Rectangle getRightBound() { return new Rectangle(x + Constant.TILE_SIZE, y, Constant.BOUND_THICKNESS, Constant.TILE_SIZE); }
-
-    public Rectangle getUpperBound() { return new Rectangle(x, y - Constant.BOUND_THICKNESS, Constant.TILE_SIZE, Constant.BOUND_THICKNESS); }
-
-    public Rectangle getLowerBound() { return new Rectangle(x, y + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.BOUND_THICKNESS); }*/
 }

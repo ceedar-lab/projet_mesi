@@ -3,11 +3,14 @@ package com.mesi;
 import com.mesi.panels.GameTitle;
 import com.mesi.panels.Game;
 import com.mesi.panels.StartMenu;
+import com.mesi.panels.maps.MapModel;
 import com.mesi.panels.maps.Map_0_0;
+import com.mesi.panels.maps.Map_0_1;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -18,38 +21,31 @@ public class MainZeldo extends JPanel {
 
     /**********  Attributes  **********/
 
-    /*BufferedImage trunk = ImageIO.read(new File("res/images/tree-trunk.png"));
-    BufferedImage foliage = ImageIO.read(new File("res/images/tree-foliage.png"));
-    g.drawImage(trunk, 2*TILE_SIZE, 6*TILE_SIZE, this);
-    g.drawImage(foliage, TILE_SIZE + TILE_SIZE/2, 4*TILE_SIZE + TILE_SIZE/2, this);*/
-
     public static enum GameState {
-        GAME_TITLE, START_MENU, GAME
+        GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1
     }
 
-    public static GameState state = GameState.GAME;
-    public static Integer onStateChange = 1;
+    public static GameState state = GameState.MAP_0_0;
+    public static boolean onStateChange = true;
 
-    public static Game game;
-
-    static {
-        try {
-            game = new Game(new Map_0_0(10, 10, KeyMap.DOWN));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static Game game;
+    private MapModel map;
 
     /**********  Constructors  **********/
 
-    public MainZeldo()  {
+    /**
+     * Panel principal.
+     * Le thread contrôle de l'état du panel à chaque rotation.
+     * Si l'état change, un nouveau panel est affiché.
+     */
+    public MainZeldo() throws IOException {
         setLayout(null);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while(true) {
-                        if (onStateChange == 1) {
+                        if (onStateChange) {
                             removeAll();
                             add(displayedPanel());
                             repaint();
@@ -66,9 +62,12 @@ public class MainZeldo extends JPanel {
 
     /**********  Methods  **********/
 
-    public JPanel displayedPanel() {
-
-        onStateChange = 0;
+    /**
+     * Retourne le panel demandé en fonction de l'état de la variable state.
+     * @return JPanel.
+     */
+    public JPanel displayedPanel() throws IOException {
+        onStateChange = false;
 
         switch (state) {
             case GAME_TITLE:
@@ -77,16 +76,49 @@ public class MainZeldo extends JPanel {
             case START_MENU:
                 return new StartMenu();
 
-            case GAME:
+            case MAP_0_0:
+                this.map = new Map_0_0(10, 10, KeyMap.DOWN);
+                this.game = new Game(map);
+                return game;
+
+            case MAP_0_1:
+                this.map = new Map_0_1(15, 10, KeyMap.LEFT);
+                this.game = new Game(map);
                 return game;
 
             default:
-                return new GameTitle();
+                return new JPanel();
         }
     }
 
-    public static void main(String[] args) {
-        JFrame f = new JFrame("MyGame");
+    /**
+     * Dessine sur le panel affiché.
+     * @param g
+     */
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        switch (state) {
+            case MAP_0_0:
+                /*g.drawImage(map.getBackgroundImage(), 0, 0, this);
+                g.setColor(Color.YELLOW);
+                g.fillRect(39 * Constant.TILE_SIZE, 10 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                g.fillRect(39 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                g.setColor(Color.RED);
+                g.fillRect(39 * Constant.TILE_SIZE, 9 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                g.fillRect(39 * Constant.TILE_SIZE, 12 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);*/
+
+            case MAP_0_1:
+        }
+    }
+
+    /**
+     * Création du JFrame et lancement du jeu.
+     * @param args
+     */
+    public static void main(String[] args) throws IOException {
+        JFrame f = new JFrame();
         f.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         f.setLocationRelativeTo(null);
         f.setUndecorated(true);
@@ -103,21 +135,24 @@ public class MainZeldo extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                //System.out.println("Touche pressée : " +e.getKeyCode());
-
                 if (state == GameState.GAME_TITLE && e.getKeyCode() == KeyMap.ESCAPE) {
-                    onStateChange = 1;
+                    onStateChange = true;
                     state = GameState.START_MENU;
                 }
 
-                if (state == GameState.GAME) {
+                if (state != GameState.GAME_TITLE && state != GameState.START_MENU) {
                     game.onKeyPressed(e.getKeyCode());
+                }
+
+                if (state == GameState.MAP_0_0 && e.getKeyCode() == KeyMap.ESCAPE) {
+                    onStateChange = true;
+                    state = GameState.MAP_0_1;
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (state == GameState.GAME) {
+                if (state != GameState.GAME_TITLE && state != GameState.START_MENU) {
                     game.onKeyReleased(e.getKeyCode());
                 }
             }

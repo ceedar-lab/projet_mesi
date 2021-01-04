@@ -2,6 +2,9 @@ package com.mesi.params;
 
 import java.awt.Color;
 
+/**
+ * Classe qui contient des couleurs personnalisées.
+ */
 public class Couleur {
 
     public static Color Black = new Color(0, 0, 0);

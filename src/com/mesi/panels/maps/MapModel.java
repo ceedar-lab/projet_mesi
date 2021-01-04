@@ -2,39 +2,62 @@ package com.mesi.panels.maps;
 
 import com.mesi.params.Constant;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 
+
+/**
+ * Map abstraite de base.
+ */
 public abstract class MapModel extends JPanel {
+
+    /**********  Attributes  **********/
 
     private Integer startingPositionX;
     private Integer startingPositionY;
     private Integer startingDirection;
 
     private Hashtable<String, Tile> tileList = new Hashtable<>();
+    //private Hashtable<String, Map>
 
-    public MapModel(Integer startingPositionX, Integer startingPositionY, Integer startingDirection) {
+    private String backgroundURL;
+    private BufferedImage backgroundImage;
+
+    private ArrayList<Rectangle> leftBounds;
+    private ArrayList<Rectangle> rightBounds;
+    private ArrayList<Rectangle> upperBounds;
+    private ArrayList<Rectangle> lowerBounds;
+    private ArrayList<Rectangle> teleport;
+
+    /**********  Constructors  **********/
+
+    public MapModel(Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
         this.startingPositionX = startingPositionX;
         this.startingPositionY = startingPositionY;
         this.startingDirection = startingDirection;
-        /*setOpaque(true);
-        setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);*/
+        //setOpaque(true);
+        //setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
+
+        /** Crée toutes les tuiles de la carte, sans bloc de collision et sans téléportation par défaut **/
         for (int x = 0; x < Constant.MAP_WIDTH; x++) {
             for (int y = 0; y < Constant.MAP_HEIGHT; y++) {
-                tileList.put(x+ "," +y, new Tile(x*Constant.TILE_SIZE, y*Constant.TILE_SIZE, true));
+                tileList.put(x + "," + y, new Tile(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE));
             }
         }
     }
 
+    /**********  Getters / Setters  **********/
+
     public Hashtable<String, Tile> getTileList() {
         return tileList;
-    }
-
-    public void setTileList(Hashtable<String, Tile> tileList) {
-        this.tileList = tileList;
     }
 
     public Integer getStartingPositionX() {
@@ -61,43 +84,97 @@ public abstract class MapModel extends JPanel {
         this.startingDirection = startingDirection;
     }
 
+    public String getBackgroundURL() {
+        return backgroundURL;
+    }
+
+    public void setBackgroundURL(String backgroundURL) {
+        this.backgroundURL = backgroundURL;
+    }
+
+    public BufferedImage getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage() throws IOException {
+        this.backgroundImage = ImageIO.read(new File(backgroundURL));
+    }
+
     public ArrayList<Rectangle> getLeftBounds() {
+        return leftBounds;
+    }
+
+    public ArrayList<Rectangle> getRightBounds() {
+        return rightBounds;
+    }
+
+    public ArrayList<Rectangle> getUpperBounds() {
+        return upperBounds;
+    }
+
+    public ArrayList<Rectangle> getLowerBounds() {
+        return lowerBounds;
+    }
+
+    public ArrayList<Rectangle> getTeleport() {
+        return teleport;
+    }
+
+    /** Récupère la liste des bords ouest des blocs de collision de la carte **/
+    public void setLeftBounds() {
         ArrayList<Rectangle> leftBounds = new ArrayList<>();
         Enumeration<Tile> e = tileList.elements();
         while (e.hasMoreElements()) {
             Tile tile = e.nextElement();
             if (!tile.isTraversable()) leftBounds.add(tile.getLeftBound());
         }
-        return leftBounds;
+        this.leftBounds = leftBounds;
     }
 
-    public ArrayList<Rectangle> getRightBounds() {
+    /** Récupère la liste des bords est des blocs de collision de la carte **/
+    public void setRightBounds() {
         ArrayList<Rectangle> rightBounds = new ArrayList<>();
         Enumeration<Tile> e = tileList.elements();
         while (e.hasMoreElements()) {
             Tile tile = e.nextElement();
             if (!tile.isTraversable()) rightBounds.add(tile.getRightBound());
         }
-        return rightBounds;
+        this.rightBounds = rightBounds;
     }
 
-    public ArrayList<Rectangle> getUpperBounds() {
+    /** Récupère la liste des bords nord des blocs de collision de la carte **/
+    public void setUpperBounds() {
         ArrayList<Rectangle> upperBounds = new ArrayList<>();
         Enumeration<Tile> e = tileList.elements();
         while (e.hasMoreElements()) {
             Tile tile = e.nextElement();
             if (!tile.isTraversable()) upperBounds.add(tile.getUpperBound());
         }
-        return upperBounds;
+        this.upperBounds = upperBounds;
     }
 
-    public ArrayList<Rectangle> getLowerBounds() {
+    /** Récupère la liste des bords sud des blocs de collision de la carte **/
+    public void setLowerBounds() {
         ArrayList<Rectangle> lowerBounds = new ArrayList<>();
         Enumeration<Tile> e = tileList.elements();
         while (e.hasMoreElements()) {
             Tile tile = e.nextElement();
             if (!tile.isTraversable()) lowerBounds.add(tile.getLowerBound());
         }
-        return lowerBounds;
+        this.lowerBounds = lowerBounds;
+    }
+
+    /**
+     * Récupère la liste des blocs de téléportation.
+     * @return
+     */
+    public void setTeleport() {
+        ArrayList<Rectangle> teleport = new ArrayList<>();
+        Enumeration<Tile> e = tileList.elements();
+        while (e.hasMoreElements()) {
+            Tile tile = e.nextElement();
+            if (tile.isTeleport()) teleport.add(tile.getTeleportBounds());
+        }
+        this.teleport = teleport;
     }
 }

@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Équipement de protection de corps du héros.
+ */
 public enum Torso {
 
     NONE(null),

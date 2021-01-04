@@ -1,6 +1,7 @@
 package com.mesi.panels;
 
 import com.mesi.MainZeldo;
+import com.mesi.params.Constant;
 import com.mesi.params.Couleur;
 
 import javax.swing.*;
@@ -10,12 +11,20 @@ import java.awt.event.ActionListener;
 
 public class StartMenu extends JPanel {
 
+    /**********  Attributes  **********/
+
     private JButton btnNouvellePartie = new JButton("NOUVELLE PARTIE");
     private JButton btnContinuer = new JButton("CONTINUER");
+    private JButton btnOptions = new JButton("OPTIONS");
     private JButton btnQuitter = new JButton("QUITTER");
-    
+
+    /**********  Constructors  **********/
+
+    /**
+     * Menu du jeu.
+     */
     public StartMenu() {
-        setBounds(0, 0, 1280, 768);
+        setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         setBackground(Couleur.Brown_1);
 
         GroupLayout layout = new GroupLayout(this);
@@ -46,20 +55,30 @@ public class StartMenu extends JPanel {
         setLayout(layout);
     }
 
+    /**********  Methods  **********/
+
+    /**
+     * Démarre une nouvelle partie.
+     * @return
+     */
     public JButton getBtnNouvellePartie() {
         btnNouvellePartie.setFocusable(false);
         btnNouvellePartie.setBackground(Color.LIGHT_GRAY);
 
         btnNouvellePartie.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MainZeldo.state = MainZeldo.GameState.GAME;
-                MainZeldo.onStateChange = 1;
+                MainZeldo.state = MainZeldo.GameState.MAP_0_0;
+                MainZeldo.onStateChange = true;
             }
         });
 
         return btnNouvellePartie;
     }
 
+    /**
+     * Continue la partie sauvegardée.
+     * @return
+     */
     public JButton getBtnContinuer() {
         /*btnContinuer.setFocusable(false);
         btnContinuer.setBackground(Color.LIGHT_GRAY);
@@ -67,7 +86,6 @@ public class StartMenu extends JPanel {
         if (btnContinuer.getActionListeners().length == 0) {
             btnContinuer.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    MainZeldo.fen.continuerPartie();
                     dispose();
                 }
             });
@@ -76,6 +94,29 @@ public class StartMenu extends JPanel {
         return btnContinuer;
     }
 
+    /**
+     * Entre dans les options du jeu.
+     * @return
+     */
+    public JButton getBtnOptions() {
+        /*btnOptions.setFocusable(false);
+        btnContinuer.setBackground(Color.LIGHT_GRAY);
+
+        if (btnOptions.getActionListeners().length == 0) {
+            btnOptions.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                }
+            });
+        }*/
+
+        return btnOptions;
+    }
+
+    /**
+     * Quitte le jeu.
+     * @return
+     */
     public JButton getBtnQuitter() {
         btnQuitter.setFocusable(false);
         btnQuitter.setBackground(Color.LIGHT_GRAY);

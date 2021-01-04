@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Arme dans la main droite du héros.
+ */
 public enum RightHand {
 
     NONE(null),

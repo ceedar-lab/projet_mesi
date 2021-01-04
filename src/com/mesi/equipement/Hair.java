@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Couleur de cheveux du héros du héros.
+ */
 public enum Hair {
 
     NONE(null),

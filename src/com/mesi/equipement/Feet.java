@@ -1,5 +1,8 @@
 package com.mesi.equipement;
 
+/**
+ * Équipement de protection de pieds du héros.
+ */
 public enum Feet {
 
     NONE(null),
