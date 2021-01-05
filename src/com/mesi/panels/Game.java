@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Game extends JPanel {
 
     /**********  Attributes  **********/
-
+//test
     private MapModel map;
 
     private BufferedImage treeFoliage;
