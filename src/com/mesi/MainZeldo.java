@@ -77,12 +77,12 @@ public class MainZeldo extends JPanel {
                 return new StartMenu();
 
             case MAP_0_0:
-                this.map = new Map_0_0(10, 10, KeyMap.DOWN);
+                this.map = new Map_0_0(80, 48, 10, 10, KeyMap.DOWN);
                 this.game = new Game(map);
                 return game;
 
             case MAP_0_1:
-                this.map = new Map_0_1(15, 10, KeyMap.LEFT);
+                this.map = new Map_0_1(40, 24, 15, 10, KeyMap.LEFT);
                 this.game = new Game(map);
                 return game;
 

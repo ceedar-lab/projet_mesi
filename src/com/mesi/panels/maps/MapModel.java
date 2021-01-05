@@ -21,6 +21,9 @@ public abstract class MapModel extends JPanel {
 
     /**********  Attributes  **********/
 
+    private Integer mapWidth;
+    private Integer mapHeight;
+
     private Integer startingPositionX;
     private Integer startingPositionY;
     private Integer startingDirection;
@@ -39,7 +42,9 @@ public abstract class MapModel extends JPanel {
 
     /**********  Constructors  **********/
 
-    public MapModel(Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
+    public MapModel(Integer mapWidth, Integer mapHeight, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
         this.startingPositionX = startingPositionX;
         this.startingPositionY = startingPositionY;
         this.startingDirection = startingDirection;
@@ -47,14 +52,22 @@ public abstract class MapModel extends JPanel {
         //setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
         /** Crée toutes les tuiles de la carte, sans bloc de collision et sans téléportation par défaut **/
-        for (int x = 0; x < Constant.MAP_WIDTH; x++) {
-            for (int y = 0; y < Constant.MAP_HEIGHT; y++) {
+        for (int x = 0; x < this.mapWidth; x++) {
+            for (int y = 0; y < this.mapHeight; y++) {
                 tileList.put(x + "," + y, new Tile(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE));
             }
         }
     }
 
     /**********  Getters / Setters  **********/
+
+    public Integer getMapWidth() {
+        return mapWidth;
+    }
+
+    public Integer getMapHeight() {
+        return mapHeight;
+    }
 
     public Hashtable<String, Tile> getTileList() {
         return tileList;

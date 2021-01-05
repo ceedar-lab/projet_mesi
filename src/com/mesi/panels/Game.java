@@ -39,9 +39,15 @@ public class Game extends JPanel {
 
     private BufferedImage bgimg;
 
-    /*Animation character = new WhiteCharacterAnimation(Hair.BLOND, Head.ROBE_HOOD, Torso.TSHIRT, Hands.NONE, Legs.SKIRT, Feet.LEATHER_BOOTS, RightHand.SWORD, LeftHand.NONE);*/
+
+    private boolean boutest = false;
+    private boolean boutsud = false;
+    private Integer transRight = 19 * Constant.TILE_SIZE;
+    private Integer transDown = 10 * Constant.TILE_SIZE;
+
+    Animation character = new WhiteCharacterAnimation(Hair.BLOND, Head.ROBE_HOOD, Torso.TSHIRT, Hands.NONE, Legs.SKIRT, Feet.LEATHER_BOOTS, RightHand.DAGGER, LeftHand.NONE);
     /*Animation character = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);*/
-    Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);
+    /*Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);*/
 
     /**********  Constructors  **********/
 
@@ -89,6 +95,8 @@ public class Game extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        add(new Test2());
+
         /** Mise à jour des coordonnées du personnage principal et de sa zone de collision **/
         if (!isBlocked) {
             characterCoordinates[0]+=offsetX;
@@ -96,16 +104,28 @@ public class Game extends JPanel {
         }
         charBounds.setBounds(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
 
+        boutest = (characterCoordinates[0] > (map.getMapWidth() - 21) * 32) ? true : false;
+        boutsud = (characterCoordinates[1] > (map.getMapHeight() - 14) * 32) ? true : false;
+
         /** Arrête les mouvement du personnage si il arrive au bord de l'écran, sauf s'il est sur une case téléportation **/
-        if (!isTeleport) {
+        /*if (!isTeleport) {
             if (characterCoordinates[0] < 0 - Constant.TILE_SIZE/2) characterCoordinates[0] = 0 - Constant.TILE_SIZE/2;
             else if (characterCoordinates[0] > Constant.FRAME_WIDTH - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2) characterCoordinates[0] = Constant.FRAME_WIDTH - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2;
             else if (characterCoordinates[1] < 0) characterCoordinates[1] = 0;
             else if (characterCoordinates[1] > Constant.FRAME_HEIGHT - Constant.SPRITE_SIZE) characterCoordinates[1] = Constant.FRAME_HEIGHT - Constant.SPRITE_SIZE;
-        }
+        }*/
 
         collisionChecker();
         teleportChecker();
+
+        if (!boutest) {
+            if (characterCoordinates[0] > transRight) g.translate(0 - (characterCoordinates[0] - transRight), 0);
+        } else g.translate(0 - (40 * 32), 0);
+        if (!boutsud) {
+            if (characterCoordinates[1] > transDown) g.translate(0, 0 - (characterCoordinates[1] - transDown));
+        } else g.translate(0, 0 - (24 * 32));
+
+
 
         /** Affichage de la grille **/
         /*for (int x = 0; x < Constant.MAP_WIDTH; x++) {
@@ -182,6 +202,8 @@ public class Game extends JPanel {
         g.drawImage(treeFoliage, Constant.TILE_SIZE * 4, Constant.TILE_SIZE * 11, this);
         g.drawImage(treeFoliage, Constant.TILE_SIZE * 7, Constant.TILE_SIZE * 8, this);
         g.drawImage(treeFoliage, Constant.TILE_SIZE * 12, Constant.TILE_SIZE * 10, this);
+
+        add(new Test());
     }
 
     /**

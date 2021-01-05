@@ -8,10 +8,10 @@ public class Map_0_0 extends MapModel {
 
     /**********  Constructors  **********/
 
-    public Map_0_0(Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
-        super(startingPositionX, startingPositionY, startingDirection);
+    public Map_0_0(Integer mapWidth, Integer mapHeight, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
+        super(mapWidth, mapHeight, startingPositionX, startingPositionY, startingDirection);
 
-        setBackgroundURL("res/images/map/map_0_0.jpg");
+        setBackgroundURL("res/images/map/newMap.jpg");
         setBackgroundImage();
 
         /** Coordonnées des blocs de collision **/
