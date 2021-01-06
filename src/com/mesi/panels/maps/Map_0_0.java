@@ -1,5 +1,8 @@
 package com.mesi.panels.maps;
 
+import com.mesi.decor.Tree;
+import com.mesi.params.Hitbox;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,6 +54,11 @@ public class Map_0_0 extends MapModel {
         getTileList().get("27,17").setTraversable(false);
         getTileList().get("39,9").setTraversable(false);
         getTileList().get("39,12").setTraversable(false);
+
+        /** case avec hitbox full **/
+        getTileList().get("20,4").setHitbox(Hitbox.FULL);
+        /** case avec un arbre **/
+        getTileList().get("4,4").setDecorObject(new Tree());
 
         /** Coordonnées des blocs de téléportation **/
         getTileList().get("39,10").setTeleport(true);

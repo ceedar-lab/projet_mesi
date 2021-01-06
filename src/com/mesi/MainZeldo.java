@@ -6,6 +6,7 @@ import com.mesi.panels.StartMenu;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.panels.maps.Map_0_0;
 import com.mesi.panels.maps.Map_0_1;
+import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 
@@ -14,22 +15,25 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.Enumeration;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class MainZeldo extends JPanel {
+public class MainZeldo extends JPanel
+{
 
     /**********  Attributes  **********/
 
-    public static enum GameState {
+    public static enum GameState
+    {
         GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1
     }
 
-    public static GameState state = GameState.MAP_0_0;
-    public static boolean onStateChange = true;
+    public static GameState state         = GameState.GAME_TITLE;
+    public static boolean   onStateChange = true;
 
-    private static Game game;
-    private MapModel map;
+    private static Game     game;
+    private        MapModel map;
 
     /**********  Constructors  **********/
 
@@ -38,14 +42,20 @@ public class MainZeldo extends JPanel {
      * Le thread contrôle de l'état du panel à chaque rotation.
      * Si l'état change, un nouveau panel est affiché.
      */
-    public MainZeldo() throws IOException {
+    public MainZeldo() throws IOException
+    {
         setLayout(null);
-        new Thread(new Runnable() {
+        new Thread(new Runnable()
+        {
             @Override
-            public void run() {
-                try {
-                    while(true) {
-                        if (onStateChange) {
+            public void run()
+            {
+                try
+                {
+                    while (true)
+                    {
+                        if (onStateChange)
+                        {
                             removeAll();
                             add(displayedPanel());
                             repaint();
@@ -53,7 +63,9 @@ public class MainZeldo extends JPanel {
                         }
                         Thread.sleep(Constant.FPS);
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -64,12 +76,15 @@ public class MainZeldo extends JPanel {
 
     /**
      * Retourne le panel demandé en fonction de l'état de la variable state.
+     *
      * @return JPanel.
      */
-    public JPanel displayedPanel() throws IOException {
+    public JPanel displayedPanel() throws IOException
+    {
         onStateChange = false;
 
-        switch (state) {
+        switch (state)
+        {
             case GAME_TITLE:
                 return new GameTitle();
 
@@ -93,21 +108,25 @@ public class MainZeldo extends JPanel {
 
     /**
      * Dessine sur le panel affiché.
+     *
      * @param g
      */
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
 
-        switch (state) {
+        switch (state)
+        {
             case MAP_0_0:
-                /*g.drawImage(map.getBackgroundImage(), 0, 0, this);
-                g.setColor(Color.YELLOW);
-                g.fillRect(39 * Constant.TILE_SIZE, 10 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                g.fillRect(39 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                g.setColor(Color.RED);
-                g.fillRect(39 * Constant.TILE_SIZE, 9 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                g.fillRect(39 * Constant.TILE_SIZE, 12 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);*/
+
+//                g.drawImage(map.getBackgroundImage(), 0, 0, this);
+//                g.setColor(Color.YELLOW);
+//                g.fillRect(39 * Constant.TILE_SIZE, 10 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+//                g.fillRect(39 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+//                g.setColor(Color.RED);
+//                g.fillRect(39 * Constant.TILE_SIZE, 9 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+//                g.fillRect(39 * Constant.TILE_SIZE, 12 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
 
             case MAP_0_1:
         }
@@ -115,9 +134,11 @@ public class MainZeldo extends JPanel {
 
     /**
      * Création du JFrame et lancement du jeu.
+     *
      * @param args
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException
+    {
         JFrame f = new JFrame();
         f.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         f.setLocationRelativeTo(null);
@@ -127,32 +148,40 @@ public class MainZeldo extends JPanel {
         f.setVisible(true);
         f.add(new MainZeldo());
 
-        f.addKeyListener(new KeyListener() {
+        f.addKeyListener(new KeyListener()
+        {
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyTyped(KeyEvent e)
+            {
 
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
-                if (state == GameState.GAME_TITLE && e.getKeyCode() == KeyMap.ESCAPE) {
+            public void keyPressed(KeyEvent e)
+            {
+                if (state == GameState.GAME_TITLE && e.getKeyCode() == KeyMap.ESCAPE)
+                {
                     onStateChange = true;
-                    state = GameState.START_MENU;
+                    state         = GameState.START_MENU;
                 }
 
-                if (state != GameState.GAME_TITLE && state != GameState.START_MENU) {
+                if (state != GameState.GAME_TITLE && state != GameState.START_MENU)
+                {
                     game.onKeyPressed(e.getKeyCode());
                 }
 
-                if (state == GameState.MAP_0_0 && e.getKeyCode() == KeyMap.ESCAPE) {
+                if (state == GameState.MAP_0_0 && e.getKeyCode() == KeyMap.ESCAPE)
+                {
                     onStateChange = true;
-                    state = GameState.MAP_0_1;
+                    state         = GameState.MAP_0_1;
                 }
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {
-                if (state != GameState.GAME_TITLE && state != GameState.START_MENU) {
+            public void keyReleased(KeyEvent e)
+            {
+                if (state != GameState.GAME_TITLE && state != GameState.START_MENU)
+                {
                     game.onKeyReleased(e.getKeyCode());
                 }
             }
