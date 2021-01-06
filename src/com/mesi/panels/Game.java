@@ -177,15 +177,15 @@ public class Game extends JPanel
 
         g.drawImage(bgimg, 0, 0, this);
 
-        /** Affichage de la grille **/
-        for (int x = 0; x < Constant.MAP_WIDTH; x++)
-        {
-            for (int y = 0; y < Constant.MAP_HEIGHT; y++)
-            {
-                g.setColor(Color.BLACK);
-                g.drawRect(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-            }
-        }
+//        /** Affichage de la grille **/
+//        for (int x = 0; x < Constant.MAP_WIDTH; x++)
+//        {
+//            for (int y = 0; y < Constant.MAP_HEIGHT; y++)
+//            {
+//                g.setColor(Color.BLACK);
+//                g.drawRect(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+//            }
+//        }
 
         Enumeration en= map.getTileList().elements();
         /** on affiche tous les objets a l'arriere plan de la map. **/

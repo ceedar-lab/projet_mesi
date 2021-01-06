@@ -15,7 +15,7 @@ public class Tree extends DecorObject
         urlForegroundImage = "res/images/tree-foliage.png";
         urlBackgroundImage = "res/images/tree-trunk.png";
 
-        foregroundOffsetX = -1 * Constant.TILE_SIZE;
+        foregroundOffsetX = -1 * Constant.TILE_SIZE -1 ;
         foregroundOffsetY = -3 * Constant.TILE_SIZE;
         backgroundOffsetX = -Constant.TILE_SIZE/2;
         backgroundOffsetY = 0;

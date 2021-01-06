@@ -14,7 +14,7 @@ public class Map_0_0 extends MapModel {
     public Map_0_0(Integer mapWidth, Integer mapHeight, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
         super(mapWidth, mapHeight, startingPositionX, startingPositionY, startingDirection);
 
-        setBackgroundURL("res/images/map/newMap.jpg");
+        setBackgroundURL("res/images/map/map_0_0.jpg");
         setBackgroundImage();
 
         /** Coordonnées des blocs de collision **/
@@ -59,6 +59,8 @@ public class Map_0_0 extends MapModel {
         getTileList().get("20,4").setHitbox(Hitbox.FULL);
         /** case avec un arbre **/
         getTileList().get("4,4").setDecorObject(new Tree());
+        getTileList().get("5,4").setDecorObject(new Tree());
+        getTileList().get("7,4").setDecorObject(new Tree());
 
         /** Coordonnées des blocs de téléportation **/
         getTileList().get("39,10").setTeleport(true);

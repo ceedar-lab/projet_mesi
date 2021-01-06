@@ -40,7 +40,7 @@ public abstract class MapModel extends JPanel
 
     /**********  Constructors  **********/
 
-    public MapModel(Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException
+    public MapModel(Integer mapWidth,Integer mapHeight,Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException
     {
         this.startingPositionX = startingPositionX;
         this.startingPositionY = startingPositionY;
@@ -49,9 +49,9 @@ public abstract class MapModel extends JPanel
         //setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
         /** Crée toutes les tuiles de la carte, sans bloc de collision et sans téléportation par défaut **/
-        for (int x = 0; x < Constant.MAP_WIDTH; x++)
+        for (int x = 0; x < mapWidth; x++)
         {
-            for (int y = 0; y < Constant.MAP_HEIGHT; y++)
+            for (int y = 0; y < mapHeight; y++)
             {
                 tileList.put(x + "," + y, new Tile(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE));
             }
