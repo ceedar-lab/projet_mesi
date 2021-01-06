@@ -17,12 +17,10 @@ import java.util.Map;
 /**
  * Map abstraite de base.
  */
-public abstract class MapModel extends JPanel {
+public abstract class MapModel extends JPanel
+{
 
     /**********  Attributes  **********/
-
-    private Integer mapWidth;
-    private Integer mapHeight;
 
     private Integer startingPositionX;
     private Integer startingPositionY;
@@ -31,7 +29,7 @@ public abstract class MapModel extends JPanel {
     private Hashtable<String, Tile> tileList = new Hashtable<>();
     //private Hashtable<String, Map>
 
-    private String backgroundURL;
+    private String        backgroundURL;
     private BufferedImage backgroundImage;
 
     private ArrayList<Rectangle> leftBounds;
@@ -42,9 +40,8 @@ public abstract class MapModel extends JPanel {
 
     /**********  Constructors  **********/
 
-    public MapModel(Integer mapWidth, Integer mapHeight, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
+    public MapModel(Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException
+    {
         this.startingPositionX = startingPositionX;
         this.startingPositionY = startingPositionY;
         this.startingDirection = startingDirection;
@@ -52,8 +49,10 @@ public abstract class MapModel extends JPanel {
         //setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
         /** Crée toutes les tuiles de la carte, sans bloc de collision et sans téléportation par défaut **/
-        for (int x = 0; x < this.mapWidth; x++) {
-            for (int y = 0; y < this.mapHeight; y++) {
+        for (int x = 0; x < Constant.MAP_WIDTH; x++)
+        {
+            for (int y = 0; y < Constant.MAP_HEIGHT; y++)
+            {
                 tileList.put(x + "," + y, new Tile(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE));
             }
         }
@@ -61,133 +60,204 @@ public abstract class MapModel extends JPanel {
 
     /**********  Getters / Setters  **********/
 
-    public Integer getMapWidth() {
-        return mapWidth;
-    }
-
-    public Integer getMapHeight() {
-        return mapHeight;
-    }
-
-    public Hashtable<String, Tile> getTileList() {
+    public Hashtable<String, Tile> getTileList()
+    {
         return tileList;
     }
 
-    public Integer getStartingPositionX() {
+    public Integer getStartingPositionX()
+    {
         return startingPositionX;
     }
 
-    public void setStartingPositionX(Integer startingPositionX) {
+    public void setStartingPositionX(Integer startingPositionX)
+    {
         this.startingPositionX = startingPositionX;
     }
 
-    public Integer getStartingPositionY() {
+    public Integer getStartingPositionY()
+    {
         return startingPositionY;
     }
 
-    public void setStartingPositionY(Integer startingPositionY) {
+    public void setStartingPositionY(Integer startingPositionY)
+    {
         this.startingPositionY = startingPositionY;
     }
 
-    public Integer getStartingDirection() {
+    public Integer getStartingDirection()
+    {
         return startingDirection;
     }
 
-    public void setStartingDirection(Integer startingDirection) {
+    public void setStartingDirection(Integer startingDirection)
+    {
         this.startingDirection = startingDirection;
     }
 
-    public String getBackgroundURL() {
+    public String getBackgroundURL()
+    {
         return backgroundURL;
     }
 
-    public void setBackgroundURL(String backgroundURL) {
+    public void setBackgroundURL(String backgroundURL)
+    {
         this.backgroundURL = backgroundURL;
     }
 
-    public BufferedImage getBackgroundImage() {
+    public BufferedImage getBackgroundImage()
+    {
         return backgroundImage;
     }
 
-    public void setBackgroundImage() throws IOException {
+    public void setBackgroundImage() throws IOException
+    {
         this.backgroundImage = ImageIO.read(new File(backgroundURL));
     }
 
-    public ArrayList<Rectangle> getLeftBounds() {
+    public ArrayList<Rectangle> getLeftBounds()
+    {
         return leftBounds;
     }
 
-    public ArrayList<Rectangle> getRightBounds() {
+    public ArrayList<Rectangle> getRightBounds()
+    {
         return rightBounds;
     }
 
-    public ArrayList<Rectangle> getUpperBounds() {
+    public ArrayList<Rectangle> getUpperBounds()
+    {
         return upperBounds;
     }
 
-    public ArrayList<Rectangle> getLowerBounds() {
+    public ArrayList<Rectangle> getLowerBounds()
+    {
         return lowerBounds;
     }
 
-    public ArrayList<Rectangle> getTeleport() {
+    public ArrayList<Rectangle> getTeleport()
+    {
         return teleport;
     }
 
-    /** Récupère la liste des bords ouest des blocs de collision de la carte **/
-    public void setLeftBounds() {
+    /**
+     * Récupère la liste des bords ouest des blocs de collision de la carte
+     **/
+    public void setLeftBounds()
+    {
         ArrayList<Rectangle> leftBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
+        Enumeration<Tile>    e          = tileList.elements();
+        while (e.hasMoreElements())
+        {
             Tile tile = e.nextElement();
-            if (!tile.isTraversable()) leftBounds.add(tile.getLeftBound());
+            if (!tile.isTraversable())
+            {
+                leftBounds.add(tile.getLeftBound());
+            }
         }
         this.leftBounds = leftBounds;
     }
 
-    /** Récupère la liste des bords est des blocs de collision de la carte **/
-    public void setRightBounds() {
+    /**
+     * Récupère la liste des bords est des blocs de collision de la carte
+     **/
+    public void setRightBounds()
+    {
         ArrayList<Rectangle> rightBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
+        Enumeration<Tile>    e           = tileList.elements();
+        while (e.hasMoreElements())
+        {
             Tile tile = e.nextElement();
-            if (!tile.isTraversable()) rightBounds.add(tile.getRightBound());
+            if (!tile.isTraversable())
+            {
+                rightBounds.add(tile.getRightBound());
+            }
         }
         this.rightBounds = rightBounds;
     }
 
-    /** Récupère la liste des bords nord des blocs de collision de la carte **/
-    public void setUpperBounds() {
+    /**
+     * Récupère la liste des bords nord des blocs de collision de la carte
+     **/
+    public void setUpperBounds()
+    {
         ArrayList<Rectangle> upperBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
+        Enumeration<Tile>    e           = tileList.elements();
+        while (e.hasMoreElements())
+        {
             Tile tile = e.nextElement();
-            if (!tile.isTraversable()) upperBounds.add(tile.getUpperBound());
+            if (!tile.isTraversable())
+            {
+                upperBounds.add(tile.getUpperBound());
+            }
         }
         this.upperBounds = upperBounds;
     }
 
-    /** Récupère la liste des bords sud des blocs de collision de la carte **/
-    public void setLowerBounds() {
+    /**
+     * Récupère la liste des bords sud des blocs de collision de la carte
+     **/
+    public void setLowerBounds()
+    {
         ArrayList<Rectangle> lowerBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
+        Enumeration<Tile>    e           = tileList.elements();
+        while (e.hasMoreElements())
+        {
             Tile tile = e.nextElement();
-            if (!tile.isTraversable()) lowerBounds.add(tile.getLowerBound());
+            if (!tile.isTraversable())
+            {
+                lowerBounds.add(tile.getLowerBound());
+            }
         }
         this.lowerBounds = lowerBounds;
     }
 
     /**
      * Récupère la liste des blocs de téléportation.
+     *
      * @return
      */
-    public void setTeleport() {
+    public void setTeleport()
+    {
         ArrayList<Rectangle> teleport = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
+        Enumeration<Tile>    e        = tileList.elements();
+        while (e.hasMoreElements())
+        {
             Tile tile = e.nextElement();
-            if (tile.isTeleport()) teleport.add(tile.getTeleportBounds());
+            if (tile.isTeleport())
+            {
+                teleport.add(tile.getTeleportBounds());
+            }
         }
         this.teleport = teleport;
     }
+
+    /** Récupère la liste des hitbox. **/
+    public ArrayList<Rectangle> getHitboxList()
+    {
+        ArrayList<Rectangle>hitboxList = new ArrayList<>();
+
+        Enumeration<Tile>    e        = tileList.elements();
+        while (e.hasMoreElements())
+        {
+            Tile tile = e.nextElement();
+            /** case avec une hitbox **/
+            if (tile.getHitbox()!=null)
+            {
+                hitboxList.add(tile.getHitbox());
+            }
+            /** case avec un objet décor ayant une hitbox **/
+            if(tile.getDecorObject()!=null)
+            {
+                if(tile.getDecorObject().getHitbox()!=null)
+                {
+                    hitboxList.add(tile.getDecorObject().getHitbox());
+                }
+            }
+        }
+
+        return hitboxList;
+    }
+
+
 }

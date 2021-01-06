@@ -9,42 +9,46 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class Animation {
+public abstract class Animation
+{
 
     /**********  Attributes  **********/
 
-    private String fileName;
+    private String  fileName;
     private Integer firstRowIndex, lastRowIndex, firstColIndex, lastColIndex;
-    private Hair hair;
-    private Head head;
-    private Torso torso;
-    private Hands hands;
-    private Legs legs;
-    private Feet feet;
-    private RightHand rightHand;
-    private LeftHand leftHand;
+    private Hair          hair;
+    private Head          head;
+    private Torso         torso;
+    private Hands         hands;
+    private Legs          legs;
+    private Feet          feet;
+    private RightHand     rightHand;
+    private LeftHand      leftHand;
     private BufferedImage newCharacter;
 
     /**********  Constructors  **********/
 
-    public Animation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) {
-        this.hair = hair;
-        this.head = head;
-        this.torso = torso;
-        this.hands = hands;
-        this.legs = legs;
-        this.feet = feet;
+    public Animation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand)
+    {
+        this.hair      = hair;
+        this.head      = head;
+        this.torso     = torso;
+        this.hands     = hands;
+        this.legs      = legs;
+        this.feet      = feet;
         this.rightHand = rightHand;
-        this.leftHand = leftHand;
+        this.leftHand  = leftHand;
     }
 
     /**********  Getters / Setters  **********/
 
-    public void setFileName(String fileName) {
+    public void setFileName(String fileName)
+    {
         this.fileName = fileName;
     }
 
-    public RightHand getRightHand() {
+    public RightHand getRightHand()
+    {
         return rightHand;
     }
 
@@ -54,23 +58,25 @@ public abstract class Animation {
      * Création de l'image du personnage principal.
      * Récupère les images du personnage et de son équipement en fonction des paramètres de la signatures du personnage, et les
      * fusionne pour obtenir l'image finale.
+     *
      * @return BufferedImage.
      * @throws IOException
      */
-    public BufferedImage createNewCharacter() throws IOException {
-        BufferedImage character = ImageIO.read(new File(fileName));
-        BufferedImage charHair = (hair.getImageURL() != null && (head != head.METAL_HELMET && head != head.CHAIN_HOOD)) ? ImageIO.read(new File(hair.getImageURL())) : null;
-        BufferedImage charHead = (head.getImageURL() != null) ? ImageIO.read(new File(head.getImageURL())) : null;
-        BufferedImage charTorso = (torso.getImageURL() != null) ? ImageIO.read(new File(torso.getImageURL())) : null;
-        BufferedImage charHands = (hands.getImageURL() != null) ? ImageIO.read(new File(hands.getImageURL())) : null;
-        BufferedImage charLegs = (legs.getImageURL() != null) ? ImageIO.read(new File(legs.getImageURL())) : null;
-        BufferedImage charFeet = (feet.getImageURL() != null) ? ImageIO.read(new File(feet.getImageURL())) : null;
+    public BufferedImage createNewCharacter() throws IOException
+    {
+        BufferedImage character     = ImageIO.read(new File(fileName));
+        BufferedImage charHair      = (hair.getImageURL() != null && (head != head.METAL_HELMET && head != head.CHAIN_HOOD)) ? ImageIO.read(new File(hair.getImageURL())) : null;
+        BufferedImage charHead      = (head.getImageURL() != null) ? ImageIO.read(new File(head.getImageURL())) : null;
+        BufferedImage charTorso     = (torso.getImageURL() != null) ? ImageIO.read(new File(torso.getImageURL())) : null;
+        BufferedImage charHands     = (hands.getImageURL() != null) ? ImageIO.read(new File(hands.getImageURL())) : null;
+        BufferedImage charLegs      = (legs.getImageURL() != null) ? ImageIO.read(new File(legs.getImageURL())) : null;
+        BufferedImage charFeet      = (feet.getImageURL() != null) ? ImageIO.read(new File(feet.getImageURL())) : null;
         BufferedImage charRightHand = (rightHand.getImageURL() != null) ? ImageIO.read(new File(rightHand.getImageURL())) : null;
-        BufferedImage charLeftHand = (leftHand.getImageURL() != null) ? (head != head.METAL_HAT) ? ImageIO.read(new File(leftHand.getImageURL())) : ImageIO.read(new File(leftHand.getImageURL2())) : null;
-        int width = 832;
-        int height = 1344;
-        BufferedImage newCharacter = new BufferedImage(width, height, 2);
-        Graphics2D g = newCharacter.createGraphics();
+        BufferedImage charLeftHand  = (leftHand.getImageURL() != null) ? (head != head.METAL_HAT) ? ImageIO.read(new File(leftHand.getImageURL())) : ImageIO.read(new File(leftHand.getImageURL2())) : null;
+        int           width         = 832;
+        int           height        = 1344;
+        BufferedImage newCharacter  = new BufferedImage(width, height, 2);
+        Graphics2D    g             = newCharacter.createGraphics();
         g.setPaint(new Color(0, 0, 0, 1));
         g.fillRect(0, 0, width, height);
         g.drawImage(character, null, 0, 0);
@@ -87,15 +93,19 @@ public abstract class Animation {
 
     /**
      * Récupère les images du mouvement parmis la table de sprites en fonction des paramètres.
+     *
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] loadSprites() throws IOException {
-        int index = 0;
+    public BufferedImage[] loadSprites() throws IOException
+    {
+        int             index   = 0;
         BufferedImage[] sprites = new BufferedImage[(lastRowIndex - firstRowIndex + 1) * (lastColIndex - firstColIndex + 1)];
 
-        for (int i = firstRowIndex; i <= lastRowIndex; i++) {
-            for (int j = firstColIndex; j <= lastColIndex; j++) {
+        for (int i = firstRowIndex; i <= lastRowIndex; i++)
+        {
+            for (int j = firstColIndex; j <= lastColIndex; j++)
+            {
                 sprites[index] = newCharacter.getSubimage(j * Constant.SPRITE_SIZE, i * Constant.SPRITE_SIZE, Constant.SPRITE_SIZE, Constant.SPRITE_SIZE);
                 index++;
             }
@@ -105,26 +115,31 @@ public abstract class Animation {
 
     /**
      * Calcul les coordonnées des images à récupérer dans la tables de sprites.
+     *
      * @param firstRowIndex
      * @param lastRowIndex
      * @param firstColIndex
      * @param lastColIndex
      */
-    public void setSpritesCoordinates(Integer firstRowIndex, Integer lastRowIndex, Integer firstColIndex, Integer lastColIndex) {
+    public void setSpritesCoordinates(Integer firstRowIndex, Integer lastRowIndex, Integer firstColIndex, Integer lastColIndex)
+    {
         this.firstRowIndex = firstRowIndex;
-        this.lastRowIndex = lastRowIndex;
+        this.lastRowIndex  = lastRowIndex;
         this.firstColIndex = firstColIndex;
-        this.lastColIndex = lastColIndex;
+        this.lastColIndex  = lastColIndex;
     }
 
     /**
      * Récupère les sprites lorsque le personnage est debout.
+     *
      * @param direction
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] stand(int direction) throws IOException {
-        switch (direction) {
+    public BufferedImage[] stand(int direction) throws IOException
+    {
+        switch (direction)
+        {
             case 37: // left
                 setSpritesCoordinates(9, 9, 0, 0);
                 break;
@@ -142,12 +157,15 @@ public abstract class Animation {
 
     /**
      * Récupère les sprites lorsque le personnage marche.
+     *
      * @param direction
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] walkCycle(int direction) throws IOException {
-        switch (direction) {
+    public BufferedImage[] walkCycle(int direction) throws IOException
+    {
+        switch (direction)
+        {
             case 37: // left
                 setSpritesCoordinates(9, 9, 0, 8);
                 break;
@@ -165,14 +183,18 @@ public abstract class Animation {
 
     /**
      * Récupère les sprites lorsque le personnage attaque.
+     *
      * @param direction
      * @param weapon
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] hit(int direction, RightHand weapon) throws IOException {
-        if (weapon == RightHand.DAGGER || weapon == RightHand.SWORD) {
-            switch (direction) {
+    public BufferedImage[] hit(int direction, RightHand weapon) throws IOException
+    {
+        if (weapon == RightHand.DAGGER || weapon == RightHand.SWORD)
+        {
+            switch (direction)
+            {
                 case 37: // left
                     setSpritesCoordinates(13, 13, 0, 5);
                     break;
@@ -186,8 +208,11 @@ public abstract class Animation {
                     setSpritesCoordinates(14, 14, 0, 5);
             }
             return this.loadSprites();
-        } else /*if (weapon == RightHand.SPEAR) */{
-            switch (direction) {
+        }
+        else /*if (weapon == RightHand.SPEAR) */
+        {
+            switch (direction)
+            {
                 case 37: // left
                     setSpritesCoordinates(5, 5, 0, 7);
                     break;
