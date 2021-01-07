@@ -3,9 +3,8 @@ package com.mesi;
 import com.mesi.panels.GameTitle;
 import com.mesi.panels.Game;
 import com.mesi.panels.StartMenu;
+import com.mesi.panels.maps.MapGenerator;
 import com.mesi.panels.maps.MapModel;
-import com.mesi.panels.maps.Map_0_0;
-import com.mesi.panels.maps.Map_0_1;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 
@@ -14,12 +13,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.Hashtable;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class MainZeldo extends JPanel {
 
     /**********  Attributes  **********/
+
+    public static Hashtable<String, MapModel> mapList = new Hashtable<String, MapModel>();
 
     public static enum GameState {
         GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1
@@ -29,7 +31,6 @@ public class MainZeldo extends JPanel {
     public static boolean onStateChange = true;
 
     private static Game game;
-    private MapModel map;
 
     /**********  Constructors  **********/
 
@@ -76,48 +77,18 @@ public class MainZeldo extends JPanel {
             case START_MENU:
                 return new StartMenu();
 
-            case MAP_0_0:
-                this.map = new Map_0_0(80, 48, 10, 10, KeyMap.DOWN);
-                this.game = new Game(map);
-                return game;
-
-            case MAP_0_1:
-                this.map = new Map_0_1(40, 24, 15, 10, KeyMap.LEFT);
-                this.game = new Game(map);
-                return game;
-
             default:
-                return new JPanel();
+                this.game = new Game(mapList.get(state.toString()));
+                return game;
         }
     }
 
     /**
-     * Dessine sur le panel affiché.
-     * @param g
-     */
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        switch (state) {
-            case MAP_0_0:
-                /*g.drawImage(map.getBackgroundImage(), 0, 0, this);
-                g.setColor(Color.YELLOW);
-                g.fillRect(39 * Constant.TILE_SIZE, 10 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                g.fillRect(39 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                g.setColor(Color.RED);
-                g.fillRect(39 * Constant.TILE_SIZE, 9 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                g.fillRect(39 * Constant.TILE_SIZE, 12 * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);*/
-
-            case MAP_0_1:
-        }
-    }
-
-    /**
-     * Création du JFrame et lancement du jeu.
+     * Génération des maps, création du JFrame et lancement du jeu.
      * @param args
      */
     public static void main(String[] args) throws IOException {
+        new MapGenerator();
         JFrame f = new JFrame();
         f.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         f.setLocationRelativeTo(null);

@@ -21,15 +21,16 @@ public abstract class MapModel extends JPanel {
 
     /**********  Attributes  **********/
 
-    private Integer mapWidth;
-    private Integer mapHeight;
+    private Integer width;
+    private Integer height;
 
     private Integer startingPositionX;
     private Integer startingPositionY;
     private Integer startingDirection;
 
+    private boolean scrollable;
+
     private Hashtable<String, Tile> tileList = new Hashtable<>();
-    //private Hashtable<String, Map>
 
     private String backgroundURL;
     private BufferedImage backgroundImage;
@@ -42,9 +43,9 @@ public abstract class MapModel extends JPanel {
 
     /**********  Constructors  **********/
 
-    public MapModel(Integer mapWidth, Integer mapHeight, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
+    public MapModel(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
+        this.width = width;
+        this.height = height;
         this.startingPositionX = startingPositionX;
         this.startingPositionY = startingPositionY;
         this.startingDirection = startingDirection;
@@ -52,8 +53,8 @@ public abstract class MapModel extends JPanel {
         //setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
         /** Crée toutes les tuiles de la carte, sans bloc de collision et sans téléportation par défaut **/
-        for (int x = 0; x < this.mapWidth; x++) {
-            for (int y = 0; y < this.mapHeight; y++) {
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
                 tileList.put(x + "," + y, new Tile(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE));
             }
         }
@@ -61,74 +62,55 @@ public abstract class MapModel extends JPanel {
 
     /**********  Getters / Setters  **********/
 
-    public Integer getMapWidth() {
-        return mapWidth;
-    }
-
-    public Integer getMapHeight() {
-        return mapHeight;
-    }
-
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
     public Hashtable<String, Tile> getTileList() {
         return tileList;
     }
-
     public Integer getStartingPositionX() {
         return startingPositionX;
     }
-
     public void setStartingPositionX(Integer startingPositionX) {
         this.startingPositionX = startingPositionX;
     }
-
     public Integer getStartingPositionY() {
         return startingPositionY;
     }
-
     public void setStartingPositionY(Integer startingPositionY) {
         this.startingPositionY = startingPositionY;
     }
-
     public Integer getStartingDirection() {
         return startingDirection;
     }
-
     public void setStartingDirection(Integer startingDirection) {
         this.startingDirection = startingDirection;
     }
-
+    public boolean isScrollable() { return scrollable; }
+    public void setScrollable(boolean scrollable) {
+        this.scrollable = scrollable;
+    }
     public String getBackgroundURL() {
         return backgroundURL;
     }
-
     public void setBackgroundURL(String backgroundURL) {
         this.backgroundURL = backgroundURL;
     }
-
     public BufferedImage getBackgroundImage() {
         return backgroundImage;
     }
-
-    public void setBackgroundImage() throws IOException {
-        this.backgroundImage = ImageIO.read(new File(backgroundURL));
-    }
-
+    public void setBackgroundImage() throws IOException { this.backgroundImage = ImageIO.read(new File(backgroundURL)); }
     public ArrayList<Rectangle> getLeftBounds() {
         return leftBounds;
     }
-
     public ArrayList<Rectangle> getRightBounds() {
         return rightBounds;
     }
-
     public ArrayList<Rectangle> getUpperBounds() {
         return upperBounds;
     }
-
     public ArrayList<Rectangle> getLowerBounds() {
         return lowerBounds;
     }
-
     public ArrayList<Rectangle> getTeleport() {
         return teleport;
     }

@@ -8,11 +8,13 @@ public class Map_0_0 extends MapModel {
 
     /**********  Constructors  **********/
 
-    public Map_0_0(Integer mapWidth, Integer mapHeight, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
-        super(mapWidth, mapHeight, startingPositionX, startingPositionY, startingDirection);
+    public Map_0_0(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
+        super(width, height, startingPositionX, startingPositionY, startingDirection);
 
-        setBackgroundURL("res/images/map/newMap.jpg");
+        setBackgroundURL("res/images/map/map_0_0.jpg");
         setBackgroundImage();
+
+        setScrollable(false);
 
         /** Coordonnées des blocs de collision **/
         getTileList().get("5,14").setTraversable(false);
@@ -49,12 +51,12 @@ public class Map_0_0 extends MapModel {
         getTileList().get("27,15").setTraversable(false);
         getTileList().get("27,16").setTraversable(false);
         getTileList().get("27,17").setTraversable(false);
-        getTileList().get("39,9").setTraversable(false);
-        getTileList().get("39,12").setTraversable(false);
 
         /** Coordonnées des blocs de téléportation **/
         getTileList().get("39,10").setTeleport(true);
         getTileList().get("39,11").setTeleport(true);
+        getTileList().get("0,10").setTeleport(true);
+        getTileList().get("0,11").setTeleport(true);
 
         /** Crée les listes de blocs collision / téléportation à récupérer **/
         setLeftBounds();
@@ -62,7 +64,5 @@ public class Map_0_0 extends MapModel {
         setUpperBounds();
         setLowerBounds();
         setTeleport();
-
-
     }
 }

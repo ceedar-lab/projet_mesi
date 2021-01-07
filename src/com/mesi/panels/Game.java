@@ -1,5 +1,6 @@
 package com.mesi.panels;
 
+import com.mesi.MainZeldo;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.animation.*;
 import com.mesi.equipement.*;
@@ -18,6 +19,10 @@ public class Game extends JPanel {
 
     /**********  Attributes  **********/
 
+    public static Integer teleportPositionX = 10;
+    public static Integer teleportPositionY = 10;
+    public static ArrayList direction = new ArrayList() {{ add(KeyMap.DOWN); }};
+
     private MapModel map;
 
     private BufferedImage treeFoliage;
@@ -26,7 +31,7 @@ public class Game extends JPanel {
     private Integer[] characterCoordinates;
     private Rectangle charBounds;
     private Integer offsetX = 0, offsetY = 0;
-    private ArrayList direction;
+    //private ArrayList direction;
 
     private boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
     private boolean isHiting = false;
@@ -37,19 +42,24 @@ public class Game extends JPanel {
     private Integer walkSpriteX = 0, walkSpriteY = 2;
     private Integer count = 0, hitSprite = 0;
 
-    private BufferedImage bgimg;
+    private BufferedImage backgroundImage;
+
+    private boolean rightEdge = false;
+    private boolean lowerEdge = false;
+    private Integer translateBoundRight = (Constant.FRAME_WIDTH / 2) - Constant.TILE_SIZE;
+    private Integer translateBoundDown = Constant.FRAME_HEIGHT / 2 - (Constant.TILE_SIZE * 2);
 
 
-    private boolean boutest = false;
-    private boolean boutsud = false;
-    private Integer transRight = 19 * Constant.TILE_SIZE;
-    private Integer transDown = 10 * Constant.TILE_SIZE;
 
     Animation character = new WhiteCharacterAnimation(Hair.BLOND, Head.ROBE_HOOD, Torso.TSHIRT, Hands.NONE, Legs.SKIRT, Feet.LEATHER_BOOTS, RightHand.DAGGER, LeftHand.NONE);
     /*Animation character = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);*/
     /*Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);*/
 
     /**********  Constructors  **********/
+
+    public ArrayList getDirection() {
+        return direction;
+    }
 
     /**
      * Le moteur de jeu.
@@ -63,11 +73,12 @@ public class Game extends JPanel {
     public Game(MapModel map) throws IOException {
         treeFoliage = ImageIO.read(new File("res/images/tree-foliage.png"));
         this.map = map;
-        characterCoordinates = new Integer[] { map.getStartingPositionX() * Constant.TILE_SIZE, map.getStartingPositionY() * Constant.TILE_SIZE };
+        //characterCoordinates = new Integer[] { map.getStartingPositionX() * Constant.TILE_SIZE, map.getStartingPositionY() * Constant.TILE_SIZE };
+        characterCoordinates = new Integer[] { teleportPositionX * Constant.TILE_SIZE, teleportPositionY * Constant.TILE_SIZE };
         charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-        direction = new ArrayList() {{ add(map.getStartingDirection()); }};
         sprites  = character.stand(map.getStartingDirection());
-        bgimg = map.getBackgroundImage();
+        //sprites  = character.stand(KeyMap.DOWN);
+        backgroundImage = map.getBackgroundImage();
         setOpaque(false);
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
@@ -95,37 +106,51 @@ public class Game extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        add(new Test2());
-
         /** Mise à jour des coordonnées du personnage principal et de sa zone de collision **/
         if (!isBlocked) {
             characterCoordinates[0]+=offsetX;
             characterCoordinates[1]+=offsetY;
+            System.out.println(characterCoordinates[0]+","+characterCoordinates[1]);
         }
         charBounds.setBounds(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
 
-        boutest = (characterCoordinates[0] > (map.getMapWidth() - 21) * 32) ? true : false;
-        boutsud = (characterCoordinates[1] > (map.getMapHeight() - 14) * 32) ? true : false;
-
         /** Arrête les mouvement du personnage si il arrive au bord de l'écran, sauf s'il est sur une case téléportation **/
-        /*if (!isTeleport) {
+        if (!isTeleport) {
             if (characterCoordinates[0] < 0 - Constant.TILE_SIZE/2) characterCoordinates[0] = 0 - Constant.TILE_SIZE/2;
-            else if (characterCoordinates[0] > Constant.FRAME_WIDTH - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2) characterCoordinates[0] = Constant.FRAME_WIDTH - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2;
+            else if (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2) characterCoordinates[0] = map.getWidth() * Constant.TILE_SIZE - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2;
             else if (characterCoordinates[1] < 0) characterCoordinates[1] = 0;
-            else if (characterCoordinates[1] > Constant.FRAME_HEIGHT - Constant.SPRITE_SIZE) characterCoordinates[1] = Constant.FRAME_HEIGHT - Constant.SPRITE_SIZE;
-        }*/
+            else if (characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.SPRITE_SIZE) characterCoordinates[1] = map.getHeight() * Constant.TILE_SIZE - Constant.SPRITE_SIZE;
+        } else {
+            if (characterCoordinates[0] < 0 - Constant.TILE_SIZE/2) {
+                teleportPositionX = map.getWidth();
+                teleportPositionY = characterCoordinates[1] / Constant.TILE_SIZE;
+                MainZeldo.onStateChange = true;
+                MainZeldo.state = MainZeldo.GameState.MAP_0_1;
+            }
+            else if (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2) {
+                teleportPositionX = - Constant.TILE_SIZE / 2;
+                teleportPositionY = characterCoordinates[1] / Constant.TILE_SIZE;
+                MainZeldo.onStateChange = true;
+                MainZeldo.state = MainZeldo.GameState.MAP_0_0;
+            }
+            /*else if (characterCoordinates[1] < 0) characterCoordinates[1] = 0;
+            else if (characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.SPRITE_SIZE) characterCoordinates[1] = map.getHeight() * Constant.TILE_SIZE - Constant.SPRITE_SIZE;*/
+        }
 
         collisionChecker();
         teleportChecker();
 
-        if (!boutest) {
-            if (characterCoordinates[0] > transRight) g.translate(0 - (characterCoordinates[0] - transRight), 0);
-        } else g.translate(0 - (40 * 32), 0);
-        if (!boutsud) {
-            if (characterCoordinates[1] > transDown) g.translate(0, 0 - (characterCoordinates[1] - transDown));
-        } else g.translate(0, 0 - (24 * 32));
-
-
+        /** Fait défiler la map en fonction des mouvements du personnage **/
+        if (map.isScrollable()) {
+            rightEdge = (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.FRAME_WIDTH + translateBoundRight) ? true : false;
+            lowerEdge = (characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.FRAME_HEIGHT + translateBoundDown) ? true : false;
+            if (!rightEdge) {
+                if (characterCoordinates[0] > translateBoundRight) g.translate(0 - (characterCoordinates[0] - translateBoundRight), 0);
+            } else g.translate(0 - map.getWidth() * Constant.TILE_SIZE + Constant.FRAME_WIDTH, 0);
+            if (!lowerEdge) {
+                if (characterCoordinates[1] > translateBoundDown) g.translate(0, 0 - (characterCoordinates[1] - translateBoundDown));
+            } else g.translate(0, 0 - map.getHeight() * Constant.TILE_SIZE + Constant.FRAME_HEIGHT);
+        }
 
         /** Affichage de la grille **/
         /*for (int x = 0; x < Constant.MAP_WIDTH; x++) {
@@ -135,7 +160,7 @@ public class Game extends JPanel {
             }
         }*/
 
-        g.drawImage(bgimg, 0, 0, this);
+        g.drawImage(backgroundImage, 0, 0, this);
 
         /** Ombre du personnage **/
         g.setColor(new Color(0, 0, 0, .5f));
@@ -198,12 +223,14 @@ public class Game extends JPanel {
         if (walkSpriteX == 9) walkSpriteX = 0;
         if (walkSpriteY == 9) walkSpriteY = 2;
 
-        g.drawImage(treeFoliage, Constant.TILE_SIZE * 8, Constant.TILE_SIZE * 13, this);
-        g.drawImage(treeFoliage, Constant.TILE_SIZE * 4, Constant.TILE_SIZE * 11, this);
-        g.drawImage(treeFoliage, Constant.TILE_SIZE * 7, Constant.TILE_SIZE * 8, this);
-        g.drawImage(treeFoliage, Constant.TILE_SIZE * 12, Constant.TILE_SIZE * 10, this);
-
-        add(new Test());
+        switch(MainZeldo.state) {
+            case MAP_0_0:
+                g.drawImage(treeFoliage, Constant.TILE_SIZE * 8, Constant.TILE_SIZE * 13, this);
+                g.drawImage(treeFoliage, Constant.TILE_SIZE * 4, Constant.TILE_SIZE * 11, this);
+                g.drawImage(treeFoliage, Constant.TILE_SIZE * 7, Constant.TILE_SIZE * 8, this);
+                g.drawImage(treeFoliage, Constant.TILE_SIZE * 12, Constant.TILE_SIZE * 10, this);
+                break;
+        }
     }
 
     /**
