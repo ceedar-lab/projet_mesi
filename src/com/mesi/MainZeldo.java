@@ -52,7 +52,7 @@ public class MainZeldo extends JPanel {
                             repaint();
                             revalidate();
                         }
-                        Thread.sleep(Constant.FPS);
+                        Thread.sleep(2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

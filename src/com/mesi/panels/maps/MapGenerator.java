@@ -13,6 +13,7 @@ public class MapGenerator {
     /**********  Constructors  **********/
 
     public MapGenerator() throws IOException {
+
         map_0_0();
         map_0_1();
     }

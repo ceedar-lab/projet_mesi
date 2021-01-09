@@ -15,6 +15,8 @@ public class Tile extends JPanel {
     private boolean traversable;
     private boolean teleport;
 
+    private String bindedTile = null;
+
     /**********  Constructors  **********/
 
     public Tile(Integer x, Integer y) {
@@ -30,43 +32,30 @@ public class Tile extends JPanel {
     public int getX() {
         return x;
     }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public boolean isTraversable() {
         return traversable;
     }
-
     public void setTraversable(boolean traversable) {
         this.traversable = traversable;
     }
-
-    public boolean isTeleport() {
-        return teleport;
-    }
-
-    public void setTeleport(boolean teleport) {
+    public boolean isTeleport() { return teleport; }
+    public void setTeleport(boolean teleport, String bindedTile) {
         this.teleport = teleport;
+        this.bindedTile = bindedTile;
     }
+    public String getBindedTile() { return bindedTile; }
 
     /**********  Methods  **********/
 
     /**
-     * Récupère toutes bornes de la case.
+     * Récupère toutes bornes d'une case téléportation.
      * @return Rectangle.
      */
     public Rectangle getTeleportBounds() {
-        return new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        return new Rectangle(x - Constant.TILE_SIZE, y - Constant.TILE_SIZE, Constant.TILE_SIZE * 3, Constant.TILE_SIZE * 3);
     }
 
     /**

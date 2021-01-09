@@ -1,5 +1,6 @@
 package com.mesi.panels.maps;
 
+import com.mesi.MainZeldo;
 import com.mesi.params.Constant;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,8 @@ import java.util.Map;
 public abstract class MapModel extends JPanel {
 
     /**********  Attributes  **********/
+
+    public static String test;
 
     private Integer width;
     private Integer height;
@@ -67,30 +70,9 @@ public abstract class MapModel extends JPanel {
     public Hashtable<String, Tile> getTileList() {
         return tileList;
     }
-    public Integer getStartingPositionX() {
-        return startingPositionX;
-    }
-    public void setStartingPositionX(Integer startingPositionX) {
-        this.startingPositionX = startingPositionX;
-    }
-    public Integer getStartingPositionY() {
-        return startingPositionY;
-    }
-    public void setStartingPositionY(Integer startingPositionY) {
-        this.startingPositionY = startingPositionY;
-    }
-    public Integer getStartingDirection() {
-        return startingDirection;
-    }
-    public void setStartingDirection(Integer startingDirection) {
-        this.startingDirection = startingDirection;
-    }
     public boolean isScrollable() { return scrollable; }
     public void setScrollable(boolean scrollable) {
         this.scrollable = scrollable;
-    }
-    public String getBackgroundURL() {
-        return backgroundURL;
     }
     public void setBackgroundURL(String backgroundURL) {
         this.backgroundURL = backgroundURL;

@@ -1,9 +1,11 @@
 package com.mesi.panels.maps;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
+/**
+ * Paramétrage de l'image de fond, des blocs de collisions et de téléportation de la map.
+ * L'initialisation se fait partir de la classe MapGenerator.
+ */
 public class Map_0_0 extends MapModel {
 
     /**********  Constructors  **********/
@@ -52,11 +54,11 @@ public class Map_0_0 extends MapModel {
         getTileList().get("27,16").setTraversable(false);
         getTileList().get("27,17").setTraversable(false);
 
-        /** Coordonnées des blocs de téléportation **/
-        getTileList().get("39,10").setTeleport(true);
-        getTileList().get("39,11").setTeleport(true);
-        getTileList().get("0,10").setTeleport(true);
-        getTileList().get("0,11").setTeleport(true);
+        /** Coordonnées des blocs de téléportation et tuile de destination **/
+        getTileList().get("39,10").setTeleport(true, "MAP_0_1 -1,10"); // -1 permet au personnage de réapparaitre collé à la bordure
+        getTileList().get("0,10").setTeleport(true, "MAP_0_1 79,10");
+        getTileList().get("10,0").setTeleport(true, "MAP_0_1 10,47");
+        getTileList().get("10,23").setTeleport(true, "MAP_0_1 10,0");
 
         /** Crée les listes de blocs collision / téléportation à récupérer **/
         setLeftBounds();
