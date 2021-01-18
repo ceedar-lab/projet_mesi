@@ -1,21 +1,22 @@
 package com.mesi.panels.maps;
 
-import com.mesi.decor.Tree;
-import com.mesi.params.Hitbox;
-
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
+/**
+ * Paramétrage de l'image de fond, des blocs de collisions et de téléportation de la map.
+ * L'initialisation se fait partir de la classe MapGenerator.
+ */
 public class Map_0_0 extends MapModel {
 
     /**********  Constructors  **********/
 
-    public Map_0_0(Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
-        super(startingPositionX, startingPositionY, startingDirection);
+    public Map_0_0(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
+        super(width, height, startingPositionX, startingPositionY, startingDirection);
 
         setBackgroundURL("res/images/map/map_0_0.jpg");
         setBackgroundImage();
+
+        setScrollable(false);
 
         /** Coordonnées des blocs de collision **/
         getTileList().get("5,14").setTraversable(false);
@@ -52,17 +53,12 @@ public class Map_0_0 extends MapModel {
         getTileList().get("27,15").setTraversable(false);
         getTileList().get("27,16").setTraversable(false);
         getTileList().get("27,17").setTraversable(false);
-        getTileList().get("39,9").setTraversable(false);
-        getTileList().get("39,12").setTraversable(false);
 
-        /** case avec hitbox full **/
-        getTileList().get("20,4").setHitbox(Hitbox.FULL);
-        /** case avec un arbre **/
-        getTileList().get("4,4").setDecorObject(new Tree());
-
-        /** Coordonnées des blocs de téléportation **/
-        getTileList().get("39,10").setTeleport(true);
-        getTileList().get("39,11").setTeleport(true);
+        /** Coordonnées des blocs de téléportation et tuile de destination **/
+        getTileList().get("39,10").setTeleport(true, "MAP_0_1 -1,10"); // -1 permet au personnage de réapparaitre collé à la bordure
+        getTileList().get("0,10").setTeleport(true, "MAP_0_1 79,10");
+        getTileList().get("10,0").setTeleport(true, "MAP_0_1 10,47");
+        getTileList().get("10,23").setTeleport(true, "MAP_0_1 10,0");
 
         /** Crée les listes de blocs collision / téléportation à récupérer **/
         setLeftBounds();
@@ -70,7 +66,5 @@ public class Map_0_0 extends MapModel {
         setUpperBounds();
         setLowerBounds();
         setTeleport();
-
-
     }
 }
