@@ -1,7 +1,8 @@
 package com.mesi.panels.maps;
 
-import com.mesi.MainZeldo;
+import com.mesi.decor.DecorObject;
 import com.mesi.params.Constant;
+import com.mesi.params.Hitbox;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Map;
 
 
 /**
@@ -38,11 +38,16 @@ public abstract class MapModel extends JPanel {
     private String backgroundURL;
     private BufferedImage backgroundImage;
 
+    private ArrayList<DecorObject>decorObjectArraylist = new ArrayList<>();
+
+    private ArrayList<Rectangle> hitboxs = new ArrayList<>();
+
     private ArrayList<Rectangle> leftBounds;
     private ArrayList<Rectangle> rightBounds;
     private ArrayList<Rectangle> upperBounds;
     private ArrayList<Rectangle> lowerBounds;
-    private ArrayList<Rectangle> teleport;
+
+    private ArrayList<Tile> teleports = new ArrayList<>();
 
     /**********  Constructors  **********/
 
@@ -52,6 +57,7 @@ public abstract class MapModel extends JPanel {
         this.startingPositionX = startingPositionX;
         this.startingPositionY = startingPositionY;
         this.startingDirection = startingDirection;
+
         //setOpaque(true);
         //setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
@@ -61,6 +67,35 @@ public abstract class MapModel extends JPanel {
                 tileList.put(x + "," + y, new Tile(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE));
             }
         }
+
+        /** ajout de bloc de collision sur les quatre coté **/
+
+        /** bord ouest **/
+        for (int y = 0; y < this.height; y++)
+        {
+            Tile tile = tileList.get( "0," + y);
+            tile.addHtibox(Hitbox.WEST_BORD);
+        }
+        /** bord est **/
+        for (int y = 0; y < this.height; y++)
+        {
+            Tile tile = tileList.get( (this.width-1)+"," + y);
+            tile.addHtibox(Hitbox.EAST_BORD);
+        }
+        /** bord ouest **/
+        for (int x = 0; x < this.width; x++)
+        {
+            Tile tile = tileList.get( x+",0");
+            tile.addHtibox(Hitbox.NORTH_BORD);
+        }
+        /** bord ouest **/
+        for (int x = 0; x < this.width; x++)
+        {
+            Tile tile = tileList.get( x+","+(this.height-1));
+            tile.addHtibox(Hitbox.SOUTH_BORD);
+        }
+
+
     }
 
     /**********  Getters / Setters  **********/
@@ -81,77 +116,85 @@ public abstract class MapModel extends JPanel {
         return backgroundImage;
     }
     public void setBackgroundImage() throws IOException { this.backgroundImage = ImageIO.read(new File(backgroundURL)); }
-    public ArrayList<Rectangle> getLeftBounds() {
-        return leftBounds;
-    }
-    public ArrayList<Rectangle> getRightBounds() {
-        return rightBounds;
-    }
-    public ArrayList<Rectangle> getUpperBounds() {
-        return upperBounds;
-    }
-    public ArrayList<Rectangle> getLowerBounds() {
-        return lowerBounds;
-    }
-    public ArrayList<Rectangle> getTeleport() {
-        return teleport;
+
+    public ArrayList<Tile> getTeleports() {
+        return teleports;
     }
 
-    /** Récupère la liste des bords ouest des blocs de collision de la carte **/
-    public void setLeftBounds() {
-        ArrayList<Rectangle> leftBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
-            Tile tile = e.nextElement();
-            if (!tile.isTraversable()) leftBounds.add(tile.getLeftBound());
-        }
-        this.leftBounds = leftBounds;
+    public ArrayList<DecorObject> getDecorObjectArraylist()
+    {
+        return decorObjectArraylist;
     }
 
-    /** Récupère la liste des bords est des blocs de collision de la carte **/
-    public void setRightBounds() {
-        ArrayList<Rectangle> rightBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
-            Tile tile = e.nextElement();
-            if (!tile.isTraversable()) rightBounds.add(tile.getRightBound());
-        }
-        this.rightBounds = rightBounds;
+    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist)
+    {
+        this.decorObjectArraylist = decorObjectArraylist;
     }
 
-    /** Récupère la liste des bords nord des blocs de collision de la carte **/
-    public void setUpperBounds() {
-        ArrayList<Rectangle> upperBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
-            Tile tile = e.nextElement();
-            if (!tile.isTraversable()) upperBounds.add(tile.getUpperBound());
+
+    /** Récupère la liste des hitbox. **/
+    public ArrayList<Rectangle> getHitboxList()
+    {
+        ArrayList<Rectangle>hitboxList = new ArrayList<>();
+
+        /** ajout des hitboxs des objet **/
+        for (DecorObject decorObject:getDecorObjectArraylist())
+        {
+            if(decorObject.getHitbox()!=null)
+            {
+                hitboxList.add(decorObject.getHitbox());
+            }
+
         }
-        this.upperBounds = upperBounds;
+
+        /** ajout des hitboxs des cases non traversables **/
+        Enumeration<Tile> e = getTileList().elements();
+        while (e.hasMoreElements())
+        {
+            Tile tile = e.nextElement();
+            if (!tile.isTraversable())
+            {
+                Rectangle hitbox = new Rectangle(tile.getX()+Hitbox.FULL.x,tile.getY()+Hitbox.FULL.y,Hitbox.FULL.width,Hitbox.FULL.height);
+                hitboxList.add(hitbox);
+            }
+            if(tile.getHitBoxs().size()>0)
+            {
+                for (Rectangle hitbox:tile.getHitBoxs())
+                {
+                    hitboxList.add(hitbox);
+                }
+            }
+        }
+
+//        /** ajout des hitboxs de bord de map **/
+//        Enumeration en = getTileList().elements();
+//        while(en.hasMoreElements())
+//        {
+//            Tile tile = (Tile)en.nextElement();
+//            if(tile.getHitBoxs().size()>0)
+//            {
+//                for (Rectangle hitbox:tile.getHitBoxs())
+//                {
+//                    hitboxList.add(hitbox);
+//                }
+//            }
+//        }
+
+
+        return hitboxList;
     }
 
-    /** Récupère la liste des bords sud des blocs de collision de la carte **/
-    public void setLowerBounds() {
-        ArrayList<Rectangle> lowerBounds = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
-            Tile tile = e.nextElement();
-            if (!tile.isTraversable()) lowerBounds.add(tile.getLowerBound());
-        }
-        this.lowerBounds = lowerBounds;
+
+    public void addTeleport(Tile teleport,Boolean isTeleport, String destination,Rectangle teleportBounds)
+    {
+        teleport.setTeleport(isTeleport,destination,teleportBounds);
+        teleport.setTraversable(true);
+        teleport.getHitBoxs().clear();
+        teleports.add(teleport);
     }
 
-    /**
-     * Récupère la liste des blocs de téléportation.
-     * @return
-     */
-    public void setTeleport() {
-        ArrayList<Rectangle> teleport = new ArrayList<>();
-        Enumeration<Tile> e = tileList.elements();
-        while (e.hasMoreElements()) {
-            Tile tile = e.nextElement();
-            if (tile.isTeleport()) teleport.add(tile.getTeleportBounds());
-        }
-        this.teleport = teleport;
-    }
+
+
+
+
 }

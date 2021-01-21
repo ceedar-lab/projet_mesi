@@ -1,10 +1,13 @@
 package com.mesi.panels;
 
 import com.mesi.MainZeldo;
+import com.mesi.decor.DecorObject;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.animation.*;
 import com.mesi.equipement.*;
+import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
+import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
 
 import javax.imageio.ImageIO;
@@ -14,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class Game extends JPanel {
 
@@ -31,12 +35,14 @@ public class Game extends JPanel {
 
     private Integer[] characterCoordinates;
     private Rectangle charBounds;
+    private Rectangle charActionArea;
 
     private static boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
     private static boolean isStanding = true;
     private boolean isHiting = false;
     private boolean isBlocked = false;
     private boolean isTeleport = false;
+    private boolean stopDebug = false;
 
     private Integer walkSpriteX = 0, walkSpriteY = 2;
     private Integer count = 0, hitSprite = 0;
@@ -52,21 +58,71 @@ public class Game extends JPanel {
     /*Animation character = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);*/
     /*Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);*/
 
-    Thread thread = new Thread(new Runnable() {
+    Thread thread =  new Thread(new Runnable()
+    {
         @Override
-        public void run() {
-            try {
-                while(true) {
-                    if (!isStanding) {
+        public void run()
+        {
+            try
+            {
+                while (true)
+                {
+                    if (!isStanding)
+                    {
+
+                        if(isMovingRight)
+                        {
+                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 + Constant.STRIDE, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            if(!collisionChecker(test))
+                            {
+                                characterCoordinates[0] += Constant.STRIDE;
+                            }
+                        }
+                        if(isMovingLeft)
+                        {
+                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 - Constant.STRIDE, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            if(!collisionChecker(test))
+                            {
+                                characterCoordinates[0] -= Constant.STRIDE;
+                            }
+                        }
+                        if(isMovingUp)
+                        {
+                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 , characterCoordinates[1] + Constant.TILE_SIZE - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            if(!collisionChecker(test))
+                            {
+                                characterCoordinates[1] -= Constant.STRIDE;
+                            }
+                        }
+                        if(isMovingDown)
+                        {
+                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 , characterCoordinates[1] + Constant.TILE_SIZE + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            if(!collisionChecker(test))
+                            {
+                                characterCoordinates[1] += Constant.STRIDE;
+                            }
+                        }
+
+                        charBounds.setBounds(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                        actionArea();
+                        teleportChecker();
                         repaint();
+                        if(stopDebug)
+                        {
+                            System.out.println("petite pause");
+                        }
+
                     }
                     Thread.sleep(Constant.FPS);
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
     });
+
 
     /**********  Constructors  **********/
 
@@ -80,10 +136,13 @@ public class Game extends JPanel {
      * @throws IOException
      */
     public Game(MapModel map) throws IOException {
+        new Images();
         treeFoliage = ImageIO.read(new File("res/images/tree-foliage.png"));
         this.map = map;
         characterCoordinates = new Integer[] { teleportPositionX * Constant.TILE_SIZE, teleportPositionY * Constant.TILE_SIZE };
         charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+//        charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
+        actionArea();
         sprites  = character.stand((Integer)direction.get(0));
         backgroundImage = map.getBackgroundImage();
         setOpaque(false);
@@ -98,35 +157,6 @@ public class Game extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        /** Mise à jour des coordonnées du personnage principal et de sa zone de collision **/
-        if (!isBlocked) {
-            characterCoordinates[0] += isMovingLeft ? -Constant.STRIDE : 0;
-            characterCoordinates[0] += isMovingRight ? Constant.STRIDE : 0;
-            characterCoordinates[1] += isMovingUp ? -Constant.STRIDE : 0;
-            characterCoordinates[1] += isMovingDown ? Constant.STRIDE : 0;
-        }
-        charBounds.setBounds(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-
-        /** Arrête les mouvements du personnage si il arrive au bord de l'écran, sauf s'il est sur une case téléportation **/
-        if (!isTeleport) {
-            if (characterCoordinates[0] < 0 - Constant.TILE_SIZE/2) characterCoordinates[0] = 0 - Constant.TILE_SIZE/2;
-            else if (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2) characterCoordinates[0] = map.getWidth() * Constant.TILE_SIZE - Constant.SPRITE_SIZE + Constant.TILE_SIZE/2;
-            else if (characterCoordinates[1] < 0) characterCoordinates[1] = 0;
-            else if (characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.SPRITE_SIZE) characterCoordinates[1] = map.getHeight() * Constant.TILE_SIZE - Constant.SPRITE_SIZE;
-        } else if (characterCoordinates[0] < 0 - 3 * Constant.SPRITE_SIZE / 4 || characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.SPRITE_SIZE/4 ||
-                characterCoordinates[1] < 0 - Constant.SPRITE_SIZE || characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.STRIDE) {
-            MainZeldo.onStateChange = true;
-            MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
-            try { // Mise en pause du thread pour corriger un défaut d'affichage du fond d'écran. Génère automatiquement une IllegalMonitorStateException.
-                thread.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        collisionChecker();
-        teleportChecker();
 
         /** Fait défiler la map en fonction des mouvements du personnage **/
         if (map.isScrollable()) {
@@ -149,6 +179,12 @@ public class Game extends JPanel {
         }
 
         g.drawImage(backgroundImage, 0, 0, this);
+
+        /** affiche les objet de decor en arriere plan **/
+        for (DecorObject decorObject:map.getDecorObjectArraylist())
+        {
+            g.drawImage(decorObject.getBackgroundImage(),decorObject.getX()+decorObject.getBackgroundOffsetX(),decorObject.getY()+decorObject.getBackgroundOffsetY(),this);
+        };
 
         /** Ombre du personnage **/
         g.setColor(new Color(0, 0, 0, .5f));
@@ -220,67 +256,102 @@ public class Game extends JPanel {
                 break;
         }
 
+
+        /** affiche les objet de decor au premier plan **/
+        for (DecorObject decorObject:map.getDecorObjectArraylist())
+        {
+            g.drawImage(decorObject.getForgroundImage(),decorObject.getX()+decorObject.getForegroundOffsetX(),decorObject.getY()+decorObject.getForegroundOffsetY(),this);
+        };
+
         /** Affichage des cases de téléportation en jaune **/
-        if (MainZeldo.state == MainZeldo.GameState.MAP_0_0) {
-            g.setColor(Color.YELLOW);
-            g.fillRect(39*32, 10*32, 32, 32);
-            g.fillRect(0, 10*32, 32, 32);
-            g.fillRect(10*32, 0, 32, 32);
-            g.fillRect(10*32, 23*32, 32, 32);
-        } else if (MainZeldo.state == MainZeldo.GameState.MAP_0_1) {
-            g.setColor(Color.YELLOW);
-            g.fillRect(0, 10*32, 32, 32);
-            g.fillRect(79*32, 10*32, 32, 32);
-            g.fillRect(10*32, 0, 32, 32);
-            g.fillRect(10*32, 47*32, 32, 32);
+        for (Tile teleport :map.getTeleports())
+        {
+            g.setColor(new Color(255,255,0,180));
+            g.fillRect(teleport.getTeleportBounds().x,teleport.getTeleportBounds().y,teleport.getTeleportBounds().width,teleport.getTeleportBounds().height);
         }
+
+        /** met en surbrillance rouge les zone de collision **/
+        for (Rectangle hitbox:map.getHitboxList())
+        {
+            g.setColor(new Color(255,0,0,100));
+            g.fillRect(hitbox.x,hitbox.y,hitbox.width,hitbox.height);
+        }
+
+
+        /** met en surbrillance violete la zone de collision du perso **/
+        g.setColor(new Color(255,0,255,100));
+        g.fillRect(charBounds.x,charBounds.y,charBounds.width,charBounds.height);
+
+        /** met en surbrillance orange la zone d'action du personnage **/
+        g.setColor(new Color(255,128,0,100));
+        g.fillRect(charActionArea.x,charActionArea.y,charActionArea.width,charActionArea.height);
+
+
     }
 
     /**
      * Action a effectuer lorsqu'une touche est pressée.
      * @param keyCode
      */
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(int keyCode)
+    {
+        System.out.println(keyCode);
         isStanding = false;
-        if (keyCode == KeyMap.LEFT && !isMovingLeft) {
+        if (keyCode == KeyMap.LEFT && !isMovingLeft)
+        {
             setDirection(keyCode);
             isMovingLeft = true;
         }
-        if (keyCode == KeyMap.RIGHT && !isMovingRight) {
+        if (keyCode == KeyMap.RIGHT && !isMovingRight)
+        {
             setDirection(keyCode);
             isMovingRight = true;
         }
-        if (keyCode == KeyMap.UP && !isMovingUp) {
+        if (keyCode == KeyMap.UP && !isMovingUp)
+        {
             setDirection(keyCode);
             isMovingUp = true;
         }
-        if (keyCode == KeyMap.DOWN && !isMovingDown) {
+        if (keyCode == KeyMap.DOWN && !isMovingDown)
+        {
             setDirection(keyCode);
             isMovingDown = true;
         }
-        if (keyCode == KeyMap.ATTACK) {
+        if (keyCode == KeyMap.ATTACK)
+        {
             isHiting = true;
         }
+        if (keyCode == 83)
+        {
+            stopDebug = !stopDebug;
+        }
+
+
     }
 
     /**
      * Action a effectuer lorsqu'une touche est relachée.
      * @param keyCode
      */
-    public void onKeyReleased(int keyCode) {
-        if (keyCode == KeyMap.LEFT) {
+    public void onKeyReleased(int keyCode)
+    {
+        if (keyCode == KeyMap.LEFT)
+        {
             removeDirection(keyCode);
             isMovingLeft = false;
         }
-        if (keyCode == KeyMap.RIGHT) {
+        if (keyCode == KeyMap.RIGHT)
+        {
             removeDirection(keyCode);
             isMovingRight = false;
         }
-        if (keyCode == KeyMap.UP) {
+        if (keyCode == KeyMap.UP)
+        {
             removeDirection(keyCode);
             isMovingUp = false;
         }
-        if (keyCode == KeyMap.DOWN) {
+        if (keyCode == KeyMap.DOWN)
+        {
             removeDirection(keyCode);
             isMovingDown = false;
         }
@@ -311,49 +382,29 @@ public class Game extends JPanel {
     /**
      * Teste si le personnage entre en collision avec un des blocs de collision de la map.
      */
-    public void collisionChecker() {
+    public boolean collisionChecker(Rectangle rectangle)
+    {
         boolean collision = false;
-        if (isBlocked) {
-            charBounds.setBounds(characterCoordinates[0] + Constant.TILE_SIZE/2 + 2, characterCoordinates[1] + Constant.TILE_SIZE + 2, Constant.TILE_SIZE - 4, Constant.TILE_SIZE - 4);
-        }
-        for (Rectangle block : map.getLeftBounds()) {
-            if (charBounds.intersects(block)) {
-                isBlocked = true;
-                characterCoordinates[0] -= Constant.STRIDE;
-                collision = true;
-                break;
-            }
-        }
-        if (!collision) {
-            for (Rectangle block : map.getRightBounds()) {
-                if (charBounds.intersects(block)) {
+
+        /** test des collision hitbox **/
+        if (!collision)
+        {
+            for (Rectangle block : map.getHitboxList())
+            {
+                if (rectangle.intersects(block))
+                {
                     isBlocked = true;
-                    characterCoordinates[0] += Constant.STRIDE;
                     collision = true;
                     break;
                 }
             }
         }
-        if (!collision) {
-            for (Rectangle block : map.getUpperBounds()) {
-                if (charBounds.intersects(block)) {
-                    isBlocked = true;
-                    characterCoordinates[1] -= Constant.STRIDE;
-                    collision = true;
-                    break;
-                }
-            }
+        if (!collision)
+        {
+            isBlocked = false;
         }
-        if (!collision) {
-            for (Rectangle block : map.getLowerBounds()) {
-                if (charBounds.intersects(block)) {
-                    isBlocked = true;
-                    characterCoordinates[1] += Constant.STRIDE;
-                    break;
-                }
-            }
-        }
-        if (!collision) isBlocked = false;
+
+        return collision;
     }
 
     /**
@@ -361,18 +412,59 @@ public class Game extends JPanel {
      */
     public void teleportChecker() {
         boolean teleport = false;
-        for (Rectangle block : map.getTeleport()) {
-            if (!teleport) {
-                if (charBounds.intersects(block)) {
-                    String teleportCoord = (block.x + Constant.TILE_SIZE) / Constant.TILE_SIZE+ "," +(block.y + Constant.TILE_SIZE) / Constant.TILE_SIZE;
-                    teleportMap = map.getTileList().get(teleportCoord).getBindedTile().split(" ")[0];
-                    teleportPositionX = Integer.parseInt(map.getTileList().get(teleportCoord).getBindedTile().split(" ")[1].split(",")[0]);
-                    teleportPositionY = Integer.parseInt(map.getTileList().get(teleportCoord).getBindedTile().split(" ")[1].split(",")[1]);
-                    isTeleport = true;
-                    teleport = true;
-                }
-                else isTeleport = false;
+        Rectangle charCenter = new Rectangle(charBounds.x+15,charBounds.y+15,2,2);
+        for (Tile tile : map.getTeleports())
+        {
+
+            if (charCenter.intersects(tile.getTeleportBounds()))
+            {
+                String teleportCoord = (tile.getY() + Constant.TILE_SIZE) / Constant.TILE_SIZE+ "," +(tile.getY() + Constant.TILE_SIZE) / Constant.TILE_SIZE;
+                teleportMap = tile.getBindedTile().split(" ")[0];
+                teleportPositionX = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]);
+                teleportPositionY = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]);
+                isTeleport = true;
+
+                MainZeldo.onStateChange = true;
+                MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
+//                try
+//                { // Mise en pause du thread pour corriger un défaut d'affichage du fond d'écran. Génère automatiquement une IllegalMonitorStateException.
+//                    thread.wait();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
             }
         }
+    }
+
+    public void actionArea()
+    {
+        Integer actionWidth = 20;
+
+        switch ((Integer)direction.get(0))
+        {
+            case 37:
+            {
+                charActionArea = new Rectangle(charBounds.x-actionWidth,charBounds.y,actionWidth,charBounds.height);
+                break;
+            }
+            case 38:
+            {
+                charActionArea = new Rectangle(charBounds.x,charBounds.y-actionWidth,charBounds.width,actionWidth);
+                break;
+            }
+            case 39:
+            {
+                charActionArea = new Rectangle(charBounds.x+charBounds.width,charBounds.y,actionWidth,charBounds.height);
+                break;
+            }
+            case 40:
+            {
+                charActionArea = new Rectangle(charBounds.x,charBounds.y+charBounds.height,charBounds.width,actionWidth);
+                break;
+            }
+
+        }
+
     }
 }

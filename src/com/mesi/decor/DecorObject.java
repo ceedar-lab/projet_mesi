@@ -1,5 +1,7 @@
 package com.mesi.decor;
 
+import com.mesi.params.Images;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,8 +22,6 @@ public class DecorObject
     protected BufferedImage forgroundImage;
     protected BufferedImage backgroundImage;
 
-    protected String urlForegroundImage;
-    protected String urlBackgroundImage;
 
     protected Rectangle hitbox;
 
@@ -36,16 +36,7 @@ public class DecorObject
 
     public BufferedImage getForgroundImage()
     {
-        try
-        {
-            forgroundImage = ImageIO.read(new File(urlForegroundImage));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        return forgroundImage;
+        return Images.FOLIAGE;
     }
 
     public void setForgroundImage(BufferedImage forgroundImage)
@@ -55,41 +46,12 @@ public class DecorObject
 
     public BufferedImage getBackgroundImage()
     {
-        try
-        {
-            backgroundImage = ImageIO.read(new File(urlBackgroundImage));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        return backgroundImage;
+        return Images.TRUNK;
     }
 
     public void setBackgroundImage(BufferedImage backgroundImage)
     {
         this.backgroundImage = backgroundImage;
-    }
-
-    public String getUrlForegroundImage()
-    {
-        return urlForegroundImage;
-    }
-
-    public void setUrlForegroundImage(String urlForegroundImage)
-    {
-        this.urlForegroundImage = urlForegroundImage;
-    }
-
-    public String getUrlBackgroundImage()
-    {
-        return urlBackgroundImage;
-    }
-
-    public void setUrlBackgroundImage(String urlBackgroundImage)
-    {
-        this.urlBackgroundImage = urlBackgroundImage;
     }
 
 
@@ -167,16 +129,5 @@ public class DecorObject
 
 
 
-    /** methods **/
-    public void initPositions()
-    {
-        hitbox.x += x;
-        hitbox.y += y;
-        foregroundOffsetX += x;
-        foregroundOffsetY += y;
-        backgroundOffsetX += x;
-        backgroundOffsetY += y;
-
-    }
 
 }
