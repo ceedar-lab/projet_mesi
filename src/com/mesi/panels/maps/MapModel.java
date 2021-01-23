@@ -37,6 +37,8 @@ public abstract class MapModel extends JPanel {
 
     private String backgroundURL;
     private BufferedImage backgroundImage;
+    private String foregroundURL;
+    private BufferedImage foregroundImage;
 
     private ArrayList<Rectangle> leftBounds;
     private ArrayList<Rectangle> rightBounds;
@@ -77,10 +79,13 @@ public abstract class MapModel extends JPanel {
     public void setBackgroundURL(String backgroundURL) {
         this.backgroundURL = backgroundURL;
     }
+    public void setForegroundURL(String foregroundURL) { this.foregroundURL = foregroundURL; }
     public BufferedImage getBackgroundImage() {
         return backgroundImage;
     }
+    public BufferedImage getForegroundImage() { return foregroundImage; }
     public void setBackgroundImage() throws IOException { this.backgroundImage = ImageIO.read(new File(backgroundURL)); }
+    public void setForegroundImage() throws IOException { this.foregroundImage = ImageIO.read(new File(foregroundURL)); }
     public ArrayList<Rectangle> getLeftBounds() {
         return leftBounds;
     }

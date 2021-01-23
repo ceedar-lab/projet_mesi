@@ -16,6 +16,7 @@ public class MapGenerator {
 
         map_0_0();
         map_0_1();
+        map_1();
     }
 
     /**********  Methods  **********/
@@ -33,4 +34,11 @@ public class MapGenerator {
 
         MainZeldo.mapList.put(name, map);
     }
+    public void map_1() throws IOException {
+        MapModel map = new Map_1(90, 50,  Game.teleportPositionX, Game.teleportPositionY, (Integer)Game.direction.get(0));
+        String name = "MAP_1";
+
+        MainZeldo.mapList.put(name, map);
+    }
+
 }

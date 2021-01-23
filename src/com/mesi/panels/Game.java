@@ -22,7 +22,7 @@ public class Game extends JPanel {
     private MapModel map;
 
     private String teleportMap;
-    public static Integer teleportPositionX = 10;
+    public static Integer teleportPositionX = 11;
     public static Integer teleportPositionY = 10;
     public static ArrayList direction = new ArrayList() {{ add(KeyMap.DOWN); }};
 
@@ -42,6 +42,9 @@ public class Game extends JPanel {
     private Integer count = 0, hitSprite = 0;
 
     private BufferedImage backgroundImage;
+    private BufferedImage foregroundImage;
+
+    public static boolean pause = false;
 
     private boolean rightEdge = false;
     private boolean lowerEdge = false;
@@ -51,22 +54,6 @@ public class Game extends JPanel {
     Animation character = new WhiteCharacterAnimation(Hair.BLOND, Head.ROBE_HOOD, Torso.TSHIRT, Hands.NONE, Legs.SKIRT, Feet.LEATHER_BOOTS, RightHand.DAGGER, LeftHand.NONE);
     /*Animation character = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);*/
     /*Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);*/
-
-    Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                while(true) {
-                    if (!isStanding) {
-                        repaint();
-                    }
-                    Thread.sleep(Constant.FPS);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    });
 
     /**********  Constructors  **********/
 
@@ -86,11 +73,26 @@ public class Game extends JPanel {
         charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
         sprites  = character.stand((Integer)direction.get(0));
         backgroundImage = map.getBackgroundImage();
+        foregroundImage = map.getForegroundImage();
         setOpaque(false);
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
         /** Lancement du thread **/
-        thread.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        if (!isStanding && !pause) {
+                            repaint();
+                        }
+                        Thread.sleep(Constant.FPS);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     /**********  Methods  **********/
@@ -118,11 +120,12 @@ public class Game extends JPanel {
                 characterCoordinates[1] < 0 - Constant.SPRITE_SIZE || characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.STRIDE) {
             MainZeldo.onStateChange = true;
             MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
-            try { // Mise en pause du thread pour corriger un défaut d'affichage du fond d'écran. Génère automatiquement une IllegalMonitorStateException.
-                thread.wait();
+            Thread.currentThread().stop(); // Déprécié mais permet d'éviter l'IllegalMonitorStateException
+            /*try { // Mise en pause du thread pour corriger un défaut d'affichage du fond d'écran. Génère automatiquement une IllegalMonitorStateException.
+                Thread.currentThread().wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
         collisionChecker();
@@ -234,13 +237,15 @@ public class Game extends JPanel {
             g.fillRect(10*32, 0, 32, 32);
             g.fillRect(10*32, 47*32, 32, 32);
         }
+
+        g.drawImage(foregroundImage, 0, 0, this);
     }
 
     /**
      * Action a effectuer lorsqu'une touche est pressée.
      * @param keyCode
      */
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(int keyCode) throws InterruptedException {
         isStanding = false;
         if (keyCode == KeyMap.LEFT && !isMovingLeft) {
             setDirection(keyCode);
@@ -260,6 +265,10 @@ public class Game extends JPanel {
         }
         if (keyCode == KeyMap.ATTACK) {
             isHiting = true;
+        }
+        if (keyCode == KeyMap.ESCAPE) {
+            pause = true;
+            new GameMenu();
         }
     }
 
