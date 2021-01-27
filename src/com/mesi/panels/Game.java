@@ -48,6 +48,7 @@ public class Game extends JPanel {
     private Integer count = 0, hitSprite = 0;
 
     private BufferedImage backgroundImage;
+    private BufferedImage foregroundImage;
 
     private boolean rightEdge = false;
     private boolean lowerEdge = false;
@@ -145,6 +146,7 @@ public class Game extends JPanel {
         actionArea();
         sprites  = character.stand((Integer)direction.get(0));
         backgroundImage = map.getBackgroundImage();
+        foregroundImage = map.getForegroundImage();
         setOpaque(false);
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 
@@ -256,6 +258,8 @@ public class Game extends JPanel {
                 break;
         }
 
+        /** affiche les elements de la carte au premier plan **/
+        g.drawImage(foregroundImage, 0, 0, this);
 
         /** affiche les objet de decor au premier plan **/
         for (DecorObject decorObject:map.getDecorObjectArraylist())
