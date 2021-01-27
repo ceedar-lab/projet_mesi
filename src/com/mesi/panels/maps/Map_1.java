@@ -57,18 +57,23 @@ public class Map_1 extends MapModel {
         getTileList().get("5,12").setTraversable(false);
         getTileList().get("5,24").setTraversable(false);
         getTileList().get("5,26").setTraversable(false);
+        getTileList().get("5,30").setTraversable(false);
         getTileList().get("5,40").setTraversable(false);
         getTileList().get("6,7").setTraversable(false);
         getTileList().get("6,23").setTraversable(false);
         getTileList().get("6,25").setTraversable(false);
+        getTileList().get("6,30").setTraversable(false);
+        getTileList().get("6,34").setTraversable(false);
         getTileList().get("6,39").setTraversable(false);
         getTileList().get("7,6").setTraversable(false);
         getTileList().get("7,24").setTraversable(false);
+        getTileList().get("7,34").setTraversable(false);
         getTileList().get("7,40").setTraversable(false);
         getTileList().get("8,5").setTraversable(false);
         getTileList().get("8,17").setTraversable(false);
         getTileList().get("8,23").setTraversable(false);
         getTileList().get("8,25").setTraversable(false);
+        getTileList().get("8,34").setTraversable(false);
         getTileList().get("8,39").setTraversable(false);
         getTileList().get("8,41").setTraversable(false);
         getTileList().get("9,4").setTraversable(false);
@@ -105,36 +110,52 @@ public class Map_1 extends MapModel {
         getTileList().get("15,42").setTraversable(false);
         getTileList().get("15,48").setTraversable(false);
         getTileList().get("16,7").setTraversable(false);
+        getTileList().get("16,12").setTraversable(false);
+        getTileList().get("16,13").setTraversable(false);
+        getTileList().get("16,14").setTraversable(false);
         getTileList().get("16,21").setTraversable(false);
         getTileList().get("16,47").setTraversable(false);
         getTileList().get("17,6").setTraversable(false);
+        getTileList().get("17,12").setTraversable(false);
+        getTileList().get("17,14").setTraversable(false);
         getTileList().get("17,24").setTraversable(false);
         getTileList().get("17,36").setTraversable(false);
         getTileList().get("17,46").setTraversable(false);
         getTileList().get("18,7").setTraversable(false);
+        getTileList().get("18,12").setTraversable(false);
+        getTileList().get("18,14").setTraversable(false);
         getTileList().get("18,25").setTraversable(false);
+        getTileList().get("18,31").setTraversable(false);
         getTileList().get("18,45").setTraversable(false);
         getTileList().get("19,6").setTraversable(false);
+        getTileList().get("19,12").setTraversable(false);
+        getTileList().get("19,13").setTraversable(false);
+        getTileList().get("19,14").setTraversable(false);
+        getTileList().get("19,15").setTraversable(false);
         getTileList().get("19,24").setTraversable(false);
         getTileList().get("19,44").setTraversable(false);
         getTileList().get("20,7").setTraversable(false);
+        getTileList().get("20,8").setTraversable(false);
+        getTileList().get("20,9").setTraversable(false);
         getTileList().get("20,15").setTraversable(false);
         getTileList().get("20,25").setTraversable(false);
         getTileList().get("20,45").setTraversable(false);
-        getTileList().get("21,6").setTraversable(false);
+        getTileList().get("21,8").setTraversable(false);
+        getTileList().get("21,9").setTraversable(false);
+        getTileList().get("21,11").setTraversable(false);
         getTileList().get("21,24").setTraversable(false);
         getTileList().get("21,27").setTraversable(false);
         getTileList().get("21,42").setTraversable(false);
         getTileList().get("21,44").setTraversable(false);
         getTileList().get("21,46").setTraversable(false);
-        getTileList().get("22,7").setTraversable(false);
         getTileList().get("22,9").setTraversable(false);
+        getTileList().get("22,11").setTraversable(false);
         getTileList().get("22,25").setTraversable(false);
         getTileList().get("22,43").setTraversable(false);
         getTileList().get("22,45").setTraversable(false);
         getTileList().get("22,47").setTraversable(false);
-        getTileList().get("23,8").setTraversable(false);
         getTileList().get("23,10").setTraversable(false);
+        getTileList().get("23,16").setTraversable(false);
         getTileList().get("23,21").setTraversable(false);
         getTileList().get("23,24").setTraversable(false);
         getTileList().get("23,28").setTraversable(false);
@@ -144,6 +165,7 @@ public class Map_1 extends MapModel {
         getTileList().get("23,44").setTraversable(false);
         getTileList().get("23,48").setTraversable(false);
         getTileList().get("24,9").setTraversable(false);
+        getTileList().get("24,14").setTraversable(false);
         getTileList().get("24,25").setTraversable(false);
         getTileList().get("24,27").setTraversable(false);
         getTileList().get("24,29").setTraversable(false);
@@ -217,10 +239,10 @@ public class Map_1 extends MapModel {
         getTileList().get("39,8").setTraversable(false);
         getTileList().get("39,13").setTraversable(false);
         getTileList().get("39,24").setTraversable(false);
+        getTileList().get("39,32").setTraversable(false);
         getTileList().get("39,48").setTraversable(false);
         getTileList().get("40,7").setTraversable(false);
         getTileList().get("40,18").setTraversable(false);
-        getTileList().get("40,25").setTraversable(false);
         getTileList().get("40,45").setTraversable(false);
         getTileList().get("40,47").setTraversable(false);
         getTileList().get("41,6").setTraversable(false);
@@ -243,6 +265,7 @@ public class Map_1 extends MapModel {
         getTileList().get("44,5").setTraversable(false);
         getTileList().get("44,13").setTraversable(false);
         getTileList().get("44,17").setTraversable(false);
+        getTileList().get("44,23").setTraversable(false);
         getTileList().get("44,35").setTraversable(false);
         getTileList().get("44,37").setTraversable(false);
         getTileList().get("44,39").setTraversable(false);
@@ -316,6 +339,7 @@ public class Map_1 extends MapModel {
         getTileList().get("53,44").setTraversable(false);
         getTileList().get("54,7").setTraversable(false);
         getTileList().get("54,9").setTraversable(false);
+        getTileList().get("54,13").setTraversable(false);
         getTileList().get("54,15").setTraversable(false);
         getTileList().get("54,16").setTraversable(false);
         getTileList().get("54,17").setTraversable(false);
@@ -323,7 +347,6 @@ public class Map_1 extends MapModel {
         getTileList().get("54,35").setTraversable(false);
         getTileList().get("54,43").setTraversable(false);
         getTileList().get("55,8").setTraversable(false);
-        getTileList().get("55,21").setTraversable(false);
         getTileList().get("55,22").setTraversable(false);
         getTileList().get("55,23").setTraversable(false);
         getTileList().get("55,36").setTraversable(false);
@@ -386,7 +409,6 @@ public class Map_1 extends MapModel {
         getTileList().get("64,26").setTraversable(false);
         getTileList().get("64,27").setTraversable(false);
         getTileList().get("64,28").setTraversable(false);
-        getTileList().get("64,30").setTraversable(false);
         getTileList().get("64,33").setTraversable(false);
         getTileList().get("64,43").setTraversable(false);
         getTileList().get("65,6").setTraversable(false);
@@ -398,6 +420,7 @@ public class Map_1 extends MapModel {
         getTileList().get("65,42").setTraversable(false);
         getTileList().get("66,7").setTraversable(false);
         getTileList().get("66,9").setTraversable(false);
+        getTileList().get("66,28").setTraversable(false);
         getTileList().get("66,39").setTraversable(false);
         getTileList().get("66,41").setTraversable(false);
         getTileList().get("67,8").setTraversable(false);
@@ -408,7 +431,6 @@ public class Map_1 extends MapModel {
         getTileList().get("68,37").setTraversable(false);
         getTileList().get("68,41").setTraversable(false);
         getTileList().get("69,8").setTraversable(false);
-        getTileList().get("69,16").setTraversable(false);
         getTileList().get("69,38").setTraversable(false);
         getTileList().get("69,40").setTraversable(false);
         getTileList().get("70,7").setTraversable(false);
@@ -416,7 +438,6 @@ public class Map_1 extends MapModel {
         getTileList().get("70,41").setTraversable(false);
         getTileList().get("71,6").setTraversable(false);
         getTileList().get("71,14").setTraversable(false);
-        getTileList().get("71,17").setTraversable(false);
         getTileList().get("71,30").setTraversable(false);
         getTileList().get("71,36").setTraversable(false);
         getTileList().get("71,38").setTraversable(false);
@@ -445,6 +466,7 @@ public class Map_1 extends MapModel {
         getTileList().get("78,35").setTraversable(false);
         getTileList().get("78,37").setTraversable(false);
         getTileList().get("79,12").setTraversable(false);
+        getTileList().get("79,16").setTraversable(false);
         getTileList().get("79,26").setTraversable(false);
         getTileList().get("79,34").setTraversable(false);
         getTileList().get("80,11").setTraversable(false);
@@ -475,10 +497,7 @@ public class Map_1 extends MapModel {
         getTileList().get("89,28").setTraversable(false);
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
-        getTileList().get("0,10").setTeleport(true, "MAP_0_0 39,10");
-        getTileList().get("79,10").setTeleport(true, "MAP_0_0 -1,10"); // -1 permet au personnage de réapparaitre collé à la bordure
-        getTileList().get("10,0").setTeleport(true, "MAP_0_0 10,23");
-        getTileList().get("10,47").setTeleport(true, "MAP_0_0 10,0");
+        getTileList().get("89,17").setTeleport(true, "MAP_0_0 -1,9"); // -1 permet au personnage de réapparaitre collé à la bordure
 
         /** Crée les listes de blocs collision / téléportation à récupérer **/
         setLeftBounds();

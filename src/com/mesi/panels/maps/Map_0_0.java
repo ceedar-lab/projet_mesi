@@ -56,7 +56,7 @@ public class Map_0_0 extends MapModel {
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
         getTileList().get("39,10").setTeleport(true, "MAP_0_1 -1,10"); // -1 permet au personnage de réapparaitre collé à la bordure
-        getTileList().get("0,10").setTeleport(true, "MAP_0_1 79,10");
+        getTileList().get("0,10").setTeleport(true, "MAP_1 89,17");
         getTileList().get("10,0").setTeleport(true, "MAP_0_1 10,47");
         getTileList().get("10,23").setTeleport(true, "MAP_0_1 10,0");
 
