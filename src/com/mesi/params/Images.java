@@ -19,7 +19,7 @@ public class Images {
 
             TRUNK = ImageIO.read(new File("res/images/tree-trunk.png"));
 
-            BUSH = ImageIO.read(new File("res/images/buisson.png"));
+            BUSH = ImageIO.read(new File("res/images/bush.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
