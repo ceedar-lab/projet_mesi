@@ -516,5 +516,8 @@ public class Map_1 extends MapModel {
         addTeleport(getTileList().get("89,19"), true, "MAP_0_1 0,14", Hitbox.EAST_TP);
 
 
+        addTeleport(getTileList().get("17,14"), true, "MAP_0_0 10,10", Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("18,14"), true, "MAP_0_0 10,10", Hitbox.NORTH_BORD);
+
     }
 }
