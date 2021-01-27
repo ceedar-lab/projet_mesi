@@ -8,16 +8,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class DecorObject
-{
+public class DecorObject {
 
-    protected Integer x ;
-    protected Integer y ;
+    protected Integer x;
+    protected Integer y;
 
-    protected Integer backgroundOffsetX ;
-    protected Integer backgroundOffsetY ;
-    protected Integer foregroundOffsetX ;
-    protected Integer foregroundOffsetY ;
+    protected Integer backgroundOffsetX;
+    protected Integer backgroundOffsetY;
+    protected Integer foregroundOffsetX;
+    protected Integer foregroundOffsetY;
 
     protected BufferedImage forgroundImage;
     protected BufferedImage backgroundImage;
@@ -26,108 +25,91 @@ public class DecorObject
     protected Rectangle hitbox;
 
 
-    /** constructor **/
-    public DecorObject()
-    {
+    /**
+     * constructor
+     **/
+    public DecorObject() {
     }
 
 
-    /** getter setter **/
+    /**
+     * getter setter
+     **/
 
-    public BufferedImage getForgroundImage()
-    {
+    public BufferedImage getForgroundImage() {
         return forgroundImage;
     }
 
-    public void setForgroundImage(BufferedImage forgroundImage)
-    {
+    public void setForgroundImage(BufferedImage forgroundImage) {
         this.forgroundImage = forgroundImage;
     }
 
-    public BufferedImage getBackgroundImage()
-    {
+    public BufferedImage getBackgroundImage() {
         return backgroundImage;
     }
 
-    public void setBackgroundImage(BufferedImage backgroundImage)
-    {
+    public void setBackgroundImage(BufferedImage backgroundImage) {
         this.backgroundImage = backgroundImage;
     }
 
 
-    public Rectangle getHitbox()
-    {
+    public Rectangle getHitbox() {
         return hitbox;
     }
 
-    public void setHitbox(Rectangle hitbox)
-    {
+    public void setHitbox(Rectangle hitbox) {
         this.hitbox = hitbox;
     }
 
 
-    public Integer getX()
-    {
+    public Integer getX() {
         return x;
     }
 
-    public void setX(Integer x)
-    {
+    public void setX(Integer x) {
         this.x = x;
     }
 
-    public Integer getY()
-    {
+    public Integer getY() {
         return y;
     }
 
-    public void setY(Integer y)
-    {
+    public void setY(Integer y) {
         this.y = y;
     }
 
 
-    public Integer getBackgroundOffsetX()
-    {
+    public Integer getBackgroundOffsetX() {
         return backgroundOffsetX;
     }
 
-    public void setBackgroundOffsetX(Integer backgroundOffsetX)
-    {
+    public void setBackgroundOffsetX(Integer backgroundOffsetX) {
         this.backgroundOffsetX = backgroundOffsetX;
     }
 
-    public Integer getBackgroundOffsetY()
-    {
+    public Integer getBackgroundOffsetY() {
         return backgroundOffsetY;
     }
 
-    public void setBackgroundOffsetY(Integer backgroundOffsetY)
-    {
+    public void setBackgroundOffsetY(Integer backgroundOffsetY) {
         this.backgroundOffsetY = backgroundOffsetY;
     }
 
-    public Integer getForegroundOffsetX()
-    {
+    public Integer getForegroundOffsetX() {
         return foregroundOffsetX;
     }
 
-    public void setForegroundOffsetX(Integer foregroundOffsetX)
-    {
+    public void setForegroundOffsetX(Integer foregroundOffsetX) {
         this.foregroundOffsetX = foregroundOffsetX;
     }
 
-    public Integer getForegroundOffsetY()
-    {
+    public Integer getForegroundOffsetY() {
         return foregroundOffsetY;
     }
 
-    public void setForegroundOffsetY(Integer foregroundOffsetY)
-    {
+    public void setForegroundOffsetY(Integer foregroundOffsetY) {
         this.foregroundOffsetY = foregroundOffsetY;
     }
-
-
 
 
 }

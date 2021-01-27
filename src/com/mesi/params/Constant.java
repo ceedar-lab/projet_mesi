@@ -5,7 +5,7 @@ package com.mesi.params;
  */
 public class Constant {
 
-    public static final Integer FPS = 1000/60;
+    public static final Integer FPS = 1000 / 60;
     public static final Integer FRAME_WIDTH = 1280;
     public static final Integer FRAME_HEIGHT = 768;
     public static final Integer MAP_WIDTH = 40;

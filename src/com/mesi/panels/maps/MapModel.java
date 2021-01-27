@@ -40,7 +40,7 @@ public abstract class MapModel extends JPanel {
     private String foregroundURL;
     private BufferedImage foregroundImage;
 
-    private ArrayList<DecorObject>decorObjectArraylist = new ArrayList<>();
+    private ArrayList<DecorObject> decorObjectArraylist = new ArrayList<>();
 
     private ArrayList<Rectangle> hitboxs = new ArrayList<>();
 
@@ -73,27 +73,23 @@ public abstract class MapModel extends JPanel {
         /** ajout de bloc de collision sur les quatre coté **/
 
         /** bord ouest **/
-        for (int y = 0; y < this.height; y++)
-        {
-            Tile tile = tileList.get( "0," + y);
+        for (int y = 0; y < this.height; y++) {
+            Tile tile = tileList.get("0," + y);
             tile.addHtibox(Hitbox.WEST_BORD);
         }
         /** bord est **/
-        for (int y = 0; y < this.height; y++)
-        {
-            Tile tile = tileList.get( (this.width-1)+"," + y);
+        for (int y = 0; y < this.height; y++) {
+            Tile tile = tileList.get((this.width - 1) + "," + y);
             tile.addHtibox(Hitbox.EAST_BORD);
         }
         /** bord ouest **/
-        for (int x = 0; x < this.width; x++)
-        {
-            Tile tile = tileList.get( x+",0");
+        for (int x = 0; x < this.width; x++) {
+            Tile tile = tileList.get(x + ",0");
             tile.addHtibox(Hitbox.NORTH_BORD);
         }
         /** bord ouest **/
-        for (int x = 0; x < this.width; x++)
-        {
-            Tile tile = tileList.get( x+","+(this.height-1));
+        for (int x = 0; x < this.width; x++) {
+            Tile tile = tileList.get(x + "," + (this.height - 1));
             tile.addHtibox(Hitbox.SOUTH_BORD);
         }
 
@@ -102,50 +98,72 @@ public abstract class MapModel extends JPanel {
 
     /**********  Getters / Setters  **********/
 
-    public int getWidth() { return width; }
-    public int getHeight() { return height; }
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public Hashtable<String, Tile> getTileList() {
         return tileList;
     }
-    public boolean isScrollable() { return scrollable; }
+
+    public boolean isScrollable() {
+        return scrollable;
+    }
+
     public void setScrollable(boolean scrollable) {
         this.scrollable = scrollable;
     }
+
     public void setBackgroundURL(String backgroundURL) {
         this.backgroundURL = backgroundURL;
     }
+
     public BufferedImage getBackgroundImage() {
         return backgroundImage;
     }
-    public void setForegroundURL(String foregroundURL) { this.foregroundURL = foregroundURL; }
-    public BufferedImage getForegroundImage() { return foregroundImage; }
-    public void setBackgroundImage() throws IOException { this.backgroundImage = ImageIO.read(new File(backgroundURL)); }
-    public void setForegroundImage() throws IOException { this.foregroundImage = ImageIO.read(new File(foregroundURL)); }
+
+    public void setForegroundURL(String foregroundURL) {
+        this.foregroundURL = foregroundURL;
+    }
+
+    public BufferedImage getForegroundImage() {
+        return foregroundImage;
+    }
+
+    public void setBackgroundImage() throws IOException {
+        this.backgroundImage = ImageIO.read(new File(backgroundURL));
+    }
+
+    public void setForegroundImage() throws IOException {
+        this.foregroundImage = ImageIO.read(new File(foregroundURL));
+    }
+
     public ArrayList<Tile> getTeleports() {
         return teleports;
     }
 
-    public ArrayList<DecorObject> getDecorObjectArraylist()
-    {
+    public ArrayList<DecorObject> getDecorObjectArraylist() {
         return decorObjectArraylist;
     }
 
-    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist)
-    {
+    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist) {
         this.decorObjectArraylist = decorObjectArraylist;
     }
 
 
-    /** Récupère la liste des hitbox. **/
-    public ArrayList<Rectangle> getHitboxList()
-    {
-        ArrayList<Rectangle>hitboxList = new ArrayList<>();
+    /**
+     * Récupère la liste des hitbox.
+     **/
+    public ArrayList<Rectangle> getHitboxList() {
+        ArrayList<Rectangle> hitboxList = new ArrayList<>();
 
         /** ajout des hitboxs des objet **/
-        for (DecorObject decorObject:getDecorObjectArraylist())
-        {
-            if(decorObject.getHitbox()!=null)
-            {
+        for (DecorObject decorObject : getDecorObjectArraylist()) {
+            if (decorObject.getHitbox() != null) {
                 hitboxList.add(decorObject.getHitbox());
             }
 
@@ -153,18 +171,14 @@ public abstract class MapModel extends JPanel {
 
         /** ajout des hitboxs des cases non traversables **/
         Enumeration<Tile> e = getTileList().elements();
-        while (e.hasMoreElements())
-        {
+        while (e.hasMoreElements()) {
             Tile tile = e.nextElement();
-            if (!tile.isTraversable())
-            {
-                Rectangle hitbox = new Rectangle(tile.getX()+Hitbox.FULL.x,tile.getY()+Hitbox.FULL.y,Hitbox.FULL.width,Hitbox.FULL.height);
+            if (!tile.isTraversable()) {
+                Rectangle hitbox = new Rectangle(tile.getX() + Hitbox.FULL.x, tile.getY() + Hitbox.FULL.y, Hitbox.FULL.width, Hitbox.FULL.height);
                 hitboxList.add(hitbox);
             }
-            if(tile.getHitBoxs().size()>0)
-            {
-                for (Rectangle hitbox:tile.getHitBoxs())
-                {
+            if (tile.getHitBoxs().size() > 0) {
+                for (Rectangle hitbox : tile.getHitBoxs()) {
                     hitboxList.add(hitbox);
                 }
             }
@@ -189,16 +203,12 @@ public abstract class MapModel extends JPanel {
     }
 
 
-    public void addTeleport(Tile teleport,Boolean isTeleport, String destination,Rectangle teleportBounds)
-    {
-        teleport.setTeleport(isTeleport,destination,teleportBounds);
+    public void addTeleport(Tile teleport, Boolean isTeleport, String destination, Rectangle teleportBounds) {
+        teleport.setTeleport(isTeleport, destination, teleportBounds);
         teleport.setTraversable(true);
         teleport.getHitBoxs().clear();
         teleports.add(teleport);
     }
-
-
-
 
 
 }
