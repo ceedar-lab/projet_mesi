@@ -12,6 +12,7 @@ public class BlackCharacterAnimation extends Animation {
 
     /**
      * Création d'un héros noir et de son équipement.
+     *
      * @throws IOException
      */
     public BlackCharacterAnimation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) throws IOException {

@@ -33,23 +33,23 @@ public class StartMenu extends JPanel {
         int hauteurBtn = 20;
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                .addComponent(getBtnNouvellePartie(),largeurBtn,largeurBtn,largeurBtn)
-                .addComponent(getBtnContinuer(),largeurBtn,largeurBtn,largeurBtn)
-                .addComponent(getBtnQuitter(),largeurBtn,largeurBtn,largeurBtn)
-            )
-            .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(getBtnNouvellePartie(), largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnContinuer(), largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnQuitter(), largeurBtn, largeurBtn, largeurBtn)
+                )
+                .addGap(0, 0, Short.MAX_VALUE)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-            .addGap(10, 10, Short.MAX_VALUE)
-            .addComponent(getBtnNouvellePartie(),hauteurBtn, hauteurBtn,hauteurBtn)
-            .addGap(20)
-            .addComponent(getBtnContinuer(),hauteurBtn, hauteurBtn,hauteurBtn)
-            .addGap(20)
-            .addComponent(getBtnQuitter(),hauteurBtn, hauteurBtn,hauteurBtn)
-            .addGap(10, 10, Short.MAX_VALUE)
+                .addGap(10, 10, Short.MAX_VALUE)
+                .addComponent(getBtnNouvellePartie(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(20)
+                .addComponent(getBtnContinuer(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(20)
+                .addComponent(getBtnQuitter(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(10, 10, Short.MAX_VALUE)
         );
 
         setLayout(layout);
@@ -59,6 +59,7 @@ public class StartMenu extends JPanel {
 
     /**
      * Démarre une nouvelle partie.
+     *
      * @return
      */
     public JButton getBtnNouvellePartie() {
@@ -77,6 +78,7 @@ public class StartMenu extends JPanel {
 
     /**
      * Continue la partie sauvegardée.
+     *
      * @return
      */
     public JButton getBtnContinuer() {
@@ -96,6 +98,7 @@ public class StartMenu extends JPanel {
 
     /**
      * Entre dans les options du jeu.
+     *
      * @return
      */
     public JButton getBtnOptions() {
@@ -115,6 +118,7 @@ public class StartMenu extends JPanel {
 
     /**
      * Quitte le jeu.
+     *
      * @return
      */
     public JButton getBtnQuitter() {

@@ -1,5 +1,8 @@
 package com.mesi.panels.maps;
 
+import com.mesi.decor.Tree;
+import com.mesi.params.Hitbox;
+
 import java.io.IOException;
 
 /**
@@ -19,19 +22,27 @@ public class Map_0_1 extends MapModel {
         setScrollable(true);
 
         /** Coordonnées des blocs de collision **/
-        getTileList().get("0,0").setTraversable(false);
+
+        /** Ajout arbre de decor **/
+        getDecorObjectArraylist().add(new Tree(10, 10));
+        getDecorObjectArraylist().add(new Tree(20, 10));
+        getDecorObjectArraylist().add(new Tree(25, 15));
+        getDecorObjectArraylist().add(new Tree(40, 10));
+        getDecorObjectArraylist().add(new Tree(45, 20));
+        getDecorObjectArraylist().add(new Tree(50, 30));
+        getDecorObjectArraylist().add(new Tree(60, 35));
+        getDecorObjectArraylist().add(new Tree(70, 25));
+
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
-        getTileList().get("0,10").setTeleport(true, "MAP_0_0 39,10");
-        getTileList().get("79,10").setTeleport(true, "MAP_0_0 -1,10"); // -1 permet au personnage de réapparaitre collé à la bordure
-        getTileList().get("10,0").setTeleport(true, "MAP_0_0 10,23");
-        getTileList().get("10,47").setTeleport(true, "MAP_0_0 10,0");
+        addTeleport(getTileList().get("0,10"), true, "MAP_1 89,15", Hitbox.WEST_TP);
+        addTeleport(getTileList().get("0,11"), true, "MAP_1 89,16", Hitbox.WEST_TP);
+        addTeleport(getTileList().get("0,12"), true, "MAP_1 89,17", Hitbox.WEST_TP);
+        addTeleport(getTileList().get("0,13"), true, "MAP_1 89,18", Hitbox.WEST_TP);
+        addTeleport(getTileList().get("0,14"), true, "MAP_1 89,19", Hitbox.WEST_TP);
 
-        /** Crée les listes de blocs collision / téléportation à récupérer **/
-        setLeftBounds();
-        setRightBounds();
-        setUpperBounds();
-        setLowerBounds();
-        setTeleport();
+        addTeleport(getTileList().get("79,10"), true, "MAP_0_0 -1,10", Hitbox.EAST_TP); //
+        addTeleport(getTileList().get("10,0"), true, "MAP_0_0 10,23", Hitbox.NORTH_TP);
+        addTeleport(getTileList().get("10,47"), true, "MAP_0_0 10,0", Hitbox.SOUTH_TP);
     }
 }

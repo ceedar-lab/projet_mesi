@@ -1,6 +1,5 @@
 package com.mesi;
 
-import com.mesi.panels.GameMenu;
 import com.mesi.panels.GameTitle;
 import com.mesi.panels.Game;
 import com.mesi.panels.StartMenu;
@@ -25,7 +24,7 @@ public class MainZeldo extends JPanel {
     public static Hashtable<String, MapModel> mapList = new Hashtable<String, MapModel>();
 
     public static enum GameState {
-        GAME_TITLE, START_MENU, GAME_MENU, MAP_0_0, MAP_0_1, MAP_1
+        GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1, MAP_1
     }
 
     public static GameState state = GameState.MAP_1;
@@ -46,7 +45,7 @@ public class MainZeldo extends JPanel {
             @Override
             public void run() {
                 try {
-                    while(true) {
+                    while (true) {
                         if (onStateChange) {
                             removeAll();
                             add(displayedPanel());
@@ -66,6 +65,7 @@ public class MainZeldo extends JPanel {
 
     /**
      * Retourne le panel demandé en fonction de l'état de la variable state.
+     *
      * @return JPanel.
      */
     public JPanel displayedPanel() throws IOException {
@@ -86,6 +86,7 @@ public class MainZeldo extends JPanel {
 
     /**
      * Génération des maps, création du JFrame et lancement du jeu.
+     *
      * @param args
      */
     public static void main(String[] args) throws IOException {
@@ -113,18 +114,13 @@ public class MainZeldo extends JPanel {
                 }
 
                 if (state != GameState.GAME_TITLE && state != GameState.START_MENU) {
-                    try {
-                        game.onKeyPressed(e.getKeyCode());
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                    }
+                    game.onKeyPressed(e.getKeyCode());
                 }
 
-                /*if (state == GameState.MAP_0_0 && e.getKeyCode() == KeyMap.ESCAPE) {
-                    *//*onStateChange = true;*//*
-                    //state = GameState.GAME_MENU;
-                    new GameMenu();
-                }*/
+                if (state == GameState.MAP_0_0 && e.getKeyCode() == KeyMap.ESCAPE) {
+                    onStateChange = true;
+                    state = GameState.MAP_0_1;
+                }
             }
 
             @Override

@@ -1,7 +1,5 @@
 package com.mesi.panels;
 
-import com.mesi.MainZeldo;
-import com.mesi.params.Constant;
 import com.mesi.params.Couleur;
 
 import javax.swing.*;
@@ -9,6 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+
 
 public class GameMenu extends JDialog {
 

@@ -12,6 +12,7 @@ public class BrownCharacterAnimation extends Animation {
 
     /**
      * Création d'un héros métisse et de son équipement.
+     *
      * @throws IOException
      */
     public BrownCharacterAnimation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) throws IOException {

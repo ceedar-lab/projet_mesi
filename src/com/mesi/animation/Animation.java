@@ -54,6 +54,7 @@ public abstract class Animation {
      * Création de l'image du personnage principal.
      * Récupère les images du personnage et de son équipement en fonction des paramètres de la signatures du personnage, et les
      * fusionne pour obtenir l'image finale.
+     *
      * @return BufferedImage.
      * @throws IOException
      */
@@ -87,6 +88,7 @@ public abstract class Animation {
 
     /**
      * Récupère les images du mouvement parmis la table de sprites en fonction des paramètres.
+     *
      * @return BufferedImage[]
      * @throws IOException
      */
@@ -105,6 +107,7 @@ public abstract class Animation {
 
     /**
      * Calcul les coordonnées des images à récupérer dans la tables de sprites.
+     *
      * @param firstRowIndex
      * @param lastRowIndex
      * @param firstColIndex
@@ -119,6 +122,7 @@ public abstract class Animation {
 
     /**
      * Récupère les sprites lorsque le personnage est debout.
+     *
      * @param direction
      * @return BufferedImage[]
      * @throws IOException
@@ -142,6 +146,7 @@ public abstract class Animation {
 
     /**
      * Récupère les sprites lorsque le personnage marche.
+     *
      * @param direction
      * @return BufferedImage[]
      * @throws IOException
@@ -165,6 +170,7 @@ public abstract class Animation {
 
     /**
      * Récupère les sprites lorsque le personnage attaque.
+     *
      * @param direction
      * @param weapon
      * @return BufferedImage[]
@@ -186,7 +192,7 @@ public abstract class Animation {
                     setSpritesCoordinates(14, 14, 0, 5);
             }
             return this.loadSprites();
-        } else /*if (weapon == RightHand.SPEAR) */{
+        } else /*if (weapon == RightHand.SPEAR) */ {
             switch (direction) {
                 case 37: // left
                     setSpritesCoordinates(5, 5, 0, 7);

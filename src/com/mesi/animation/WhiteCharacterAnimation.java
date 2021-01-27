@@ -12,6 +12,7 @@ public class WhiteCharacterAnimation extends Animation {
 
     /**
      * Création d'un héros blanc et de son équipement.
+     *
      * @throws IOException
      */
     public WhiteCharacterAnimation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) throws IOException {

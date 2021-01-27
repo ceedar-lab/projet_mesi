@@ -1,5 +1,9 @@
 package com.mesi.panels.maps;
 
+import com.mesi.decor.Bush;
+import com.mesi.decor.Tree;
+import com.mesi.params.Hitbox;
+
 import java.io.IOException;
 
 /**
@@ -54,17 +58,45 @@ public class Map_0_0 extends MapModel {
         getTileList().get("27,16").setTraversable(false);
         getTileList().get("27,17").setTraversable(false);
 
-        /** Coordonnées des blocs de téléportation et tuile de destination **/
-        getTileList().get("39,10").setTeleport(true, "MAP_0_1 -1,10"); // -1 permet au personnage de réapparaitre collé à la bordure
-        getTileList().get("0,10").setTeleport(true, "MAP_1 89,17");
-        getTileList().get("10,0").setTeleport(true, "MAP_0_1 10,47");
-        getTileList().get("10,23").setTeleport(true, "MAP_0_1 10,0");
 
-        /** Crée les listes de blocs collision / téléportation à récupérer **/
-        setLeftBounds();
-        setRightBounds();
-        setUpperBounds();
-        setLowerBounds();
-        setTeleport();
+        /** ajout des arbres **/
+        for (int i = 1; i < width; i += 2) {
+            getDecorObjectArraylist().add(new Tree(i, 1));
+        }
+        for (int i = 0; i < width; i += 2) {
+            if (i != 10) {
+                getDecorObjectArraylist().add(new Tree(i, 2));
+            }
+        }
+        for (int i = 1; i < height; i += 2) {
+            getDecorObjectArraylist().add(new Tree(1, i));
+        }
+        for (int i = 0; i < height; i += 2) {
+            if (i != 10) {
+                getDecorObjectArraylist().add(new Tree(2, i));
+            }
+        }
+
+        /** ajout des buissons **/
+        for (int i = 5; i < 8; i++) {
+            getDecorObjectArraylist().add(new Bush(i, 5));
+        }
+
+
+        /** Coordonnées des blocs de téléportation et tuile de destination **/
+
+        addTeleport(getTileList().get("39,10"), true, "MAP_0_1 -1,10", Hitbox.EAST_BORD);
+        addTeleport(getTileList().get("0,10"), true, "MAP_0_1 79,10", Hitbox.WEST_BORD);
+        addTeleport(getTileList().get("10,0"), true, "MAP_0_1 10,47", Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("10,23"), true, "MAP_0_1 10,0", Hitbox.SOUTH_BORD);
+
+
+//        /** Crée les listes de blocs collision / téléportation à récupérer **/
+//        setLeftBounds();
+//        setRightBounds();
+//        setUpperBounds();
+//        setLowerBounds();
+
+
     }
 }
