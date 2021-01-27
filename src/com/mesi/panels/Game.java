@@ -430,7 +430,6 @@ public class Game extends JPanel {
         Rectangle charCenter = new Rectangle(charBounds.x+15,charBounds.y+15,2,2);
         for (Tile tile : map.getTeleports())
         {
-
             if (charCenter.intersects(tile.getTeleportBounds()))
             {
                 String teleportCoord = (tile.getY() + Constant.TILE_SIZE) / Constant.TILE_SIZE+ "," +(tile.getY() + Constant.TILE_SIZE) / Constant.TILE_SIZE;
@@ -441,12 +440,12 @@ public class Game extends JPanel {
 
                 MainZeldo.onStateChange = true;
                 MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
-//                try
-//                { // Mise en pause du thread pour corriger un défaut d'affichage du fond d'écran. Génère automatiquement une IllegalMonitorStateException.
-//                    thread.wait();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                try
+                { // Mise en pause du thread pour corriger un défaut d'affichage du fond d'écran. Génère automatiquement une IllegalMonitorStateException.
+                    thread.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
         }
@@ -498,7 +497,6 @@ public class Game extends JPanel {
                 {
                     temp.add(decorObject);
                 }
-
             }
         }
 
