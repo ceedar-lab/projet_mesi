@@ -1,6 +1,7 @@
 package com.mesi.panels;
 
 import com.mesi.MainZeldo;
+import com.mesi.decor.Bush;
 import com.mesi.decor.DecorObject;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.animation.*;
@@ -107,6 +108,10 @@ public class Game extends JPanel {
                         charBounds.setBounds(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
                         actionArea();
                         teleportChecker();
+                        if(isHiting)
+                        {
+                            hitChecker(charActionArea);
+                        }
                         repaint();
                         if(stopDebug)
                         {
@@ -477,4 +482,33 @@ public class Game extends JPanel {
         }
 
     }
+
+
+    /**
+     * Teste si l'action du personnage entre en collision avec un des blocs d'interaction de la map.
+     */
+    public void hitChecker(Rectangle rectangle)
+    {
+        ArrayList<DecorObject> temp= new ArrayList<>();
+        for (DecorObject decorObject: map.getDecorObjectArraylist())
+        {
+            if (rectangle.intersects(decorObject.getHitbox()))
+            {
+                if (decorObject instanceof Bush)
+                {
+                    temp.add(decorObject);
+                }
+
+            }
+        }
+
+        for (DecorObject decorObject:temp)
+        {
+            map.getDecorObjectArraylist().remove(decorObject);
+        }
+
+    }
+
+
+
 }
