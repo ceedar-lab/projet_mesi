@@ -11,6 +11,8 @@ public class Images
 
     public static BufferedImage TRUNK;
     public static BufferedImage FOLIAGE;
+    public static BufferedImage BUSH;
+
 
     public Images()
     {
@@ -20,7 +22,7 @@ public class Images
 
             TRUNK = ImageIO.read(new File("res/images/tree-trunk.png"));
 
-
+            BUSH = ImageIO.read(new File("res/images/buisson.png"));
 
         }
         catch (IOException e)

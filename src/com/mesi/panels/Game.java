@@ -185,7 +185,10 @@ public class Game extends JPanel {
         /** affiche les objet de decor en arriere plan **/
         for (DecorObject decorObject:map.getDecorObjectArraylist())
         {
-            g.drawImage(decorObject.getBackgroundImage(),decorObject.getX()+decorObject.getBackgroundOffsetX(),decorObject.getY()+decorObject.getBackgroundOffsetY(),this);
+            if(decorObject.getBackgroundImage()!=null)
+            {
+                g.drawImage(decorObject.getBackgroundImage(),decorObject.getX()+decorObject.getBackgroundOffsetX(),decorObject.getY()+decorObject.getBackgroundOffsetY(),this);
+            }
         };
 
         /** Ombre du personnage **/
@@ -264,7 +267,10 @@ public class Game extends JPanel {
         /** affiche les objet de decor au premier plan **/
         for (DecorObject decorObject:map.getDecorObjectArraylist())
         {
-            g.drawImage(decorObject.getForgroundImage(),decorObject.getX()+decorObject.getForegroundOffsetX(),decorObject.getY()+decorObject.getForegroundOffsetY(),this);
+            if(decorObject.getForgroundImage()!=null)
+            {
+                g.drawImage(decorObject.getForgroundImage(),decorObject.getX()+decorObject.getForegroundOffsetX(),decorObject.getY()+decorObject.getForegroundOffsetY(),this);
+            }
         };
 
         /** Affichage des cases de téléportation en jaune **/

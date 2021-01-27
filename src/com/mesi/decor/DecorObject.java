@@ -36,7 +36,7 @@ public class DecorObject
 
     public BufferedImage getForgroundImage()
     {
-        return Images.FOLIAGE;
+        return forgroundImage;
     }
 
     public void setForgroundImage(BufferedImage forgroundImage)
@@ -46,7 +46,7 @@ public class DecorObject
 
     public BufferedImage getBackgroundImage()
     {
-        return Images.TRUNK;
+        return backgroundImage;
     }
 
     public void setBackgroundImage(BufferedImage backgroundImage)

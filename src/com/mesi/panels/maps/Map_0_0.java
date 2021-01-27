@@ -1,5 +1,6 @@
 package com.mesi.panels.maps;
 
+import com.mesi.decor.Bush;
 import com.mesi.decor.Tree;
 import com.mesi.params.Hitbox;
 
@@ -82,7 +83,11 @@ public class Map_0_0 extends MapModel {
             }
         }
 
-
+        /** ajout des buissons **/
+        for(int i =5;i<8;i++)
+        {
+            getDecorObjectArraylist().add(new Bush(i,5));
+        }
 
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
