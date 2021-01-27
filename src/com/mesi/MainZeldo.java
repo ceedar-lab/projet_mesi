@@ -27,7 +27,7 @@ public class MainZeldo extends JPanel {
         GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1,MAP_1
     }
 
-    public static GameState state = GameState.MAP_0_0;
+    public static GameState state = GameState.MAP_1;
     public static boolean onStateChange = true;
 
     private static Game game;

@@ -33,18 +33,14 @@ public class Map_0_1 extends MapModel {
         getDecorObjectArraylist().add(new Tree(60,35));
         getDecorObjectArraylist().add(new Tree(70,25));
 
-//        /** Coordonnées des blocs de téléportation et tuile de destination **/
-//        getTileList().get("0,10").setTeleport(true, "MAP_0_0 39,10", Hitbox.FULL);
-//        getTileList().get("79,10").setTeleport(true, "MAP_0_0 -1,10", Hitbox.FULL); // -1 permet au personnage de réapparaitre collé à la bordure
-//        getTileList().get("10,0").setTeleport(true, "MAP_0_0 10,23", Hitbox.FULL);
-//        getTileList().get("10,47").setTeleport(true, "MAP_0_0 10,0", Hitbox.FULL);
+
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
-        addTeleport(getTileList().get("0,10"),true, "MAP_1 88,15", Hitbox.WEST_BORD);
-        addTeleport(getTileList().get("0,11"),true, "MAP_1 88,16", Hitbox.WEST_BORD);
-        addTeleport(getTileList().get("0,12"),true, "MAP_1 88,17", Hitbox.WEST_BORD);
-        addTeleport(getTileList().get("0,13"),true, "MAP_1 88,18", Hitbox.WEST_BORD);
-        addTeleport(getTileList().get("0,14"),true, "MAP_1 88,19", Hitbox.WEST_BORD);
+        addTeleport(getTileList().get("0,10"),true, "MAP_1 89,15", Hitbox.WEST_TP);
+        addTeleport(getTileList().get("0,11"),true, "MAP_1 89,16", Hitbox.WEST_TP);
+        addTeleport(getTileList().get("0,12"),true, "MAP_1 89,17", Hitbox.WEST_BORD);
+        addTeleport(getTileList().get("0,13"),true, "MAP_1 89,18", Hitbox.WEST_BORD);
+        addTeleport(getTileList().get("0,14"),true, "MAP_1 89,19", Hitbox.WEST_BORD);
 
         addTeleport(getTileList().get("79,10"),true, "MAP_0_0 -1,10", Hitbox.EAST_BORD); //
         addTeleport(getTileList().get("10,0"),true, "MAP_0_0 10,23", Hitbox.NORTH_BORD);

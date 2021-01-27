@@ -74,7 +74,7 @@ public class Game extends JPanel {
 
                         if(isMovingRight)
                         {
-                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 + Constant.STRIDE, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                             if(!collisionChecker(test))
                             {
                                 characterCoordinates[0] += Constant.STRIDE;
@@ -82,7 +82,7 @@ public class Game extends JPanel {
                         }
                         if(isMovingLeft)
                         {
-                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 - Constant.STRIDE, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            Rectangle test = new Rectangle(characterCoordinates[0] - Constant.STRIDE, characterCoordinates[1] , Constant.TILE_SIZE, Constant.TILE_SIZE);
                             if(!collisionChecker(test))
                             {
                                 characterCoordinates[0] -= Constant.STRIDE;
@@ -90,7 +90,7 @@ public class Game extends JPanel {
                         }
                         if(isMovingUp)
                         {
-                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 , characterCoordinates[1] + Constant.TILE_SIZE - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            Rectangle test = new Rectangle(characterCoordinates[0] , characterCoordinates[1] - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
                             if(!collisionChecker(test))
                             {
                                 characterCoordinates[1] -= Constant.STRIDE;
@@ -98,21 +98,25 @@ public class Game extends JPanel {
                         }
                         if(isMovingDown)
                         {
-                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE / 2 , characterCoordinates[1] + Constant.TILE_SIZE + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+                            Rectangle test = new Rectangle(characterCoordinates[0] , characterCoordinates[1] + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
                             if(!collisionChecker(test))
                             {
                                 characterCoordinates[1] += Constant.STRIDE;
                             }
                         }
 
-                        charBounds.setBounds(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                        actionArea();
+                        charBounds.setBounds(characterCoordinates[0] , characterCoordinates[1] , Constant.TILE_SIZE, Constant.TILE_SIZE);
+
+
+                        getActionArea();
                         teleportChecker();
+
                         if(isHiting)
                         {
                             hitChecker(charActionArea);
                         }
                         repaint();
+
                         if(stopDebug)
                         {
                             System.out.println("petite pause");
@@ -146,9 +150,9 @@ public class Game extends JPanel {
         treeFoliage = ImageIO.read(new File("res/images/tree-foliage.png"));
         this.map = map;
         characterCoordinates = new Integer[] { teleportPositionX * Constant.TILE_SIZE, teleportPositionY * Constant.TILE_SIZE };
-        charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-//        charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-        actionArea();
+//        charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
+        getActionArea();
         sprites  = character.stand((Integer)direction.get(0));
         backgroundImage = map.getBackgroundImage();
         foregroundImage = map.getForegroundImage();
@@ -198,8 +202,10 @@ public class Game extends JPanel {
 
         /** Ombre du personnage **/
         g.setColor(new Color(0, 0, 0, .5f));
-        g.fillOval(characterCoordinates[0] + 16, characterCoordinates[1] + 48, 32, 14);
+        g.fillOval(characterCoordinates[0] , characterCoordinates[1]+16 , 32, 14);
 
+        Integer offsetX = - Constant.TILE_SIZE/2;
+        Integer offsetY = - Constant.TILE_SIZE;
         /** Mise à jour des mouvements du personnage **/
         if (isHiting) { // Attaque
             try {
@@ -209,7 +215,7 @@ public class Game extends JPanel {
             }
 
             if (character.getRightHand() == RightHand.DAGGER || character.getRightHand() == RightHand.SWORD) {
-                g.drawImage(sprites[hitSprite], characterCoordinates[0], characterCoordinates[1], this);
+                g.drawImage(sprites[hitSprite], characterCoordinates[0]+offsetX, characterCoordinates[1]+offsetY, this);
 
                 count++;
 
@@ -222,7 +228,7 @@ public class Game extends JPanel {
                     isHiting = false;
                 }
             } else {
-                g.drawImage(sprites[hitSprite], characterCoordinates[0], characterCoordinates[1], this);
+                g.drawImage(sprites[hitSprite], characterCoordinates[0]+offsetX, characterCoordinates[1]+offsetY, this);
 
                 count++;
 
@@ -243,12 +249,12 @@ public class Game extends JPanel {
                 e.printStackTrace();
             }
             if (direction.get(0).equals(KeyMap.LEFT) || direction.get(0).equals(KeyMap.RIGHT)) {
-                g.drawImage(sprites[walkSpriteX], characterCoordinates[0], characterCoordinates[1], this);
+                g.drawImage(sprites[walkSpriteX], characterCoordinates[0]+offsetX, characterCoordinates[1]+offsetY, this);
             } else {
-                g.drawImage(sprites[walkSpriteY], characterCoordinates[0], characterCoordinates[1], this);
+                g.drawImage(sprites[walkSpriteY], characterCoordinates[0]+offsetX, characterCoordinates[1]+offsetY, this);
             }
         } else { // Position debout
-            g.drawImage(sprites[0], characterCoordinates[0], characterCoordinates[1], this);
+            g.drawImage(sprites[0], characterCoordinates[0]+offsetX, characterCoordinates[1]+offsetY, this);
             isStanding = true;
         }
 
@@ -300,6 +306,11 @@ public class Game extends JPanel {
         /** met en surbrillance orange la zone d'action du personnage **/
         g.setColor(new Color(255,128,0,100));
         g.fillRect(charActionArea.x,charActionArea.y,charActionArea.width,charActionArea.height);
+
+
+//        /** met en surbrillance jaune le dos du personnage **/
+//        g.setColor(new Color(255,255,0,180));
+//        g.fillRect(getCharBack().x,getCharBack().y,getCharBack().width,getCharBack().height);
 
 
     }
@@ -426,7 +437,9 @@ public class Game extends JPanel {
      * Teste si le personnage entre sur une case de téléportation de la map.
      */
     public void teleportChecker() {
-        boolean teleport = false;
+
+//        Rectangle charBack = getCharBack();
+
         Rectangle charCenter = new Rectangle(charBounds.x+15,charBounds.y+15,2,2);
         for (Tile tile : map.getTeleports())
         {
@@ -451,9 +464,44 @@ public class Game extends JPanel {
         }
     }
 
-    public void actionArea()
+
+//    public Rectangle getCharBack()
+//    {
+//
+//        Integer backWidth = 2;
+//        Rectangle charBack = null;
+//        switch ((Integer)direction.get(0))
+//        {
+//            case 37:
+//            {
+//                charBack = new Rectangle(charBounds.x+charBounds.width,charBounds.y,backWidth,charBounds.height);
+//                break;
+//            }
+//            case 38:
+//            {
+//                charBack = new Rectangle(charBounds.x,charBounds.y+charBounds.height,charBounds.width,backWidth);
+//                break;
+//            }
+//            case 39:
+//            {
+//                charBack = new Rectangle(charBounds.x-backWidth,charBounds.y,backWidth,charBounds.height);
+//                break;
+//            }
+//            case 40:
+//            {
+//                charBack = new Rectangle(charBounds.x,charBounds.y-backWidth,charBounds.width,backWidth);
+//                break;
+//            }
+//
+//        }
+//
+//        return charBack;
+//    }
+
+    public void getActionArea()
     {
         Integer actionWidth = 20;
+
 
         switch ((Integer)direction.get(0))
         {

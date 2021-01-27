@@ -490,8 +490,8 @@ public class Map_1 extends MapModel {
         /** Coordonnées des blocs de téléportation et tuile de destination **/
 
 
-        addTeleport(getTileList().get("89,15"),true, "MAP_0_1 0,10", Hitbox.EAST_BORD);
-        addTeleport(getTileList().get("89,16"),true, "MAP_0_1 0,11", Hitbox.EAST_BORD);
+        addTeleport(getTileList().get("89,15"),true, "MAP_0_1 0,10", Hitbox.EAST_TP);
+        addTeleport(getTileList().get("89,16"),true, "MAP_0_1 0,11", Hitbox.EAST_TP);
         addTeleport(getTileList().get("89,17"),true, "MAP_0_1 0,12", Hitbox.EAST_BORD);
         addTeleport(getTileList().get("89,18"),true, "MAP_0_1 0,13", Hitbox.EAST_BORD);
         addTeleport(getTileList().get("89,19"),true, "MAP_0_1 0,14", Hitbox.EAST_BORD);
