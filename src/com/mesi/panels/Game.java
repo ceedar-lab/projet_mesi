@@ -18,7 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 public class Game extends JPanel {
 
@@ -53,6 +52,8 @@ public class Game extends JPanel {
     private BufferedImage backgroundImage;
     private BufferedImage foregroundImage;
 
+    public static boolean pause = false;
+
     private boolean rightEdge = false;
     private boolean lowerEdge = false;
     private Integer translateBoundRight = (Constant.FRAME_WIDTH / 2) - Constant.TILE_SIZE;
@@ -67,7 +68,7 @@ public class Game extends JPanel {
         public void run() {
             try {
                 while (true) {
-                    if (!isStanding) {
+                    if (!isStanding && !pause) {
 
                         if (isMovingRight) {
                             Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
@@ -339,6 +340,10 @@ public class Game extends JPanel {
         }
         if (keyCode == KeyMap.ATTACK) {
             isHiting = true;
+        }
+        if (keyCode == KeyMap.ESCAPE) {
+            pause = true;
+            new GameMenu();
         }
         if (keyCode == 83) {
             stopDebug = !stopDebug;
