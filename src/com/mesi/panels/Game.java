@@ -437,11 +437,7 @@ public class Game extends JPanel {
 
                 MainZeldo.onStateChange = true;
                 MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
-                try { // Mise en pause du thread pour corriger un défaut d'affichage du fond d'écran. Génère automatiquement une IllegalMonitorStateException.
-                    thread.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.currentThread().stop();
 
             }
         }
