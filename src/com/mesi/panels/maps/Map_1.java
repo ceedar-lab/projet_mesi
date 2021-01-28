@@ -25,7 +25,6 @@ public class Map_1 extends MapModel {
         setScrollable(true);
 
         /** Coordonnées des blocs de collision **/
-        /** Coordonnées des blocs de collision **/
         getTileList().get("0,15").setTraversable(false);
         getTileList().get("0,19").setTraversable(false);
         getTileList().get("1,14").setTraversable(false);
@@ -516,8 +515,8 @@ public class Map_1 extends MapModel {
         addTeleport(getTileList().get("89,19"), true, "MAP_0_1 0,14", Hitbox.EAST_TP);
 
 
-        addTeleport(getTileList().get("17,14"), true, "MAP_0_0 10,10", Hitbox.NORTH_BORD);
-        addTeleport(getTileList().get("18,14"), true, "MAP_0_0 10,10", Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("17,14"), true, "MAP_2 19,17", Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("18,14"), true, "MAP_2 20,17", Hitbox.NORTH_BORD);
 
     }
 }

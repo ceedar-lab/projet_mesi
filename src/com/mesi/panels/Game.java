@@ -69,38 +69,10 @@ public class Game extends JPanel {
             try {
                 while (true) {
                     if (!isStanding && !pause) {
-
-                        if (isMovingRight) {
-                            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-                            if (!collisionChecker(test)) {
-                                characterCoordinates[0] += Constant.STRIDE;
-                            }
-                        }
-                        if (isMovingLeft) {
-                            Rectangle test = new Rectangle(characterCoordinates[0] - Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-                            if (!collisionChecker(test)) {
-                                characterCoordinates[0] -= Constant.STRIDE;
-                            }
-                        }
-                        if (isMovingUp) {
-                            Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                            if (!collisionChecker(test)) {
-                                characterCoordinates[1] -= Constant.STRIDE;
-                            }
-                        }
-                        if (isMovingDown) {
-                            Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-                            if (!collisionChecker(test)) {
-                                characterCoordinates[1] += Constant.STRIDE;
-                            }
-                        }
-
+                        setCharCoordinates();
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-
-
                         getActionArea();
                         teleportChecker();
-
                         if (isHiting) {
                             hitChecker(charActionArea);
                         }
@@ -109,7 +81,6 @@ public class Game extends JPanel {
                         if (stopDebug) {
                             System.out.println("petite pause");
                         }
-
                     }
                     Thread.sleep(Constant.FPS);
                 }
@@ -285,26 +256,26 @@ public class Game extends JPanel {
         }
         ;
 
-        /** Affichage des cases de téléportation en jaune **/
+        /** Affichage des cases de téléportation en jaune **//*
         for (Tile teleport : map.getTeleports()) {
             g.setColor(new Color(255, 255, 0, 180));
             g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
         }
 
-        /** met en surbrillance rouge les zone de collision **/
+        *//** met en surbrillance rouge les zone de collision **//*
         for (Rectangle hitbox : map.getHitboxList()) {
             g.setColor(new Color(255, 0, 0, 100));
             g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         }
 
 
-        /** met en surbrillance violete la zone de collision du perso **/
+        *//** met en surbrillance violete la zone de collision du perso **//*
         g.setColor(new Color(255, 0, 255, 100));
         g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
 
-        /** met en surbrillance orange la zone d'action du personnage **/
+        *//** met en surbrillance orange la zone d'action du personnage **//*
         g.setColor(new Color(255, 128, 0, 100));
-        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
+        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);*/
 
 
 //        /** met en surbrillance jaune le dos du personnage **/
@@ -373,6 +344,36 @@ public class Game extends JPanel {
         if (keyCode == KeyMap.DOWN) {
             removeDirection(keyCode);
             isMovingDown = false;
+        }
+    }
+
+    /**
+     * Modifie les coordonnées du personnage en fonction de sa direction de déplacement et de la longueur de son pas (Constant.STRIDE).
+     */
+    public void setCharCoordinates() {
+        if (isMovingRight) {
+            Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
+            if (!collisionChecker(test)) {
+                characterCoordinates[0] += Constant.STRIDE;
+            }
+        }
+        if (isMovingLeft) {
+            Rectangle test = new Rectangle(characterCoordinates[0] - Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
+            if (!collisionChecker(test)) {
+                characterCoordinates[0] -= Constant.STRIDE;
+            }
+        }
+        if (isMovingUp) {
+            Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+            if (!collisionChecker(test)) {
+                characterCoordinates[1] -= Constant.STRIDE;
+            }
+        }
+        if (isMovingDown) {
+            Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
+            if (!collisionChecker(test)) {
+                characterCoordinates[1] += Constant.STRIDE;
+            }
         }
     }
 

@@ -24,7 +24,7 @@ public class MainZeldo extends JPanel {
     public static Hashtable<String, MapModel> mapList = new Hashtable<String, MapModel>();
 
     public static enum GameState {
-        GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1, MAP_1
+        GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1, MAP_1, MAP_2
     }
 
     public static GameState state = GameState.MAP_1;

@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class DecorObject {
+public abstract class DecorObject {
 
     protected Integer x;
     protected Integer y;
