@@ -1,6 +1,7 @@
 package com.mesi.decor;
 
 import com.mesi.params.Constant;
+import com.mesi.params.Hitbox;
 import com.mesi.params.Images;
 
 import javax.imageio.ImageIO;
@@ -16,6 +17,7 @@ public class Tree extends DecorObject {
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
 
+        hitbox = Hitbox.FULL;
         setName("Arbre");
     }
 

@@ -60,7 +60,10 @@ public class DecorObject {
 
 
     public Rectangle getHitbox() {
-        Rectangle rectangle = new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        Rectangle rectangle = null;
+        if (hitbox != null) {
+            rectangle = new Rectangle(x + hitbox.x, y + hitbox.y, hitbox.width, hitbox.height);
+        }
         return rectangle;
     }
 

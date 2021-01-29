@@ -4,6 +4,7 @@ import com.mesi.MainZeldo;
 import com.mesi.decor.Bush;
 import com.mesi.decor.Chest;
 import com.mesi.decor.DecorObject;
+import com.mesi.decor.collectableItem.CollectableItem;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.animation.*;
 import com.mesi.equipement.*;
@@ -13,11 +14,9 @@ import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
 import com.mesi.pnj.Pnj;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -111,7 +110,6 @@ public class Game extends JPanel {
                         }
 
 
-
                         repaint();
 
                         if (stopDebug) {
@@ -199,9 +197,8 @@ public class Game extends JPanel {
         /** affiche les objet de decor en arriere plan **/
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
             if (decorObject.getBackgroundImage() != null) {
-                if(decorObject.getAnimLaunched())
-                {
-                    decorObject.setAnimPhase(decorObject.getAnimPhase()+1);
+                if (decorObject.getAnimLaunched()) {
+                    decorObject.setAnimPhase(decorObject.getAnimPhase() + 1);
                 }
                 g.drawImage(decorObject.getBackgroundImage(), decorObject.getX() + decorObject.getBackgroundOffsetX(), decorObject.getY() + decorObject.getBackgroundOffsetY(), this);
             }
@@ -331,7 +328,15 @@ public class Game extends JPanel {
             g.setColor(new Color(255, 0, 0, 100));
             g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         }
+        /** met en surbrillance bleu les zones d'objet collectable **/
+        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
+            if (decorObject instanceof CollectableItem) {
+                Rectangle hitbox = ((CollectableItem) decorObject).getInteractionBox();
+                g.setColor(new Color(0, 128, 255, 150));
+                g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+            }
 
+        }
 
         /** met en surbrillance violete la zone de collision du perso **/
         g.setColor(new Color(255, 0, 255, 100));
@@ -553,11 +558,14 @@ public class Game extends JPanel {
     public void hitChecker(Rectangle rectangle) {
         ArrayList<DecorObject> temp = new ArrayList<>();
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
-            if (rectangle.intersects(decorObject.getHitbox())) {
-                if (decorObject instanceof Bush) {
-                    temp.add(decorObject);
+            if (decorObject.getHitbox() != null) {
+                if (rectangle.intersects(decorObject.getHitbox())) {
+                    if (decorObject instanceof Bush) {
+                        temp.add(decorObject);
+                    }
                 }
             }
+
         }
 
         for (DecorObject decorObject : temp) {
@@ -573,20 +581,32 @@ public class Game extends JPanel {
 
         for (Pnj pnj : map.getPnjList()) {
             if (rectangle.intersects(pnj.getHitbox())) {
-                System.out.println("je parle au pnj "+pnj.getName());
+                System.out.println("je parle au pnj " + pnj.getName());
             }
         }
 
-        for (DecorObject decorObject : map.getDecorObjectArraylist())
-        {
-            if (rectangle.intersects(decorObject.getHitbox())) {
-                System.out.println("j'active l'objet " + decorObject.getName());
-                if(decorObject instanceof Chest)
-                {
-                    ((Chest) decorObject).open();
+        ArrayList<DecorObject> objectToRemove = new ArrayList<>();
+        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
+            if (decorObject.getHitbox() != null) {
+                if (rectangle.intersects(decorObject.getHitbox())) {
+                    System.out.println("j'active l'objet " + decorObject.getName());
+                    if (decorObject instanceof Chest) {
+                        ((Chest) decorObject).open();
+                    }
                 }
-
             }
+
+            if (decorObject instanceof CollectableItem) {
+                if (((CollectableItem) decorObject).getInteractionBox() != null) {
+                    if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
+                        System.out.println("je rammasse l'objet " + decorObject.getName());
+                        objectToRemove.add(decorObject);
+                    }
+                }
+            }
+        }
+        for (DecorObject decorObject : objectToRemove) {
+            map.getDecorObjectArraylist().remove(decorObject);
         }
 
     }
@@ -604,7 +624,6 @@ public class Game extends JPanel {
 //            }
 //        }
 //    }
-
 
 
 }
