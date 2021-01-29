@@ -16,14 +16,13 @@ public class Tree extends DecorObject {
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
 
-        hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        setName("Arbre");
     }
 
     public Tree(Integer tileX, Integer tileY) {
         this();
         setX(tileX * Constant.TILE_SIZE);
         setY(tileY * Constant.TILE_SIZE);
-        hitbox = new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     @Override

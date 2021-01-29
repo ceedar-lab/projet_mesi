@@ -2,6 +2,7 @@ package com.mesi.panels.maps;
 
 import com.mesi.MainZeldo;
 import com.mesi.decor.Bush;
+import com.mesi.decor.Chest;
 import com.mesi.decor.Tree;
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
@@ -515,6 +516,9 @@ public class Map_1 extends MapModel {
         pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
         pnjTest.setDirection(1);
         getPnjList().add(pnjTest);
+
+        /** ajout coffre **/
+        getDecorObjectArraylist().add(new Chest(13, 16));
 
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/

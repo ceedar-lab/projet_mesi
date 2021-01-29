@@ -13,15 +13,14 @@ public class Bush extends DecorObject {
         foregroundOffsetY = 0;
         backgroundOffsetX = 0;
         backgroundOffsetY = 0;
+        setName("Buisson");
 
-        hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     public Bush(Integer tileX, Integer tileY) {
         this();
         setX(tileX * Constant.TILE_SIZE);
         setY(tileY * Constant.TILE_SIZE);
-        hitbox = new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     @Override

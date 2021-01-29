@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Pnj extends Animation {
 
-
+    private String name;
     private Integer[] characterCoordinates;
     private Integer direction;
     private Rectangle hitbox;
@@ -55,5 +55,11 @@ public class Pnj extends Animation {
         this.hitbox = rectangle;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

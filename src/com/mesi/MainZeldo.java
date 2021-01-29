@@ -6,6 +6,7 @@ import com.mesi.panels.StartMenu;
 import com.mesi.panels.maps.MapGenerator;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Constant;
+import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
 import com.mesi.pnj.Pnj;
 import com.mesi.pnj.PnjGenerator;
@@ -93,8 +94,9 @@ public class MainZeldo extends JPanel {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-        new PnjGenerator();
-        new MapGenerator();
+        new Images();//charge les images en buffer
+        new PnjGenerator();//genere les PNJs
+        new MapGenerator();//genere les maps
         JFrame f = new JFrame();
         f.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         f.setLocationRelativeTo(null);

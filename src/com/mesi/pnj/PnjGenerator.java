@@ -11,11 +11,11 @@ public class PnjGenerator {
 
     public PnjGenerator() {
 
-        PnjTest();
+        PnjTest("pnjTest");
 
     }
 
-    private void PnjTest() {
+    private void PnjTest(String name) {
         try {
             Pnj pnjTest = new Pnj
                     (
@@ -29,10 +29,10 @@ public class PnjGenerator {
                             LeftHand.NONE,
                             "res/images/character-white_skin.png"
                     );
-
+            pnjTest.setName(name);
             pnjTest.setHitbox(Hitbox.FULL);
 
-            MainZeldo.pnjList.put("pnjTest", pnjTest);
+            MainZeldo.pnjList.put(name, pnjTest);
 
         } catch (Exception e) {
 

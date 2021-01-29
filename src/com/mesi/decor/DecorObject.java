@@ -1,5 +1,6 @@
 package com.mesi.decor;
 
+import com.mesi.params.Constant;
 import com.mesi.params.Images;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,11 @@ public class DecorObject {
     protected BufferedImage forgroundImage;
     protected BufferedImage backgroundImage;
 
+    protected String name;
+
+    private Integer animPhase = 0;
+    private Boolean animLaunched = false;
+    protected BufferedImage[] decorObjectAnim;
 
     protected Rectangle hitbox;
 
@@ -54,7 +60,8 @@ public class DecorObject {
 
 
     public Rectangle getHitbox() {
-        return hitbox;
+        Rectangle rectangle = new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        return rectangle;
     }
 
     public void setHitbox(Rectangle hitbox) {
@@ -111,5 +118,27 @@ public class DecorObject {
         this.foregroundOffsetY = foregroundOffsetY;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAnimPhase() {
+        return animPhase;
+    }
+
+    public void setAnimPhase(Integer animPhase) {
+        this.animPhase = animPhase;
+    }
+
+    public Boolean getAnimLaunched() {
+        return animLaunched;
+    }
+
+    public void setAnimLaunched(Boolean animLaunched) {
+        this.animLaunched = animLaunched;
+    }
 }

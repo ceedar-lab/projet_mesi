@@ -2,6 +2,7 @@ package com.mesi.panels;
 
 import com.mesi.MainZeldo;
 import com.mesi.decor.Bush;
+import com.mesi.decor.Chest;
 import com.mesi.decor.DecorObject;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.animation.*;
@@ -42,9 +43,9 @@ public class Game extends JPanel {
     private static boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
     private static boolean isStanding = true;
     private boolean isHiting = false;
-    private boolean isBlocked = false;
-    private boolean isTeleport = false;
-    private boolean stopDebug = false;
+    private boolean isActing = false;
+
+    public static boolean stopDebug = false;
 
     private Integer walkSpriteX = 0, walkSpriteY = 2;
     private Integer count = 0, hitSprite = 0;
@@ -68,7 +69,7 @@ public class Game extends JPanel {
         public void run() {
             try {
                 while (true) {
-                    if (!isStanding && !pause) {
+                    if (!pause) {
 
                         if (isMovingRight) {
                             Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
@@ -104,6 +105,13 @@ public class Game extends JPanel {
                         if (isHiting) {
                             hitChecker(charActionArea);
                         }
+
+                        if (isActing) {
+                            actionChecker(charActionArea);
+                        }
+
+
+
                         repaint();
 
                         if (stopDebug) {
@@ -133,7 +141,7 @@ public class Game extends JPanel {
      * @throws IOException
      */
     public Game(MapModel map) throws IOException {
-        new Images();
+
 
         this.map = map;
         characterCoordinates = new Integer[]{teleportPositionX * Constant.TILE_SIZE, teleportPositionY * Constant.TILE_SIZE};
@@ -154,6 +162,9 @@ public class Game extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        Integer offsetXChar = -Constant.TILE_SIZE / 2;
+        Integer offsetYChar = -Constant.TILE_SIZE;
 
         /** Fait défiler la map en fonction des mouvements du personnage **/
         if (map.isScrollable()) {
@@ -188,17 +199,30 @@ public class Game extends JPanel {
         /** affiche les objet de decor en arriere plan **/
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
             if (decorObject.getBackgroundImage() != null) {
+                if(decorObject.getAnimLaunched())
+                {
+                    decorObject.setAnimPhase(decorObject.getAnimPhase()+1);
+                }
                 g.drawImage(decorObject.getBackgroundImage(), decorObject.getX() + decorObject.getBackgroundOffsetX(), decorObject.getY() + decorObject.getBackgroundOffsetY(), this);
             }
         }
-        ;
+
+
+        /** affiche les PNJ en arriere plan **/
+        for (Pnj pnj : map.getPnjList()) {
+            try {
+                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         /** Ombre du personnage **/
         g.setColor(new Color(0, 0, 0, .5f));
         g.fillOval(characterCoordinates[0], characterCoordinates[1] + 16, 32, 14);
 
-        Integer offsetX = -Constant.TILE_SIZE / 2;
-        Integer offsetY = -Constant.TILE_SIZE;
+
         /** Mise à jour des mouvements du personnage **/
         if (isHiting) { // Attaque
             try {
@@ -208,7 +232,7 @@ public class Game extends JPanel {
             }
 
             if (character.getRightHand() == RightHand.DAGGER || character.getRightHand() == RightHand.SWORD) {
-                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
 
                 count++;
 
@@ -221,7 +245,7 @@ public class Game extends JPanel {
                     isHiting = false;
                 }
             } else {
-                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
 
                 count++;
 
@@ -242,12 +266,12 @@ public class Game extends JPanel {
                 e.printStackTrace();
             }
             if (direction.get(0).equals(KeyMap.LEFT) || direction.get(0).equals(KeyMap.RIGHT)) {
-                g.drawImage(sprites[walkSpriteX], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[walkSpriteX], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
             } else {
-                g.drawImage(sprites[walkSpriteY], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[walkSpriteY], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
             }
         } else { // Position debout
-            g.drawImage(sprites[0], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+            g.drawImage(sprites[0], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
             isStanding = true;
         }
 
@@ -286,10 +310,13 @@ public class Game extends JPanel {
 
         /** affiche les PNJ au premier plan **/
         for (Pnj pnj : map.getPnjList()) {
-            try {
-                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetX, pnj.getCharacterCoordinates()[1] + offsetY, this);
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            if (pnj.getCharacterCoordinates()[1] > characterCoordinates[1]) {
+                try {
+                    g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -353,8 +380,11 @@ public class Game extends JPanel {
             pause = true;
             new GameMenu();
         }
-        if (keyCode == 83) {
+        if (keyCode == KeyMap.STOP) {
             stopDebug = !stopDebug;
+        }
+        if (keyCode == KeyMap.ACTION) {
+            isActing = true;
         }
 
 
@@ -382,6 +412,11 @@ public class Game extends JPanel {
             removeDirection(keyCode);
             isMovingDown = false;
         }
+        if (keyCode == KeyMap.ACTION) {
+            isActing = false;
+        }
+
+
     }
 
     /**
@@ -419,14 +454,10 @@ public class Game extends JPanel {
         if (!collision) {
             for (Rectangle block : map.getHitboxList()) {
                 if (rectangle.intersects(block)) {
-                    isBlocked = true;
                     collision = true;
                     break;
                 }
             }
-        }
-        if (!collision) {
-            isBlocked = false;
         }
 
         return collision;
@@ -446,7 +477,6 @@ public class Game extends JPanel {
                 teleportMap = tile.getBindedTile().split(" ")[0];
                 teleportPositionX = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]);
                 teleportPositionY = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]);
-                isTeleport = true;
 
                 MainZeldo.onStateChange = true;
                 MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
@@ -535,6 +565,46 @@ public class Game extends JPanel {
         }
 
     }
+
+    /**
+     * Teste si l'action du personnage entre en collision avec un des PNJ de la map.
+     */
+    public void actionChecker(Rectangle rectangle) {
+
+        for (Pnj pnj : map.getPnjList()) {
+            if (rectangle.intersects(pnj.getHitbox())) {
+                System.out.println("je parle au pnj "+pnj.getName());
+            }
+        }
+
+        for (DecorObject decorObject : map.getDecorObjectArraylist())
+        {
+            if (rectangle.intersects(decorObject.getHitbox())) {
+                System.out.println("j'active l'objet " + decorObject.getName());
+                if(decorObject instanceof Chest)
+                {
+                    ((Chest) decorObject).open();
+                }
+
+            }
+        }
+
+    }
+
+//    /**
+//     * Teste si l'action du personnage entre en collision avec un objet rammassable de la map.
+//     */
+//    public void takeChecker(Rectangle rectangle) {
+//
+//        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
+//            if (rectangle.intersects(pnj.getHitbox())) {
+//                if (decorObject instanceof Bush) {
+//                    temp.add(decorObject);
+//                }
+//            }
+//        }
+//    }
+
 
 
 }

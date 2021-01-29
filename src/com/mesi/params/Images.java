@@ -11,7 +11,7 @@ public class Images {
     public static BufferedImage TRUNK;
     public static BufferedImage FOLIAGE;
     public static BufferedImage BUSH;
-
+    public static BufferedImage CHEST;
 
     public Images() {
         try {
@@ -20,6 +20,8 @@ public class Images {
             TRUNK = ImageIO.read(new File("res/images/tree-trunk.png"));
 
             BUSH = ImageIO.read(new File("res/images/bush.png"));
+
+            CHEST = ImageIO.read(new File("res/images/map/tiles/chests.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
