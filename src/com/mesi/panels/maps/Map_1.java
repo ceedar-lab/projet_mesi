@@ -1,8 +1,11 @@
 package com.mesi.panels.maps;
 
+import com.mesi.MainZeldo;
 import com.mesi.decor.Bush;
 import com.mesi.decor.Tree;
+import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
+import com.mesi.pnj.Pnj;
 
 import java.io.IOException;
 
@@ -506,6 +509,12 @@ public class Map_1 extends MapModel {
         for (int i = 14; i < 17; i++) {
             getDecorObjectArraylist().add(new Bush(i, 24));
         }
+
+        /** ajout des PNJ **/
+        Pnj pnjTest = MainZeldo.pnjList.get("pnjTest");
+        pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
+        pnjTest.setDirection(1);
+        getPnjList().add(pnjTest);
 
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/

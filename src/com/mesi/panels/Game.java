@@ -10,6 +10,7 @@ import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
 import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
+import com.mesi.pnj.Pnj;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,7 +33,6 @@ public class Game extends JPanel {
         add(KeyMap.DOWN);
     }};
 
-    private BufferedImage treeFoliage;
     private BufferedImage[] sprites;
 
     private Integer[] characterCoordinates;
@@ -134,10 +134,9 @@ public class Game extends JPanel {
      */
     public Game(MapModel map) throws IOException {
         new Images();
-        treeFoliage = ImageIO.read(new File("res/images/tree-foliage.png"));
+
         this.map = map;
         characterCoordinates = new Integer[]{teleportPositionX * Constant.TILE_SIZE, teleportPositionY * Constant.TILE_SIZE};
-//        charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
         sprites = character.stand((Integer) direction.get(0));
@@ -267,10 +266,10 @@ public class Game extends JPanel {
 
         switch (MainZeldo.state) {
             case MAP_0_0:
-                g.drawImage(treeFoliage, Constant.TILE_SIZE * 8, Constant.TILE_SIZE * 13, this);
-                g.drawImage(treeFoliage, Constant.TILE_SIZE * 4, Constant.TILE_SIZE * 11, this);
-                g.drawImage(treeFoliage, Constant.TILE_SIZE * 7, Constant.TILE_SIZE * 8, this);
-                g.drawImage(treeFoliage, Constant.TILE_SIZE * 12, Constant.TILE_SIZE * 10, this);
+                g.drawImage(Images.FOLIAGE, Constant.TILE_SIZE * 8, Constant.TILE_SIZE * 13, this);
+                g.drawImage(Images.FOLIAGE, Constant.TILE_SIZE * 4, Constant.TILE_SIZE * 11, this);
+                g.drawImage(Images.FOLIAGE, Constant.TILE_SIZE * 7, Constant.TILE_SIZE * 8, this);
+                g.drawImage(Images.FOLIAGE, Constant.TILE_SIZE * 12, Constant.TILE_SIZE * 10, this);
                 break;
         }
 
@@ -283,7 +282,16 @@ public class Game extends JPanel {
                 g.drawImage(decorObject.getForgroundImage(), decorObject.getX() + decorObject.getForegroundOffsetX(), decorObject.getY() + decorObject.getForegroundOffsetY(), this);
             }
         }
-        ;
+
+
+        /** affiche les PNJ au premier plan **/
+        for (Pnj pnj : map.getPnjList()) {
+            try {
+                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetX, pnj.getCharacterCoordinates()[1] + offsetY, this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         /** Affichage des cases de téléportation en jaune **/
         for (Tile teleport : map.getTeleports()) {

@@ -7,6 +7,8 @@ import com.mesi.panels.maps.MapGenerator;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
+import com.mesi.pnj.Pnj;
+import com.mesi.pnj.PnjGenerator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +24,7 @@ public class MainZeldo extends JPanel {
     /**********  Attributes  **********/
 
     public static Hashtable<String, MapModel> mapList = new Hashtable<String, MapModel>();
+    public static Hashtable<String, Pnj> pnjList = new Hashtable<String, Pnj>();
 
     public static enum GameState {
         GAME_TITLE, START_MENU, MAP_0_0, MAP_0_1, MAP_1
@@ -90,6 +93,7 @@ public class MainZeldo extends JPanel {
      * @param args
      */
     public static void main(String[] args) throws IOException {
+        new PnjGenerator();
         new MapGenerator();
         JFrame f = new JFrame();
         f.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);

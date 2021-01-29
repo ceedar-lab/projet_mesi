@@ -3,6 +3,7 @@ package com.mesi.panels.maps;
 import com.mesi.decor.DecorObject;
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
+import com.mesi.pnj.Pnj;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -41,6 +42,7 @@ public abstract class MapModel extends JPanel {
     private BufferedImage foregroundImage;
 
     private ArrayList<DecorObject> decorObjectArraylist = new ArrayList<>();
+    private ArrayList<Pnj> pnjList = new ArrayList<>();
 
     private ArrayList<Rectangle> hitboxs = new ArrayList<>();
 
@@ -154,6 +156,13 @@ public abstract class MapModel extends JPanel {
         this.decorObjectArraylist = decorObjectArraylist;
     }
 
+    public ArrayList<Pnj> getPnjList() {
+        return pnjList;
+    }
+
+    public void setPnjList(ArrayList<Pnj> pnjList) {
+        this.pnjList = pnjList;
+    }
 
     /**
      * Récupère la liste des hitbox.
@@ -167,6 +176,13 @@ public abstract class MapModel extends JPanel {
                 hitboxList.add(decorObject.getHitbox());
             }
 
+        }
+
+        /** ajout des hitboxs des PNJ **/
+        for (Pnj pnj : getPnjList()) {
+            if (pnj.getHitbox() != null) {
+                hitboxList.add(pnj.getHitbox());
+            }
         }
 
         /** ajout des hitboxs des cases non traversables **/
@@ -183,20 +199,6 @@ public abstract class MapModel extends JPanel {
                 }
             }
         }
-
-//        /** ajout des hitboxs de bord de map **/
-//        Enumeration en = getTileList().elements();
-//        while(en.hasMoreElements())
-//        {
-//            Tile tile = (Tile)en.nextElement();
-//            if(tile.getHitBoxs().size()>0)
-//            {
-//                for (Rectangle hitbox:tile.getHitBoxs())
-//                {
-//                    hitboxList.add(hitbox);
-//                }
-//            }
-//        }
 
 
         return hitboxList;
