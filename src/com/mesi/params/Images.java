@@ -13,6 +13,7 @@ public class Images {
     public static BufferedImage BUSH;
     public static BufferedImage CHEST;
     public static BufferedImage SWORD;
+    public static BufferedImage SHIELD;
 
     public Images() {
         try {
@@ -25,6 +26,8 @@ public class Images {
             CHEST = ImageIO.read(new File("res/images/map/tiles/chests.png"));
 
             SWORD = ImageIO.read(new File("res/images/sword_on_floor.png"));
+
+            SHIELD = ImageIO.read(new File("res/images/shield_on_floor.png"));
 
 
         } catch (IOException e) {

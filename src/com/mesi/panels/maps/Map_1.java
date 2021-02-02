@@ -4,6 +4,7 @@ import com.mesi.MainZeldo;
 import com.mesi.decor.Bush;
 import com.mesi.decor.Chest;
 import com.mesi.decor.Tree;
+import com.mesi.decor.collectableItem.Shield;
 import com.mesi.decor.collectableItem.Sword;
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
@@ -521,9 +522,11 @@ public class Map_1 extends MapModel {
         /** ajout coffre **/
         getDecorObjectArraylist().add(new Chest(13, 16));
 
-
         /** ajout épée **/
         getDecorObjectArraylist().add(new Sword(12, 13));
+
+        /** ajout épée **/
+        getDecorObjectArraylist().add(new Shield(19, 18));
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
         addTeleport(getTileList().get("89,15"), true, "MAP_0_1 0,10", Hitbox.EAST_TP);
