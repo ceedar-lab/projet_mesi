@@ -1,14 +1,10 @@
 package com.mesi.panels.maps;
 
-import com.github.cliftonlabs.json_simple.JsonArray;
-import com.github.cliftonlabs.json_simple.JsonObject;
-import com.github.cliftonlabs.json_simple.Jsonable;
 import com.mesi.MainZeldo;
 import com.mesi.decor.Bush;
 import com.mesi.params.Hitbox;
 
 import java.io.IOException;
-import java.io.Writer;
 
 /**
  * Paramétrage de l'image de fond, des blocs de collisions et de téléportation de la map.
@@ -504,18 +500,7 @@ public class Map_1 extends MapModel {
         getTileList().get("89,12").setTraversable(false);
         getTileList().get("89,28").setTraversable(false);
 
-        /** ajout des buissons **/
-        for (int i = 14; i < 17; i++) {
-            getDecorObjectArraylist().add(new Bush(i, 24));
-        }
-
         /** Coordonnées des blocs de téléportation et tuile de destination **/
-        addTeleport(getTileList().get("89,15"), true, "MAP_0_1 0,10", Hitbox.EAST_TP);
-        addTeleport(getTileList().get("89,16"), true, "MAP_0_1 0,11", Hitbox.EAST_TP);
-        addTeleport(getTileList().get("89,17"), true, "MAP_0_1 0,12", Hitbox.EAST_TP);
-        addTeleport(getTileList().get("89,18"), true, "MAP_0_1 0,13", Hitbox.EAST_TP);
-        addTeleport(getTileList().get("89,19"), true, "MAP_0_1 0,14", Hitbox.EAST_TP);
-
         addTeleport(getTileList().get("17,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getWidth()/2 - 1) + "," + (MainZeldo.mapList.get("MAP_2").getHeight()/2 + 6), Hitbox.NORTH_BORD);
         addTeleport(getTileList().get("18,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getWidth()/2) + "," + (MainZeldo.mapList.get("MAP_2").getHeight()/2 + 6), Hitbox.NORTH_BORD);
 

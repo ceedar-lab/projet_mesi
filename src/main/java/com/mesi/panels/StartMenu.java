@@ -1,21 +1,19 @@
 package com.mesi.panels;
 
-import com.mesi.MainZeldo;
-import com.mesi.decor.DecorObject;
 import com.mesi.params.Constant;
 import com.mesi.params.Couleur;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.mesi.params.Backup;
+import com.mesi.params.KeyMap;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class StartMenu extends JPanel {
 
@@ -25,6 +23,10 @@ public class StartMenu extends JPanel {
     private JButton btnContinuer = new JButton("CONTINUER");
     private JButton btnOptions = new JButton("OPTIONS");
     private JButton btnQuitter = new JButton("QUITTER");
+
+    private ArrayList<JButton> listeBtn = new ArrayList<JButton>();
+
+    private int indexSelection = 0;
 
     /**********  Constructors  **********/
 
@@ -45,6 +47,7 @@ public class StartMenu extends JPanel {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(getBtnNouvellePartie(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnContinuer(), largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(btnOptions, largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnQuitter(), largeurBtn, largeurBtn, largeurBtn)
                 )
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -52,15 +55,19 @@ public class StartMenu extends JPanel {
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(10, 10, Short.MAX_VALUE)
-                .addComponent(getBtnNouvellePartie(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addComponent(btnNouvellePartie, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnContinuer, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
-                .addComponent(getBtnQuitter(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addComponent(btnOptions, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(20)
+                .addComponent(btnQuitter, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(10, 10, Short.MAX_VALUE)
         );
 
         setLayout(layout);
+
+        initButtonList();
     }
 
     /**********  Methods  **********/
@@ -76,8 +83,7 @@ public class StartMenu extends JPanel {
 
         btnNouvellePartie.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MainZeldo.state = MainZeldo.GameState.MAP_1;
-                MainZeldo.onStateChange = true;
+                new Backup().startNewGame();
             }
         });
 
@@ -95,34 +101,7 @@ public class StartMenu extends JPanel {
 
         btnContinuer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                FileReader reader = null;
-                try {
-                    reader = new FileReader("src/main/resources/saves/init_data.json");
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-                JSONParser jsonParser = new JSONParser();
-                JSONObject save = null;
-                try {
-                    save = (JSONObject) jsonParser.parse(reader);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
-                }
-                JSONArray c = (JSONArray) save.get("characterPosition");
-                //Integer[] c = (Integer[])save.get("characterPosition");
-                Game.characterCoordinates[0] = Math.toIntExact((Long) c.get(0));
-                Game.characterCoordinates[1] = Math.toIntExact((Long) c.get(1));
-                //System.out.println(Math.toIntExact((Long) c.get(0)));
-
-                JSONArray m = (JSONArray) ((JSONObject) save.get("maps")).get("MAP_1");
-                System.out.println(m);
-                MainZeldo.mapList.get("MAP_1").getDecorObjectArraylist().clear();
-                for (Object n : m) {
-                    String o = ((String) n).substring(1, ((String) n).length() - 1);
-                    //MainZeldo.mapList.get("MAP_1").getDecorObjectArraylist().add((DecorObject) o);
-                }
+                new Backup().load("save_1");
             }
         });
 
@@ -165,5 +144,59 @@ public class StartMenu extends JPanel {
         });
 
         return btnQuitter;
+    }
+
+    /**
+     * Actions effectuées lorsqu'une touche est pressée.
+     *
+     * @param keyCode
+     */
+    public void onKeyPressed(int keyCode) {
+        if (keyCode == KeyMap.UP) {
+            indexSelection--;
+            if (indexSelection < 0) {
+                indexSelection = listeBtn.size() - 1;
+            }
+            selectButton(indexSelection);
+        }
+
+        if (keyCode == KeyMap.DOWN) {
+            indexSelection++;
+            if (indexSelection >= listeBtn.size()) {
+                indexSelection = 0;
+            }
+            selectButton(indexSelection);
+        }
+
+        if (keyCode == KeyMap.ENTER) {
+            listeBtn.get(indexSelection).doClick();
+        }
+    }
+
+    /**
+     * Initialise la liste des boutons.
+     */
+    public void initButtonList() {
+        listeBtn.clear();
+
+        listeBtn.add(btnNouvellePartie);
+        listeBtn.add(btnContinuer);
+        listeBtn.add(btnOptions);
+        listeBtn.add(btnQuitter);
+
+        btnNouvellePartie.setBackground(Color.GREEN);
+    }
+
+    /**
+     * Fais défiler le sélecteur lorsqu'on appuie sur les flèches de direction.
+     *
+     * @param buttonNumber
+     */
+    public void selectButton(int buttonNumber) {
+        for (int i = 0; i < listeBtn.size(); i++) {
+            listeBtn.get(i).setBackground(Color.LIGHT_GRAY);
+        }
+
+        listeBtn.get(buttonNumber).setBackground(Color.GREEN);
     }
 }

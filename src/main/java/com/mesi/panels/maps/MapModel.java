@@ -1,11 +1,8 @@
 package com.mesi.panels.maps;
 
-import com.github.cliftonlabs.json_simple.Jsonable;
 import com.mesi.decor.DecorObject;
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -25,8 +21,6 @@ import java.util.Hashtable;
 public abstract class MapModel extends JPanel {
 
     /**********  Attributes  **********/
-
-    public static String test;
 
     private Integer width;
     private Integer height;
@@ -97,7 +91,6 @@ public abstract class MapModel extends JPanel {
             tile.addHtibox(Hitbox.SOUTH_BORD);
         }
 
-
     }
 
     /**********  Getters / Setters  **********/
@@ -166,21 +159,6 @@ public abstract class MapModel extends JPanel {
                 }
             }
         }
-
-//        /** ajout des hitboxs de bord de map **/
-//        Enumeration en = getTileList().elements();
-//        while(en.hasMoreElements())
-//        {
-//            Tile tile = (Tile)en.nextElement();
-//            if(tile.getHitBoxs().size()>0)
-//            {
-//                for (Rectangle hitbox:tile.getHitBoxs())
-//                {
-//                    hitboxList.add(hitbox);
-//                }
-//            }
-//        }
-
 
         return hitboxList;
     }

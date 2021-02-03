@@ -1,8 +1,7 @@
 package com.mesi.panels;
 
 import com.mesi.MainZeldo;
-import com.mesi.panels.maps.MapGenerator;
-import com.mesi.saves.GameInit;
+import com.mesi.params.Backup;
 import com.mesi.params.Couleur;
 import com.mesi.params.KeyMap;
 
@@ -14,11 +13,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.concurrent.TimeUnit;
 
 public class GameMenu extends JDialog {
 
-    private static final long serialVersionUID = 1L;
+    /**********  Attributes  **********/
 
     private JPanel panelPrinc = new JPanel();
 
@@ -35,19 +34,15 @@ public class GameMenu extends JDialog {
     /**********  Constructors  **********/
 
     public GameMenu() {
-        System.out.println("menu");
         //setOpaque(false);
         /*setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);*/
         setSize(300, 400);
         setUndecorated(true);
         setModal(false);
         setFocusable(true);
-
-        add(getPanelPrinc());
-
         setLocationRelativeTo(null);
 
-        setVisible(true);
+        add(getPanelPrinc());
 
         addKeyListener(new KeyListener() {
             @Override
@@ -57,9 +52,9 @@ public class GameMenu extends JDialog {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e.getKeyCode() + " Menu");
 
                 if (e.getKeyCode() == KeyMap.ESCAPE) {
+                    Game.pause = false;
                     dispose();
                 }
 
@@ -68,7 +63,7 @@ public class GameMenu extends JDialog {
                     if (indexSelection < 0) {
                         indexSelection = listeBtn.size() - 1;
                     }
-                    selectionButton(indexSelection);
+                    selectButton(indexSelection);
                 }
 
                 if (e.getKeyCode() == KeyMap.DOWN) {
@@ -76,7 +71,7 @@ public class GameMenu extends JDialog {
                     if (indexSelection >= listeBtn.size()) {
                         indexSelection = 0;
                     }
-                    selectionButton(indexSelection);
+                    selectButton(indexSelection);
                 }
 
                 if (e.getKeyCode() == KeyMap.ENTER) {
@@ -90,7 +85,7 @@ public class GameMenu extends JDialog {
             }
         });
 
-        initBtn();
+        initButtonList();
 
         setVisible(true);
 
@@ -98,6 +93,11 @@ public class GameMenu extends JDialog {
 
     /**********  Methods  **********/
 
+    /**
+     * Configuration du menu in game.
+     *
+     * @return
+     */
     public JPanel getPanelPrinc() {
         panelPrinc.setBackground(Couleur.Brown_1);
 
@@ -111,7 +111,7 @@ public class GameMenu extends JDialog {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(getBtnRetourAuJeu(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnEnregistrer(), largeurBtn, largeurBtn, largeurBtn)
-                        .addComponent(btnCharger, largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnCharger(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnMenuPrincipal(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnQuitter(), largeurBtn, largeurBtn, largeurBtn)
                 )
@@ -120,15 +120,15 @@ public class GameMenu extends JDialog {
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(10, 10, Short.MAX_VALUE)
-                .addComponent(getBtnRetourAuJeu(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addComponent(btnRetourAuJeu, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnEnregistrer, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnCharger, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
-                .addComponent(getBtnMenuPrincipal(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addComponent(btnMenuPrincipal, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
-                .addComponent(getBtnQuitter(), hauteurBtn, hauteurBtn, hauteurBtn)
+                .addComponent(btnQuitter, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(10, 10, Short.MAX_VALUE)
         );
 
@@ -137,6 +137,11 @@ public class GameMenu extends JDialog {
         return panelPrinc;
     }
 
+    /**
+     * Ferme le menu et retourne à la partie.
+     *
+     * @return
+     */
     public JButton getBtnRetourAuJeu() {
         btnRetourAuJeu.setFocusable(false);
         btnRetourAuJeu.setBackground(Color.LIGHT_GRAY);
@@ -151,6 +156,11 @@ public class GameMenu extends JDialog {
         return btnRetourAuJeu;
     }
 
+    /**
+     * Retour au menu principal.
+     *
+     * @return
+     */
     public JButton getBtnMenuPrincipal() {
         btnMenuPrincipal.setFocusable(false);
         btnMenuPrincipal.setBackground(Color.LIGHT_GRAY);
@@ -158,16 +168,21 @@ public class GameMenu extends JDialog {
         btnMenuPrincipal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Game.pause = false;
+                Game.killThread = true;
                 dispose();
                 MainZeldo.state = MainZeldo.GameState.START_MENU;
                 MainZeldo.onStateChange = true;
-                GameInit.RestartGame();
             }
         });
 
         return btnMenuPrincipal;
     }
 
+    /**
+     * Enregistre la partie en cours.
+     *
+     * @return
+     */
     public JButton getBtnEnregistrer() {
         btnEnregistrer.setFocusable(false);
         btnEnregistrer.setBackground(Color.LIGHT_GRAY);
@@ -175,7 +190,7 @@ public class GameMenu extends JDialog {
         btnEnregistrer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    new GameInit();
+                    new Backup().save("save_1");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -185,6 +200,37 @@ public class GameMenu extends JDialog {
         return btnEnregistrer;
     }
 
+    /**
+     * Charge la dernière partie sauvegardée.
+     *
+     * @return
+     */
+    public JButton getBtnCharger() {
+        btnCharger.setFocusable(false);
+        btnCharger.setBackground(Color.LIGHT_GRAY);
+
+        btnCharger.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Game.pause = false;
+                Game.killThread = true;
+                try {
+                    TimeUnit.MILLISECONDS.sleep(15);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                dispose();
+                new Backup().load("save_1");
+            }
+        });
+
+        return btnCharger;
+    }
+
+    /**
+     * Retourne à Windows.
+     *
+     * @return
+     */
     public JButton getBtnQuitter() {
         btnQuitter.setFocusable(false);
         btnQuitter.setBackground(Color.LIGHT_GRAY);
@@ -198,7 +244,10 @@ public class GameMenu extends JDialog {
         return btnQuitter;
     }
 
-    public void initBtn() {
+    /**
+     * Initialise la liste des boutons.
+     */
+    public void initButtonList() {
         listeBtn.clear();
 
         listeBtn.add(btnRetourAuJeu);
@@ -210,7 +259,12 @@ public class GameMenu extends JDialog {
         btnRetourAuJeu.setBackground(Color.GREEN);
     }
 
-    public void selectionButton(int buttonNumber) {
+    /**
+     * Fais défiler le sélecteur lorsqu'on appuie sur les flèches de direction.
+     *
+     * @param buttonNumber
+     */
+    public void selectButton(int buttonNumber) {
         for (int i = 0; i < listeBtn.size(); i++) {
             listeBtn.get(i).setBackground(Color.LIGHT_GRAY);
         }

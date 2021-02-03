@@ -11,11 +11,9 @@ import com.mesi.params.Constant;
 import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -29,7 +27,7 @@ public class Game extends JPanel {
 //    public static Integer startingPositionX = 11;
 //    public static Integer startingPositionY = 11;
     public static Integer[] characterCoordinates = new Integer[] { 11 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE };
-    public static ArrayList direction = new ArrayList() {{
+    public static ArrayList<Integer> direction = new ArrayList() {{
         add(KeyMap.DOWN);
     }};
 
@@ -51,12 +49,9 @@ public class Game extends JPanel {
 
     private BufferedImage backgroundImage;
     private BufferedImage foregroundImage;
-//    private Graphics2D bg2;
-//    private Graphics2D fg2;
-//    private BufferedImage bg;
-//    private BufferedImage fg;
 
     public static boolean pause = false;
+    public static boolean killThread = false;
 
     private boolean rightEdge = false;
     private boolean lowerEdge = false;
@@ -64,18 +59,16 @@ public class Game extends JPanel {
     private Integer translateBoundDown = Constant.FRAME_HEIGHT / 2 - (Constant.TILE_SIZE * 2);
 
     Animation character = new WhiteCharacterAnimation(Hair.BLOND, Head.NONE, Torso.NONE, Hands.NONE, Legs.NONE, Feet.NONE, RightHand.DAGGER, LeftHand.NONE);
-    /*Animation character = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);*/
-    /*Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);*/
+//    Animation character = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);
+//    Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);
 
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
             try {
                 while (true) {
+                    if (killThread) Thread.currentThread().stop();
                     if (!isStanding && !pause) {
-                        System.out.println(map.getWidth()+"X"+map.getHeight());
-                        System.out.println(-(backgroundImage.getWidth() - Constant.FRAME_WIDTH) / 2 +"x"+ -(backgroundImage.getHeight() - Constant.FRAME_HEIGHT) / 2);
-                        System.out.println(backgroundImage.getHeight());
                         setCharCoordinates();
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                         getActionArea();
@@ -97,8 +90,9 @@ public class Game extends JPanel {
         }
     });
 
-
     /**********  Constructors  **********/
+
+    public Game() throws IOException {}
 
     /**
      * Le moteur de jeu.
@@ -113,11 +107,11 @@ public class Game extends JPanel {
     public Game(MapModel map) throws IOException {
         new Images();
         this.map = map;
-        //characterCoordinates = new Integer[] { startingPositionX * Constant.TILE_SIZE, startingPositionY * Constant.TILE_SIZE };
+//        characterCoordinates = new Integer[] { startingPositionX * Constant.TILE_SIZE, startingPositionY * Constant.TILE_SIZE };
 //        charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
-        sprites = character.stand((Integer) direction.get(0));
+        sprites = character.stand(direction.get(0));
         backgroundImage = map.getBackgroundImage();
         foregroundImage = map.getForegroundImage();
         setOpaque(false);
@@ -159,7 +153,7 @@ public class Game extends JPanel {
                     this);
         }
 
-        /** affiche les objet de decor en arriere plan **/
+        /** Affiche les objets de décor en arrière plan **/
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
             if (decorObject.getBackgroundImage() != null) {
                 g.drawImage(decorObject.getBackgroundImage(), decorObject.getX() + decorObject.getBackgroundOffsetX(), decorObject.getY() + decorObject.getBackgroundOffsetY(), this);
@@ -172,10 +166,11 @@ public class Game extends JPanel {
 
         Integer offsetX = -Constant.TILE_SIZE / 2;
         Integer offsetY = -Constant.TILE_SIZE;
+
         /** Mise à jour des mouvements du personnage **/
         if (isHiting) { // Attaque
             try {
-                sprites = character.hit((Integer) direction.get(0), character.getRightHand());
+                sprites = character.hit(direction.get(0), character.getRightHand());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -209,8 +204,9 @@ public class Game extends JPanel {
             }
 
         } else if (isMovingRight || isMovingLeft || isMovingUp || isMovingDown) { // Déplacement
+            System.out.println("walk");
             try {
-                sprites = character.walkCycle((Integer) direction.get(0));
+                sprites = character.walkCycle(direction.get(0));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -239,10 +235,7 @@ public class Game extends JPanel {
 
         /** affiche les elements de la carte au premier plan **/
         if (map.isScrollable()) {
-            //System.out.println("ok");
             g.drawImage(foregroundImage, 0, 0, this);
-//            fg2.drawImage(fg, 0, 0, null);
-//            fg2.dispose();
         } else
             g.drawImage(foregroundImage,
                     -((int)Math.floor((foregroundImage.getWidth() - Constant.FRAME_WIDTH) / 64)) * 32,
@@ -255,7 +248,6 @@ public class Game extends JPanel {
                 g.drawImage(decorObject.getForgroundImage(), decorObject.getX() + decorObject.getForegroundOffsetX(), decorObject.getY() + decorObject.getForegroundOffsetY(), this);
             }
         }
-        ;
 
         /** Affichage des cases de téléportation en jaune **/
         for (Tile teleport : map.getTeleportList()) {
@@ -268,14 +260,14 @@ public class Game extends JPanel {
             g.setColor(new Color(255, 0, 0, 100));
             g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         }
-//
-//        /** met en surbrillance violete la zone de collision du perso **/
-//        g.setColor(new Color(255, 0, 255, 100));
-//        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
-//
-//        /** met en surbrillance orange la zone d'action du personnage **/
-//        g.setColor(new Color(255, 128, 0, 100));
-//        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
+
+        /** met en surbrillance violete la zone de collision du perso **/
+        g.setColor(new Color(255, 0, 255, 100));
+        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
+
+        /** met en surbrillance orange la zone d'action du personnage **/
+        g.setColor(new Color(255, 128, 0, 100));
+        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
 
 
 //        /** met en surbrillance jaune le dos du personnage **/
@@ -291,10 +283,6 @@ public class Game extends JPanel {
      * @param keyCode
      */
     public void onKeyPressed(int keyCode) {
-        if (keyCode == KeyMap.ESCAPE && pause) {
-        System.out.println("test menu pause");
-    }
-        System.out.println(keyCode);
         isStanding = false;
         if (keyCode == KeyMap.LEFT && !isMovingLeft) {
             setDirection(keyCode);
@@ -316,7 +304,6 @@ public class Game extends JPanel {
             isHiting = true;
         }
         if (keyCode == KeyMap.ESCAPE) {
-            System.out.println("test");
             pause = true;
             new GameMenu();
         }
@@ -445,8 +432,8 @@ public class Game extends JPanel {
                 characterCoordinates[1] = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]) * Constant.TILE_SIZE;
                 isTeleport = true;
 
-                MainZeldo.onStateChange = true;
                 MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
+                MainZeldo.onStateChange = true;
                 Thread.currentThread().stop();
             }
         }
@@ -489,13 +476,13 @@ public class Game extends JPanel {
     public void getActionArea() {
         Integer actionWidth = 20;
 
-        if ((Integer)direction.get(0) == KeyMap.LEFT)
+        if (direction.get(0) == KeyMap.LEFT)
             charActionArea = new Rectangle(charBounds.x - actionWidth, charBounds.y, actionWidth, charBounds.height);
-        else if ((Integer)direction.get(0) == KeyMap.UP)
+        else if (direction.get(0) == KeyMap.UP)
             charActionArea = new Rectangle(charBounds.x, charBounds.y - actionWidth, charBounds.width, actionWidth);
-        else if ((Integer)direction.get(0) == KeyMap.RIGHT)
+        else if (direction.get(0) == KeyMap.RIGHT)
             charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y, actionWidth, charBounds.height);
-        else if ((Integer)direction.get(0) == KeyMap.DOWN)
+        else if (direction.get(0) == KeyMap.DOWN)
             charActionArea = new Rectangle(charBounds.x, charBounds.y + charBounds.height, charBounds.width, actionWidth);
 
 
@@ -538,5 +525,4 @@ public class Game extends JPanel {
             map.getDecorObjectArraylist().remove(decorObject);
         }
     }
-
 }

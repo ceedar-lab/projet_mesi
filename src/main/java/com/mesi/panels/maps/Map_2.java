@@ -57,10 +57,6 @@ public class Map_2 extends MapModel {
         getTileList().get(getWidth()/2 + 7 + "," + getHeight()/2).setTraversable(false);
         getTileList().get(getWidth()/2 + 7 + "," + (getHeight()/2 + 4)).setTraversable(false);
 
-        /** ajout des coffres **/
-        getDecorObjectArraylist().add(new Chest(getWidth()/2, getHeight()/2 + -2));
-        getDecorObjectArraylist().add(new Chest(getWidth()/2 + 3, getHeight()/2 + -2));
-
         /** Coordonnées des blocs de téléportation et tuile de destination **/
         addTeleport(getTileList().get(getWidth()/2 - 1 + "," + (getHeight()/2 + 6)), true, "MAP_1 17,15", Hitbox.SOUTH_BORD);
         addTeleport(getTileList().get(getWidth()/2 + "," + (getHeight()/2 + 6)), true, "MAP_1 18,15", Hitbox.SOUTH_BORD);
