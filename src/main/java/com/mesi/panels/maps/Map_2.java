@@ -1,12 +1,9 @@
 package com.mesi.panels.maps;
 
-import com.github.cliftonlabs.json_simple.Jsonable;
-import com.mesi.decor.Bush;
-import com.mesi.decor.Chest;
 import com.mesi.params.Hitbox;
+import com.mesi.params.Images;
 
 import java.io.IOException;
-import java.io.Writer;
 
 /**
  * Paramétrage de l'image de fond, des blocs de collisions et de téléportation de la map.
@@ -19,10 +16,10 @@ public class Map_2 extends MapModel {
     public Map_2(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
         super(width, height, startingPositionX, startingPositionY, startingDirection);
 
-        setBackgroundURL("src/main/resources/images/map/map_2a-background.jpg");
-        setForegroundURL("src/main/resources/images/map/map_2a-foreground.png");
-        setBackgroundImage();
-        setForegroundImage();
+//        setBackgroundURL("src/main/resources/images/map/map_2a-background.jpg");
+//        setForegroundURL("src/main/resources/images/map/map_2a-foreground.png");
+        setBackgroundImage(Images.MAP_2_BG);
+        setForegroundImage(Images.MAP_2_FG);
 
         setScrollable(false);
 

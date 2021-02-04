@@ -6,7 +6,7 @@ package com.mesi.equipement;
 public enum Hands {
 
     NONE(null),
-    METAL_GLOVES("src/main/resources/images/hands-gloves_metal.png");
+    METAL_GLOVES("src/main/resources/images/sprites/hands-gloves_metal.png");
 
     private final String imageURL;
 

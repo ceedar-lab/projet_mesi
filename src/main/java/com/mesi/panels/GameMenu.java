@@ -27,7 +27,13 @@ public class GameMenu extends JDialog {
     private JButton btnMenuPrincipal = new JButton("MENU PRINCIPAL");
     private JButton btnQuitter = new JButton("QUITTER");
 
-    private ArrayList<JButton> listeBtn = new ArrayList<JButton>();
+    private ArrayList<JButton> listeBtn = new ArrayList<JButton>() {{
+        add(btnRetourAuJeu);
+        add(btnEnregistrer);
+        add(btnCharger);
+        add(btnMenuPrincipal);
+        add(btnQuitter);
+    }};
 
     private int indexSelection = 0;
 
@@ -85,10 +91,9 @@ public class GameMenu extends JDialog {
             }
         });
 
-        initButtonList();
-
         setVisible(true);
 
+        btnRetourAuJeu.setBackground(Color.GREEN);
     }
 
     /**********  Methods  **********/
@@ -242,21 +247,6 @@ public class GameMenu extends JDialog {
         });
 
         return btnQuitter;
-    }
-
-    /**
-     * Initialise la liste des boutons.
-     */
-    public void initButtonList() {
-        listeBtn.clear();
-
-        listeBtn.add(btnRetourAuJeu);
-        listeBtn.add(btnEnregistrer);
-        listeBtn.add(btnCharger);
-        listeBtn.add(btnMenuPrincipal);
-        listeBtn.add(btnQuitter);
-
-        btnRetourAuJeu.setBackground(Color.GREEN);
     }
 
     /**

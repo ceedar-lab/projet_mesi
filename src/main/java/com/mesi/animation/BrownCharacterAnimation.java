@@ -16,7 +16,7 @@ public class BrownCharacterAnimation extends Animation {
      */
     public BrownCharacterAnimation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) throws IOException {
         super(hair, head, torso, hands, legs, feet, rightHand, leftHand);
-        setFileName("src/main/resources/images/character-brown_skin.png");
+        setFileName("src/main/resources/images/sprites/character-brown_skin.png");
         super.createNewCharacter();
     }
 

@@ -6,8 +6,8 @@ package com.mesi.equipement;
 public enum Feet {
 
     NONE(null),
-    METAL_BOOTS("src/main/resources/images/feet-boots_metal.png"),
-    LEATHER_BOOTS("src/main/resources/images/feet-boots_leather.png");
+    METAL_BOOTS("src/main/resources/images/sprites/feet-boots_metal.png"),
+    LEATHER_BOOTS("src/main/resources/images/sprites/feet-boots_leather.png");
 
     private final String imageURL;
 

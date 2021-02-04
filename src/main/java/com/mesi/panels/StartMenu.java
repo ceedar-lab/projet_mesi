@@ -10,8 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,7 +22,12 @@ public class StartMenu extends JPanel {
     private JButton btnOptions = new JButton("OPTIONS");
     private JButton btnQuitter = new JButton("QUITTER");
 
-    private ArrayList<JButton> listeBtn = new ArrayList<JButton>();
+    private ArrayList<JButton> listeBtn = new ArrayList<JButton>() {{
+        add(btnNouvellePartie);
+        add(btnContinuer);
+        add(btnOptions);
+        add(btnQuitter);
+    }};
 
     private int indexSelection = 0;
 
@@ -67,7 +70,7 @@ public class StartMenu extends JPanel {
 
         setLayout(layout);
 
-        initButtonList();
+        btnNouvellePartie.setBackground(Color.GREEN);
     }
 
     /**********  Methods  **********/
@@ -95,7 +98,7 @@ public class StartMenu extends JPanel {
      *
      * @return
      */
-    public JButton getBtnContinuer() throws IOException, ParseException {
+    public JButton getBtnContinuer() {
         btnContinuer.setFocusable(false);
         btnContinuer.setBackground(Color.LIGHT_GRAY);
 
@@ -171,20 +174,6 @@ public class StartMenu extends JPanel {
         if (keyCode == KeyMap.ENTER) {
             listeBtn.get(indexSelection).doClick();
         }
-    }
-
-    /**
-     * Initialise la liste des boutons.
-     */
-    public void initButtonList() {
-        listeBtn.clear();
-
-        listeBtn.add(btnNouvellePartie);
-        listeBtn.add(btnContinuer);
-        listeBtn.add(btnOptions);
-        listeBtn.add(btnQuitter);
-
-        btnNouvellePartie.setBackground(Color.GREEN);
     }
 
     /**

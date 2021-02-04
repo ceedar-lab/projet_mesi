@@ -4,7 +4,6 @@ import com.mesi.params.Constant;
 import com.mesi.params.Images;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Bush extends DecorObject {
 
@@ -13,6 +12,8 @@ public class Bush extends DecorObject {
         foregroundOffsetY = 0;
         backgroundOffsetX = 0;
         backgroundOffsetY = 0;
+
+        setBackgroundImage(Images.BUSH);
 
         hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
@@ -23,11 +24,4 @@ public class Bush extends DecorObject {
         setY(tileY * Constant.TILE_SIZE);
         hitbox = new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
-
-    @Override
-    public BufferedImage getBackgroundImage() {
-        return Images.BUSH;
-    }
-
-
 }

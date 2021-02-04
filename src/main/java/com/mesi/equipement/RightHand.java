@@ -6,9 +6,9 @@ package com.mesi.equipement;
 public enum RightHand {
 
     NONE(null),
-    DAGGER("src/main/resources/images/right_hand-dagger.png"),
-    SWORD("src/main/resources/images/right_hand-sword.png"),
-    SPEAR("src/main/resources/images/right_hand-spear.png");
+    DAGGER("src/main/resources/images/sprites/right_hand-dagger.png"),
+    SWORD("src/main/resources/images/sprites/right_hand-sword.png"),
+    SPEAR("src/main/resources/images/sprites/right_hand-spear.png");
 
     private final String imageURL;
 

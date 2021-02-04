@@ -6,11 +6,11 @@ package com.mesi.equipement;
 public enum Head {
 
     NONE(null),
-    METAL_HELMET("src/main/resources/images/head-helmet_metal.png"),
-    METAL_HAT("src/main/resources/images/head-hat_metal.png"),
-    LEATHER_HAT("src/main/resources/images/head-hat_leather.png"),
-    CHAIN_HOOD("src/main/resources/images/head-hood_chain.png"),
-    ROBE_HOOD("src/main/resources/images/head-hood_robe.png");
+    METAL_HELMET("src/main/resources/images/sprites/head-helmet_metal.png"),
+    METAL_HAT("src/main/resources/images/sprites/head-hat_metal.png"),
+    LEATHER_HAT("src/main/resources/images/sprites/head-hat_leather.png"),
+    CHAIN_HOOD("src/main/resources/images/sprites/head-hood_chain.png"),
+    ROBE_HOOD("src/main/resources/images/sprites/head-hood_robe.png");
 
     private final String imageURL;
 

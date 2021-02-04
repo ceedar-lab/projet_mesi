@@ -12,4 +12,5 @@ public class KeyMap {
     public static Integer ESCAPE = 27;
     public static Integer ATTACK = 32;
     public static Integer ENTER = 10;
+    public static Integer ACTION = 88;
 }

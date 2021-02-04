@@ -16,7 +16,7 @@ public class WhiteCharacterAnimation extends Animation {
      */
     public WhiteCharacterAnimation(Hair hair, Head head, Torso torso, Hands hands, Legs legs, Feet feet, RightHand rightHand, LeftHand leftHand) throws IOException {
         super(hair, head, torso, hands, legs, feet, rightHand, leftHand);
-        setFileName("src/main/resources/images/character-white_skin.png");
+        setFileName("src/main/resources/images/sprites/character-white_skin.png");
         super.createNewCharacter();
     }
 

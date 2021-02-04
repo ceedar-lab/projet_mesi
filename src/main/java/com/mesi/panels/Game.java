@@ -3,6 +3,7 @@ package com.mesi.panels;
 import com.mesi.MainZeldo;
 import com.mesi.animation.*;
 import com.mesi.decor.Bush;
+import com.mesi.decor.Chest;
 import com.mesi.decor.DecorObject;
 import com.mesi.equipement.*;
 import com.mesi.panels.maps.MapModel;
@@ -40,6 +41,7 @@ public class Game extends JPanel {
     private static boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
     private static boolean isStanding = true;
     private boolean isHiting = false;
+    private boolean isActionning = false;
     private boolean isBlocked = false;
     private boolean isTeleport = false;
     private boolean stopDebug = false;
@@ -73,7 +75,7 @@ public class Game extends JPanel {
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                         getActionArea();
                         teleportChecker();
-                        if (isHiting) {
+                        if (isHiting || isActionning) {
                             hitChecker(charActionArea);
                         }
                         repaint();
@@ -204,7 +206,6 @@ public class Game extends JPanel {
             }
 
         } else if (isMovingRight || isMovingLeft || isMovingUp || isMovingDown) { // Déplacement
-            System.out.println("walk");
             try {
                 sprites = character.walkCycle(direction.get(0));
             } catch (IOException e) {
@@ -244,30 +245,30 @@ public class Game extends JPanel {
 
         /** affiche les objet de decor au premier plan **/
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
-            if (decorObject.getForgroundImage() != null) {
-                g.drawImage(decorObject.getForgroundImage(), decorObject.getX() + decorObject.getForegroundOffsetX(), decorObject.getY() + decorObject.getForegroundOffsetY(), this);
+            if (decorObject.getForegroundImage() != null) {
+                g.drawImage(decorObject.getForegroundImage(), decorObject.getX() + decorObject.getForegroundOffsetX(), decorObject.getY() + decorObject.getForegroundOffsetY(), this);
             }
         }
 
-        /** Affichage des cases de téléportation en jaune **/
-        for (Tile teleport : map.getTeleportList()) {
-            g.setColor(new Color(255, 255, 0, 180));
-            g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
-        }
+//        /** Affichage des cases de téléportation en jaune **/
+//        for (Tile teleport : map.getTeleportList()) {
+//            g.setColor(new Color(255, 255, 0, 180));
+//            g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
+//        }
 //
-        /** met en surbrillance rouge les zone de collision **/
-        for (Rectangle hitbox : map.getHitboxList()) {
-            g.setColor(new Color(255, 0, 0, 100));
-            g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-        }
-
-        /** met en surbrillance violete la zone de collision du perso **/
-        g.setColor(new Color(255, 0, 255, 100));
-        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
-
-        /** met en surbrillance orange la zone d'action du personnage **/
-        g.setColor(new Color(255, 128, 0, 100));
-        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
+//        /** met en surbrillance rouge les zone de collision **/
+//        for (Rectangle hitbox : map.getHitboxList()) {
+//            g.setColor(new Color(255, 0, 0, 100));
+//            g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+//        }
+//
+//        /** met en surbrillance violete la zone de collision du perso **/
+//        g.setColor(new Color(255, 0, 255, 100));
+//        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
+//
+//        /** met en surbrillance orange la zone d'action du personnage **/
+//        g.setColor(new Color(255, 128, 0, 100));
+//        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
 
 
 //        /** met en surbrillance jaune le dos du personnage **/
@@ -306,6 +307,9 @@ public class Game extends JPanel {
         if (keyCode == KeyMap.ESCAPE) {
             pause = true;
             new GameMenu();
+        }
+        if (keyCode == KeyMap.ACTION) {
+            isActionning = true;
         }
         if (keyCode == 83) {
             stopDebug = !stopDebug;
@@ -474,16 +478,16 @@ public class Game extends JPanel {
 //    }
 
     public void getActionArea() {
-        Integer actionWidth = 20;
+        Integer actionWidth = 10;
 
         if (direction.get(0) == KeyMap.LEFT)
-            charActionArea = new Rectangle(charBounds.x - actionWidth, charBounds.y, actionWidth, charBounds.height);
+            charActionArea = new Rectangle(charBounds.x - actionWidth, charBounds.y + 11, actionWidth, 10);
         else if (direction.get(0) == KeyMap.UP)
-            charActionArea = new Rectangle(charBounds.x, charBounds.y - actionWidth, charBounds.width, actionWidth);
+            charActionArea = new Rectangle(charBounds.x  + 12, charBounds.y - actionWidth, 10, actionWidth);
         else if (direction.get(0) == KeyMap.RIGHT)
-            charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y, actionWidth, charBounds.height);
+            charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y + 11, actionWidth, 10);
         else if (direction.get(0) == KeyMap.DOWN)
-            charActionArea = new Rectangle(charBounds.x, charBounds.y + charBounds.height, charBounds.width, actionWidth);
+            charActionArea = new Rectangle(charBounds.x + 12, charBounds.y + charBounds.height, 10, actionWidth);
 
 
         /*switch ((Integer) direction.get(0)) {
@@ -511,18 +515,30 @@ public class Game extends JPanel {
     /**
      * Teste si l'action du personnage entre en collision avec un des blocs d'interaction de la map.
      */
-    public void hitChecker(Rectangle rectangle) throws IOException {
-        ArrayList<DecorObject> temp = new ArrayList<>();
+    public void hitChecker(Rectangle rectangle) {
+        ArrayList<DecorObject> tempToRemove = new ArrayList<>();
+        ArrayList<DecorObject> tempToAdd = new ArrayList<>();
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
             if (rectangle.intersects(decorObject.getHitbox())) {
-                if (decorObject instanceof Bush) {
-                    temp.add(decorObject);
+                if (isHiting) {
+                    if (decorObject instanceof Bush) {
+                        tempToRemove.add(decorObject);
+                    }
+                }
+                if (isActionning) {
+                    if (decorObject instanceof Chest) {
+                        tempToAdd.add(new Chest("open", decorObject.getX() / Constant.TILE_SIZE, decorObject.getY() / Constant.TILE_SIZE));
+                        tempToRemove.add(decorObject);
+                    }
                 }
             }
         }
 
-        for (DecorObject decorObject : temp) {
+        for (DecorObject decorObject : tempToRemove)
             map.getDecorObjectArraylist().remove(decorObject);
-        }
+        for (DecorObject decorObject : tempToAdd)
+            map.getDecorObjectArraylist().add(decorObject);
+
+        isActionning = false;
     }
 }

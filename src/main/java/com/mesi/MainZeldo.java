@@ -112,6 +112,7 @@ public class MainZeldo extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
+                System.out.println(e.getKeyCode());
                 if (state == GameState.GAME_TITLE && e.getKeyCode() == KeyMap.ESCAPE) {
                     onStateChange = true;
                     state = GameState.START_MENU;

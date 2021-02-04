@@ -6,10 +6,10 @@ package com.mesi.equipement;
 public enum Torso {
 
     NONE(null),
-    METAL_ARMOR("src/main/resources/images/torso-armor_metal.png"),
-    CHAIN_ARMOR("src/main/resources/images/torso-armor_chain.png"),
-    LEATHER_ARMOR("src/main/resources/images/torso-armor_leather.png"),
-    TSHIRT("src/main/resources/images/torso-tshirt.png");
+    METAL_ARMOR("src/main/resources/images/sprites/torso-armor_metal.png"),
+    CHAIN_ARMOR("src/main/resources/images/sprites/torso-armor_chain.png"),
+    LEATHER_ARMOR("src/main/resources/images/sprites/torso-armor_leather.png"),
+    TSHIRT("src/main/resources/images/sprites/torso-tshirt.png");
 
     private final String imageURL;
 

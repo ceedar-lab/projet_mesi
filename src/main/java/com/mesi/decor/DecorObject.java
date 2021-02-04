@@ -13,9 +13,8 @@ public abstract class DecorObject {
     protected Integer foregroundOffsetX;
     protected Integer foregroundOffsetY;
 
-    protected BufferedImage forgroundImage;
+    protected BufferedImage foregroundImage;
     protected BufferedImage backgroundImage;
-
 
     protected Rectangle hitbox;
 
@@ -31,12 +30,10 @@ public abstract class DecorObject {
      * getter setter
      **/
 
-    public BufferedImage getForgroundImage() {
-        return forgroundImage;
-    }
+    public BufferedImage getForegroundImage() { return foregroundImage; }
 
-    public void setForgroundImage(BufferedImage forgroundImage) {
-        this.forgroundImage = forgroundImage;
+    public void setForegroundImage(BufferedImage foregroundImage) {
+        this.foregroundImage = foregroundImage;
     }
 
     public BufferedImage getBackgroundImage() {
@@ -47,7 +44,6 @@ public abstract class DecorObject {
         this.backgroundImage = backgroundImage;
     }
 
-
     public Rectangle getHitbox() {
         return hitbox;
     }
@@ -55,7 +51,6 @@ public abstract class DecorObject {
     public void setHitbox(Rectangle hitbox) {
         this.hitbox = hitbox;
     }
-
 
     public Integer getX() {
         return x;
@@ -72,7 +67,6 @@ public abstract class DecorObject {
     public void setY(Integer y) {
         this.y = y;
     }
-
 
     public Integer getBackgroundOffsetX() {
         return backgroundOffsetX;

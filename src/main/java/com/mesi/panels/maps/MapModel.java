@@ -122,8 +122,8 @@ public abstract class MapModel extends JPanel {
     public BufferedImage getForegroundImage() {
         return foregroundImage;
     }
-    public void setBackgroundImage() throws IOException { this.backgroundImage = toCompatibleImage(ImageIO.read(new File(backgroundURL))); }
-    public void setForegroundImage() throws IOException { this.foregroundImage = toCompatibleImage(ImageIO.read(new File(foregroundURL))); }
+    public void setBackgroundImage(BufferedImage backgroundImage) { this.backgroundImage = backgroundImage; }
+    public void setForegroundImage(BufferedImage foregroundImage) { this.foregroundImage = foregroundImage; }
     public ArrayList<Tile> getTeleportList() {
         return teleportList;
     }
@@ -173,26 +173,26 @@ public abstract class MapModel extends JPanel {
         teleportList.add(teleport);
     }
 
-    /**
-     * Test si l'image est optimisé pour le système, et la convertit dans le cas contraire.
-     * @param image
-     * @return
-     */
-    public static BufferedImage toCompatibleImage(final BufferedImage image) {
-        GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-
-        /**  Retourne l'image si elle est déjà compatible et optimisée pour le système  **/
-        if (image.getColorModel().equals(config.getColorModel())) {
-            return image;
-        }
-
-        /**  Si elle n'est pas optimisée, conversion en image qui l'est  **/
-        final BufferedImage new_image = config.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
-        final Graphics2D g2d = (Graphics2D) new_image.getGraphics();
-
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-
-        return new_image;
-    }
+//    /**
+//     * Test si l'image est optimisé pour le système, et la convertit dans le cas contraire.
+//     * @param image
+//     * @return
+//     */
+//    public static BufferedImage toCompatibleImage(final BufferedImage image) {
+//        GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+//
+//        /**  Retourne l'image si elle est déjà compatible et optimisée pour le système  **/
+//        if (image.getColorModel().equals(config.getColorModel())) {
+//            return image;
+//        }
+//
+//        /**  Si elle n'est pas optimisée, conversion en image qui l'est  **/
+//        final BufferedImage new_image = config.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
+//        final Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+//
+//        g2d.drawImage(image, 0, 0, null);
+//        g2d.dispose();
+//
+//        return new_image;
+//    }
 }

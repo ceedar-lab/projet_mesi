@@ -49,6 +49,8 @@ public class Backup {
             String mapName = e.nextElement();
             for (DecorObject obj : MainZeldo.mapList.get(mapName).getDecorObjectArraylist()) {
                 JSONObject object = new JSONObject();
+                if (obj instanceof Chest)
+                    object.put("state", ((Chest) obj).getState());
                 object.put("positionX", obj.getX());
                 object.put("positionY", obj.getY());
                 map.put(obj.toString().split("\\.")[3].toLowerCase(), object);
@@ -96,8 +98,13 @@ public class Backup {
                 JSONObject p = (JSONObject) m.get(decorObject);
                 if (decorObject.toString().contains("bush")) {
                     MainZeldo.mapList.get(map.toString()).getDecorObjectArraylist().add(new Bush(
-                            Integer.valueOf(p.get("positionX").toString()) / 32,
-                            Integer.valueOf(p.get("positionY").toString()) / 32
+                            Integer.valueOf(p.get("positionX").toString()) / Constant.TILE_SIZE,
+                            Integer.valueOf(p.get("positionY").toString()) / Constant.TILE_SIZE
+                    ));
+                } else if (decorObject.toString().contains("chest")) {
+                    MainZeldo.mapList.get(map.toString()).getDecorObjectArraylist().add(new Chest((String) p.get("state"),
+                            Integer.valueOf(p.get("positionX").toString()) / Constant.TILE_SIZE,
+                            Integer.valueOf(p.get("positionY").toString()) / Constant.TILE_SIZE
                     ));
                 }
             }
@@ -123,8 +130,8 @@ public class Backup {
         }
 
         MapModel map_2 = MainZeldo.mapList.get("MAP_2");
-        map_2.getDecorObjectArraylist().add(new Chest(map_2.getWidth()/2, map_2.getHeight()/2 + -2));
-        map_2.getDecorObjectArraylist().add(new Chest(map_2.getWidth()/2 + 3, map_2.getHeight()/2 + -2));
+        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getWidth()/2, map_2.getHeight()/2 + -2));
+        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getWidth()/2 + 3, map_2.getHeight()/2 + -2));
 
         Game.killThread = false;
         MainZeldo.state = MainZeldo.GameState.MAP_1;

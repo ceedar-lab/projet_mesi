@@ -4,7 +4,6 @@ import com.mesi.params.Constant;
 import com.mesi.params.Images;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Tree extends DecorObject {
 
@@ -13,6 +12,9 @@ public class Tree extends DecorObject {
         foregroundOffsetY = -3 * Constant.TILE_SIZE;
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
+
+        setBackgroundImage(Images.TRUNK);
+        setForegroundImage(Images.FOLIAGE);
 
         hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
@@ -23,16 +25,4 @@ public class Tree extends DecorObject {
         setY(tileY * Constant.TILE_SIZE);
         hitbox = new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
-
-    @Override
-    public BufferedImage getBackgroundImage() {
-        return Images.TRUNK;
-    }
-
-    @Override
-    public BufferedImage getForgroundImage() {
-        return Images.FOLIAGE;
-    }
-
-
 }

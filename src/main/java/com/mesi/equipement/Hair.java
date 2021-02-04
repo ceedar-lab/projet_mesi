@@ -6,9 +6,9 @@ package com.mesi.equipement;
 public enum Hair {
 
     NONE(null),
-    BLACK("src/main/resources/images/hair-black.png"),
-    BROWN("src/main/resources/images/hair-brown.png"),
-    BLOND("src/main/resources/images/hair-blond.png");
+    BLACK("src/main/resources/images/sprites/hair-black.png"),
+    BROWN("src/main/resources/images/sprites/hair-brown.png"),
+    BLOND("src/main/resources/images/sprites/hair-blond.png");
 
     private final String imageURL;
 

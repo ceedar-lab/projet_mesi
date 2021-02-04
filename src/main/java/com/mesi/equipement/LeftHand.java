@@ -6,7 +6,7 @@ package com.mesi.equipement;
 public enum LeftHand {
 
     NONE(null, null),
-    SHIELD("src/main/resources/images/left_hand-shield.png", "src/main/resources/images/left_hand-shield_cut.png");
+    SHIELD("src/main/resources/images/sprites/left_hand-shield.png", "src/main/resources/images/sprites/left_hand-shield_cut.png");
 
     private final String imageURL;
     private final String imageURL2;

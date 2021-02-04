@@ -1,8 +1,8 @@
 package com.mesi.panels.maps;
 
 import com.mesi.MainZeldo;
-import com.mesi.decor.Bush;
 import com.mesi.params.Hitbox;
+import com.mesi.params.Images;
 
 import java.io.IOException;
 
@@ -17,10 +17,10 @@ public class Map_1 extends MapModel {
     public Map_1(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
         super(width, height, startingPositionX, startingPositionY, startingDirection);
 
-        setBackgroundURL("src/main/resources/images/map/forest_background.jpg");
-        setForegroundURL("src/main/resources/images/map/forest_foreground.png");
-        setBackgroundImage();
-        setForegroundImage();
+//        setBackgroundURL("src/main/resources/images/map/forest_background.jpg");
+//        setForegroundURL("src/main/resources/images/map/forest_foreground.png");
+        setBackgroundImage(Images.MAP_1_BG);
+        setForegroundImage(Images.MAP_1_FG);
 
         setScrollable(true);
 
@@ -402,6 +402,7 @@ public class Map_1 extends MapModel {
         getTileList().get("63,24").setTraversable(false);
         getTileList().get("63,26").setTraversable(false);
         getTileList().get("63,29").setTraversable(false);
+        getTileList().get("63,30").setTraversable(false);
         getTileList().get("63,31").setTraversable(false);
         getTileList().get("63,42").setTraversable(false);
         getTileList().get("64,7").setTraversable(false);
