@@ -16,6 +16,12 @@ public abstract class DecorObject {
     protected BufferedImage foregroundImage;
     protected BufferedImage backgroundImage;
 
+//\    protected String name;
+//
+//    private Integer animPhase = 0;
+//    private Boolean animLaunched = false;
+//\    protected BufferedImage[] decorObjectAnim;
+
     protected Rectangle hitbox;
 
 
@@ -47,6 +53,14 @@ public abstract class DecorObject {
     public Rectangle getHitbox() {
         return hitbox;
     }
+
+//\    public Rectangle getHitbox() {
+//        Rectangle rectangle = null;
+//        if (hitbox != null) {
+//            rectangle = new Rectangle(x + hitbox.x, y + hitbox.y, hitbox.width, hitbox.height);
+//        }
+//        return rectangle;
+//\    }
 
     public void setHitbox(Rectangle hitbox) {
         this.hitbox = hitbox;
@@ -100,5 +114,27 @@ public abstract class DecorObject {
         this.foregroundOffsetY = foregroundOffsetY;
     }
 
-
+//\    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public Integer getAnimPhase() {
+//        return animPhase;
+//    }
+//
+//    public void setAnimPhase(Integer animPhase) {
+//        this.animPhase = animPhase;
+//    }
+//
+//    public Boolean getAnimLaunched() {
+//        return animLaunched;
+//    }
+//
+//    public void setAnimLaunched(Boolean animLaunched) {
+//        this.animLaunched = animLaunched;
+//\    }
 }

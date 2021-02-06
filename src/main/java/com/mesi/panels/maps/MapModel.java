@@ -3,6 +3,7 @@ package com.mesi.panels.maps;
 import com.mesi.decor.DecorObject;
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
+import com.mesi.pnj.Pnj;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -39,6 +40,7 @@ public abstract class MapModel extends JPanel {
     private BufferedImage foregroundImage;
 
     private ArrayList<DecorObject> decorObjectArraylist = new ArrayList<>();
+    private ArrayList<Pnj> pnjList = new ArrayList<>();
 
     private ArrayList<Rectangle> hitboxs = new ArrayList<>();
 
@@ -98,27 +100,35 @@ public abstract class MapModel extends JPanel {
     public int getWidth() {
         return width;
     }
+
     public int getHeight() {
         return height;
     }
+
     public Hashtable<String, Tile> getTileList() {
         return tileList;
     }
+
     public boolean isScrollable() {
         return scrollable;
     }
+
     public void setScrollable(boolean scrollable) {
         this.scrollable = scrollable;
     }
+
     public void setBackgroundURL(String backgroundURL) {
         this.backgroundURL = backgroundURL;
     }
+
     public BufferedImage getBackgroundImage() {
         return backgroundImage;
     }
+
     public void setForegroundURL(String foregroundURL) {
         this.foregroundURL = foregroundURL;
     }
+
     public BufferedImage getForegroundImage() {
         return foregroundImage;
     }
@@ -130,6 +140,18 @@ public abstract class MapModel extends JPanel {
     public ArrayList<DecorObject> getDecorObjectArraylist() {
         return decorObjectArraylist;
     }
+
+//\    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist) {
+//        this.decorObjectArraylist = decorObjectArraylist;
+//    }
+//
+//    public ArrayList<Pnj> getPnjList() {
+//        return pnjList;
+//    }
+//
+//    public void setPnjList(ArrayList<Pnj> pnjList) {
+//        this.pnjList = pnjList;
+//\    }
 
     /**
      * Récupère la liste des hitbox.
@@ -144,6 +166,13 @@ public abstract class MapModel extends JPanel {
             }
 
         }
+
+//\        /** ajout des hitboxs des PNJ **/
+//        for (Pnj pnj : getPnjList()) {
+//            if (pnj.getHitbox() != null) {
+//                hitboxList.add(pnj.getHitbox());
+//            }
+//\        }
 
         /** ajout des hitboxs des cases non traversables **/
         Enumeration<Tile> e = getTileList().elements();
@@ -172,27 +201,4 @@ public abstract class MapModel extends JPanel {
         teleport.getHitBoxs().clear();
         teleportList.add(teleport);
     }
-
-//    /**
-//     * Test si l'image est optimisé pour le système, et la convertit dans le cas contraire.
-//     * @param image
-//     * @return
-//     */
-//    public static BufferedImage toCompatibleImage(final BufferedImage image) {
-//        GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-//
-//        /**  Retourne l'image si elle est déjà compatible et optimisée pour le système  **/
-//        if (image.getColorModel().equals(config.getColorModel())) {
-//            return image;
-//        }
-//
-//        /**  Si elle n'est pas optimisée, conversion en image qui l'est  **/
-//        final BufferedImage new_image = config.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
-//        final Graphics2D g2d = (Graphics2D) new_image.getGraphics();
-//
-//        g2d.drawImage(image, 0, 0, null);
-//        g2d.dispose();
-//
-//        return new_image;
-//    }
 }

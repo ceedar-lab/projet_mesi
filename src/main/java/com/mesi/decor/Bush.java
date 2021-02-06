@@ -1,6 +1,7 @@
 package com.mesi.decor;
 
 import com.mesi.params.Constant;
+import com.mesi.params.Hitbox;
 import com.mesi.params.Images;
 
 import java.awt.*;
@@ -16,12 +17,14 @@ public class Bush extends DecorObject {
         setBackgroundImage(Images.BUSH);
 
         hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
+//\        hitbox = Hitbox.FULL;
+//\        setName("Buisson");
+
     }
 
     public Bush(Integer tileX, Integer tileY) {
         this();
         setX(tileX * Constant.TILE_SIZE);
         setY(tileY * Constant.TILE_SIZE);
-        hitbox = new Rectangle(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 }

@@ -5,12 +5,16 @@ import com.mesi.animation.*;
 import com.mesi.decor.Bush;
 import com.mesi.decor.Chest;
 import com.mesi.decor.DecorObject;
+import com.mesi.decor.collectableItem.CollectableItem;
+import com.mesi.panels.maps.MapModel;
+import com.mesi.animation.*;
 import com.mesi.equipement.*;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
 import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
+import com.mesi.pnj.Pnj;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,10 +45,12 @@ public class Game extends JPanel {
     private static boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
     private static boolean isStanding = true;
     private boolean isHiting = false;
-    private boolean isActionning = false;
+    private boolean isActing = false;
     private boolean isBlocked = false;
     private boolean isTeleport = false;
     private boolean stopDebug = false;
+
+    public static boolean stopDebug = false;
 
     private Integer walkSpriteX = 0, walkSpriteY = 2;
     private Integer count = 0, hitSprite = 0;
@@ -70,14 +76,20 @@ public class Game extends JPanel {
             try {
                 while (true) {
                     if (killThread) Thread.currentThread().stop();
-                    if (!isStanding && !pause) {
+                    if (/*!isStanding &&*/ !pause) {
                         setCharCoordinates();
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                         getActionArea();
                         teleportChecker();
-                        if (isHiting || isActionning) {
+                        if (isHiting || isActing) {
                             hitChecker(charActionArea);
                         }
+
+//\                        if (isActing) {
+//                            actionChecker(charActionArea);
+//\                        }
+
+
                         repaint();
 
                         if (stopDebug) {
@@ -129,6 +141,9 @@ public class Game extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+//\        Integer offsetXChar = -Constant.TILE_SIZE / 2;
+//\        Integer offsetYChar = -Constant.TILE_SIZE;
+
         /** Fait défiler la map en fonction des mouvements du personnage **/
         if (map.isScrollable()) {
             rightEdge = (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.FRAME_WIDTH + translateBoundRight) ? true : false;
@@ -158,17 +173,30 @@ public class Game extends JPanel {
         /** Affiche les objets de décor en arrière plan **/
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
             if (decorObject.getBackgroundImage() != null) {
+//\                if (decorObject.getAnimLaunched()) {
+//                    decorObject.setAnimPhase(decorObject.getAnimPhase() + 1);
+//\
                 g.drawImage(decorObject.getBackgroundImage(), decorObject.getX() + decorObject.getBackgroundOffsetX(), decorObject.getY() + decorObject.getBackgroundOffsetY(), this);
             }
         }
+
+
+        /** affiche les PNJ en arriere plan **/
+        for (Pnj pnj : map.getPnjList()) {
+            try {
+                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         /** Ombre du personnage **/
         g.setColor(new Color(0, 0, 0, .5f));
         g.fillOval(characterCoordinates[0], characterCoordinates[1] + 16, 32, 14);
 
-        Integer offsetX = -Constant.TILE_SIZE / 2;
-        Integer offsetY = -Constant.TILE_SIZE;
-
+//\        Integer offsetX = -Constant.TILE_SIZE / 2;
+//\        Integer offsetY = -Constant.TILE_SIZE;
         /** Mise à jour des mouvements du personnage **/
         if (isHiting) { // Attaque
             try {
@@ -178,7 +206,7 @@ public class Game extends JPanel {
             }
 
             if (character.getRightHand() == RightHand.DAGGER || character.getRightHand() == RightHand.SWORD) {
-                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
 
                 count++;
 
@@ -191,7 +219,7 @@ public class Game extends JPanel {
                     isHiting = false;
                 }
             } else {
-                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
 
                 count++;
 
@@ -212,12 +240,12 @@ public class Game extends JPanel {
                 e.printStackTrace();
             }
             if (direction.get(0).equals(KeyMap.LEFT) || direction.get(0).equals(KeyMap.RIGHT)) {
-                g.drawImage(sprites[walkSpriteX], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[walkSpriteX], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
             } else {
-                g.drawImage(sprites[walkSpriteY], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+                g.drawImage(sprites[walkSpriteY], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
             }
         } else { // Position debout
-            g.drawImage(sprites[0], characterCoordinates[0] + offsetX, characterCoordinates[1] + offsetY, this);
+            g.drawImage(sprites[0], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
             isStanding = true;
         }
 
@@ -247,6 +275,18 @@ public class Game extends JPanel {
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
             if (decorObject.getForegroundImage() != null) {
                 g.drawImage(decorObject.getForegroundImage(), decorObject.getX() + decorObject.getForegroundOffsetX(), decorObject.getY() + decorObject.getForegroundOffsetY(), this);
+            }
+        }
+
+        /** affiche les PNJ au premier plan **/
+        for (Pnj pnj : map.getPnjList()) {
+
+            if (pnj.getCharacterCoordinates()[1] > characterCoordinates[1]) {
+                try {
+                    g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -308,11 +348,11 @@ public class Game extends JPanel {
             pause = true;
             new GameMenu();
         }
-        if (keyCode == KeyMap.ACTION) {
-            isActionning = true;
-        }
-        if (keyCode == 83) {
+        if (keyCode == KeyMap.STOP) {
             stopDebug = !stopDebug;
+        }
+        if (keyCode == KeyMap.ACTION) {
+            isActing = true;
         }
 
 
@@ -339,6 +379,9 @@ public class Game extends JPanel {
         if (keyCode == KeyMap.DOWN) {
             removeDirection(keyCode);
             isMovingDown = false;
+        }
+        if (keyCode == KeyMap.ACTION) {
+            isActing = false;
         }
     }
 
@@ -407,15 +450,15 @@ public class Game extends JPanel {
         if (!collision) {
             for (Rectangle block : map.getHitboxList()) {
                 if (rectangle.intersects(block)) {
-                    isBlocked = true;
+                    //isBlocked = true;
                     collision = true;
                     break;
                 }
             }
         }
-        if (!collision) {
-            isBlocked = false;
-        }
+//        if (!collision) {
+//            isBlocked = false;
+//        }
 
         return collision;
     }
@@ -541,4 +584,57 @@ public class Game extends JPanel {
 
         isActionning = false;
     }
+
+    /**
+     * Teste si l'action du personnage entre en collision avec un des PNJ de la map.
+     */
+    public void actionChecker(Rectangle rectangle) {
+
+        for (Pnj pnj : map.getPnjList()) {
+            if (rectangle.intersects(pnj.getHitbox())) {
+                System.out.println("je parle au pnj " + pnj.getName());
+            }
+        }
+
+        ArrayList<DecorObject> objectToRemove = new ArrayList<>();
+        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
+            if (decorObject.getHitbox() != null) {
+                if (rectangle.intersects(decorObject.getHitbox())) {
+                    System.out.println("j'active l'objet " + decorObject.getName());
+                    if (decorObject instanceof Chest) {
+                        ((Chest) decorObject).open();
+                    }
+                }
+            }
+
+            if (decorObject instanceof CollectableItem) {
+                if (((CollectableItem) decorObject).getInteractionBox() != null) {
+                    if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
+                        System.out.println("je rammasse l'objet " + decorObject.getName());
+                        objectToRemove.add(decorObject);
+                    }
+                }
+            }
+        }
+        for (DecorObject decorObject : objectToRemove) {
+            map.getDecorObjectArraylist().remove(decorObject);
+        }
+
+    }
+
+//    /**
+//     * Teste si l'action du personnage entre en collision avec un objet rammassable de la map.
+//     */
+//    public void takeChecker(Rectangle rectangle) {
+//
+//        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
+//            if (rectangle.intersects(pnj.getHitbox())) {
+//                if (decorObject instanceof Bush) {
+//                    temp.add(decorObject);
+//                }
+//            }
+//        }
+//    }
+
+
 }

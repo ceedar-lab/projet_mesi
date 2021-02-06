@@ -8,6 +8,8 @@ import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 import org.json.simple.parser.ParseException;
+import com.mesi.pnj.Pnj;
+import com.mesi.pnj.PnjGenerator;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -22,6 +24,7 @@ public class MainZeldo extends JPanel {
     /**********  Attributes  **********/
 
     public static Hashtable<String, MapModel> mapList = new Hashtable<String, MapModel>();
+    public static Hashtable<String, Pnj> pnjList = new Hashtable<String, Pnj>();
 
     public static enum GameState {
         GAME_TITLE, START_MENU, MAP_1, MAP_2
@@ -79,8 +82,7 @@ public class MainZeldo extends JPanel {
                 return new GameTitle();
 
             case START_MENU:
-                this.startMenu = new StartMenu();
-                return startMenu;
+                return startMenu = new StartMenu();
 
             default:
                 return game = new Game(mapList.get(state.toString()));
@@ -93,7 +95,9 @@ public class MainZeldo extends JPanel {
      * @param args
      */
     public static void main(String[] args) throws IOException, ParseException {
-        new MapGenerator();
+        //new Images();//charge les images en buffer
+        new PnjGenerator();//genere les PNJs
+        new MapGenerator();//genere les maps
         JFrame f = new JFrame();
         //f.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         f.setLocationRelativeTo(null);
