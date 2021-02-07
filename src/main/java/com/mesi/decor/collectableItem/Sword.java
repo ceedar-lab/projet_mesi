@@ -4,8 +4,6 @@ import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
 import com.mesi.params.Images;
 
-import java.awt.image.BufferedImage;
-
 public class Sword extends CollectableItem {
 
     public Sword() {
@@ -14,6 +12,8 @@ public class Sword extends CollectableItem {
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
         setName("Sword");
+
+        setBackgroundImage(Images.SWORD);
 
         setInteractionBox(Hitbox.FULL);
 
@@ -24,11 +24,4 @@ public class Sword extends CollectableItem {
         setX(tileX * Constant.TILE_SIZE);
         setY(tileY * Constant.TILE_SIZE);
     }
-
-    @Override
-    public BufferedImage getBackgroundImage() {
-        return Images.SWORD;
-    }
-
-
 }

@@ -1,27 +1,25 @@
-package com.mesi.decor;
+package com.mesi.decor.collectableItem;
 
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
 import com.mesi.params.Images;
 
-import java.awt.*;
+public class Dagger extends CollectableItem {
 
-public class Bush extends DecorObject {
-
-    public Bush() {
+    public Dagger() {
         foregroundOffsetX = 0;
         foregroundOffsetY = 0;
         backgroundOffsetX = 0;
         backgroundOffsetY = 0;
+        setName("dagger");
 
-        setBackgroundImage(Images.BUSH);
+        setBackgroundImage(Images.DAGGER);
 
-        hitbox = Hitbox.FULL;
-//\        setName("Buisson");
+        setInteractionBox(Hitbox.FULL);
 
     }
 
-    public Bush(Integer tileX, Integer tileY) {
+    public Dagger(Integer tileX, Integer tileY) {
         this();
         setX(tileX * Constant.TILE_SIZE);
         setY(tileY * Constant.TILE_SIZE);

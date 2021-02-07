@@ -1,11 +1,14 @@
 package com.mesi.params;
 
 import com.mesi.MainZeldo;
-import com.mesi.decor.Bush;
-import com.mesi.decor.Chest;
-import com.mesi.decor.DecorObject;
+import com.mesi.decor.*;
+import com.mesi.decor.collectableItem.BootsLeather;
+import com.mesi.decor.collectableItem.Dagger;
+import com.mesi.decor.collectableItem.Shield;
+import com.mesi.decor.collectableItem.Sword;
 import com.mesi.panels.Game;
 import com.mesi.panels.maps.MapModel;
+import com.mesi.pnj.Pnj;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -128,8 +131,16 @@ public class Backup {
         for (int i = 14; i < 17; i++) {
             map_1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
+        map_1.getDecorObjectArraylist().add(new Sword(12, 13));
+        map_1.getDecorObjectArraylist().add(new Shield(19, 18));
+        Pnj pnjTest = MainZeldo.pnjList.get("pnjTest");
+        pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
+        pnjTest.setDirection(1);
+        map_1.getPnjList().add(pnjTest);
 
         MapModel map_2 = MainZeldo.mapList.get("MAP_2");
+        map_2.getDecorObjectArraylist().add(new Dagger(map_2.getWidth()/2 - 8, map_2.getHeight()/2 + 3));
+        map_2.getDecorObjectArraylist().add(new BootsLeather(map_2.getWidth()/2 - 2, map_2.getHeight()/2 + -2));
         map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getWidth()/2, map_2.getHeight()/2 + -2));
         map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getWidth()/2 + 3, map_2.getHeight()/2 + -2));
 

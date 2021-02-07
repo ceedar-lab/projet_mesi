@@ -13,13 +13,13 @@ public class Tree extends DecorObject {
         foregroundOffsetY = -3 * Constant.TILE_SIZE;
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
+        setName("Arbre");
 
         setBackgroundImage(Images.TRUNK);
         setForegroundImage(Images.FOLIAGE);
 
-        hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
-//\        hitbox = Hitbox.FULL;
-//\        setName("Arbre");
+//        hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
+        hitbox = Hitbox.FULL;
     }
 
     public Tree(Integer tileX, Integer tileY) {

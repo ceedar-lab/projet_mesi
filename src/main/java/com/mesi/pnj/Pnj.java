@@ -2,7 +2,6 @@ package com.mesi.pnj;
 
 import com.mesi.animation.Animation;
 import com.mesi.equipement.*;
-import com.mesi.params.Hitbox;
 
 import java.awt.*;
 import java.io.IOException;

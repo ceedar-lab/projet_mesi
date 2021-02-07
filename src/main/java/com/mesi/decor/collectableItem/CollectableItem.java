@@ -4,7 +4,7 @@ import com.mesi.decor.DecorObject;
 
 import java.awt.*;
 
-public class CollectableItem extends DecorObject {
+public abstract class CollectableItem extends DecorObject {
 
     protected Rectangle interactionBox;
 

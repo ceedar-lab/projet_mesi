@@ -16,8 +16,6 @@ public class Map_2 extends MapModel {
     public Map_2(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
         super(width, height, startingPositionX, startingPositionY, startingDirection);
 
-//        setBackgroundURL("src/main/resources/images/map/map_2a-background.jpg");
-//        setForegroundURL("src/main/resources/images/map/map_2a-foreground.png");
         setBackgroundImage(Images.MAP_2_BG);
         setForegroundImage(Images.MAP_2_FG);
 

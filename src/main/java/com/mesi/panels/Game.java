@@ -48,7 +48,6 @@ public class Game extends JPanel {
     private boolean isActing = false;
     private boolean isBlocked = false;
     private boolean isTeleport = false;
-    private boolean stopDebug = false;
 
     public static boolean stopDebug = false;
 
@@ -76,7 +75,7 @@ public class Game extends JPanel {
             try {
                 while (true) {
                     if (killThread) Thread.currentThread().stop();
-                    if (/*!isStanding &&*/ !pause) {
+                    if (!isStanding && !pause) {
                         setCharCoordinates();
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                         getActionArea();
@@ -141,8 +140,8 @@ public class Game extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-//\        Integer offsetXChar = -Constant.TILE_SIZE / 2;
-//\        Integer offsetYChar = -Constant.TILE_SIZE;
+        Integer offsetXChar = -Constant.TILE_SIZE / 2;
+        Integer offsetYChar = -Constant.TILE_SIZE;
 
         /** Fait défiler la map en fonction des mouvements du personnage **/
         if (map.isScrollable()) {
@@ -290,25 +289,33 @@ public class Game extends JPanel {
             }
         }
 
-//        /** Affichage des cases de téléportation en jaune **/
-//        for (Tile teleport : map.getTeleportList()) {
-//            g.setColor(new Color(255, 255, 0, 180));
-//            g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
-//        }
-//
-//        /** met en surbrillance rouge les zone de collision **/
-//        for (Rectangle hitbox : map.getHitboxList()) {
-//            g.setColor(new Color(255, 0, 0, 100));
-//            g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-//        }
-//
-//        /** met en surbrillance violete la zone de collision du perso **/
-//        g.setColor(new Color(255, 0, 255, 100));
-//        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
-//
-//        /** met en surbrillance orange la zone d'action du personnage **/
-//        g.setColor(new Color(255, 128, 0, 100));
-//        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
+        /** Affichage des cases de téléportation en jaune **/
+        for (Tile teleport : map.getTeleportList()) {
+            g.setColor(new Color(255, 255, 0, 180));
+            g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
+        }
+
+        /** met en surbrillance rouge les zone de collision **/
+        for (Rectangle hitbox : map.getHitboxList()) {
+            g.setColor(new Color(255, 0, 0, 100));
+            g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        }
+
+        /** met en surbrillance rouge les zone de collision **/
+        for (DecorObject object : map.getDecorObjectArraylist()) {
+            if (object instanceof CollectableItem) {
+                g.setColor(new Color(0, 0, 255, 100));
+                g.fillRect(object.getX(), object.getY(), Constant.TILE_SIZE, Constant.TILE_SIZE);
+            }
+        }
+
+        /** met en surbrillance violete la zone de collision du perso **/
+        g.setColor(new Color(255, 0, 255, 100));
+        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
+
+        /** met en surbrillance orange la zone d'action du personnage **/
+        g.setColor(new Color(255, 128, 0, 100));
+        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
 
 
 //        /** met en surbrillance jaune le dos du personnage **/
@@ -559,37 +566,6 @@ public class Game extends JPanel {
      * Teste si l'action du personnage entre en collision avec un des blocs d'interaction de la map.
      */
     public void hitChecker(Rectangle rectangle) {
-        ArrayList<DecorObject> tempToRemove = new ArrayList<>();
-        ArrayList<DecorObject> tempToAdd = new ArrayList<>();
-        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
-            if (rectangle.intersects(decorObject.getHitbox())) {
-                if (isHiting) {
-                    if (decorObject instanceof Bush) {
-                        tempToRemove.add(decorObject);
-                    }
-                }
-                if (isActionning) {
-                    if (decorObject instanceof Chest) {
-                        tempToAdd.add(new Chest("open", decorObject.getX() / Constant.TILE_SIZE, decorObject.getY() / Constant.TILE_SIZE));
-                        tempToRemove.add(decorObject);
-                    }
-                }
-            }
-        }
-
-        for (DecorObject decorObject : tempToRemove)
-            map.getDecorObjectArraylist().remove(decorObject);
-        for (DecorObject decorObject : tempToAdd)
-            map.getDecorObjectArraylist().add(decorObject);
-
-        isActionning = false;
-    }
-
-    /**
-     * Teste si l'action du personnage entre en collision avec un des PNJ de la map.
-     */
-    public void actionChecker(Rectangle rectangle) {
-
         for (Pnj pnj : map.getPnjList()) {
             if (rectangle.intersects(pnj.getHitbox())) {
                 System.out.println("je parle au pnj " + pnj.getName());
@@ -597,16 +573,23 @@ public class Game extends JPanel {
         }
 
         ArrayList<DecorObject> objectToRemove = new ArrayList<>();
+        ArrayList<DecorObject> objectToAdd = new ArrayList<>();
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
-            if (decorObject.getHitbox() != null) {
+            if (!(decorObject instanceof CollectableItem)) {
                 if (rectangle.intersects(decorObject.getHitbox())) {
-                    System.out.println("j'active l'objet " + decorObject.getName());
-                    if (decorObject instanceof Chest) {
-                        ((Chest) decorObject).open();
+                    if (isHiting) {
+                        if (decorObject instanceof Bush) {
+                            objectToRemove.add(decorObject);
+                        }
+                    }
+                    if (isActing) {
+                        if (decorObject instanceof Chest) {
+                            objectToAdd.add(new Chest("open", decorObject.getX() / Constant.TILE_SIZE, decorObject.getY() / Constant.TILE_SIZE));
+                            objectToRemove.add(decorObject);
+                        }
                     }
                 }
             }
-
             if (decorObject instanceof CollectableItem) {
                 if (((CollectableItem) decorObject).getInteractionBox() != null) {
                     if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
@@ -616,11 +599,49 @@ public class Game extends JPanel {
                 }
             }
         }
-        for (DecorObject decorObject : objectToRemove) {
-            map.getDecorObjectArraylist().remove(decorObject);
-        }
 
+        for (DecorObject decorObject : objectToRemove)
+            map.getDecorObjectArraylist().remove(decorObject);
+        for (DecorObject decorObject : objectToAdd)
+            map.getDecorObjectArraylist().add(decorObject);
     }
+
+//    /**
+//     * Teste si l'action du personnage entre en collision avec un des PNJ de la map.
+//     */
+//    public void actionChecker(Rectangle rectangle) {
+//
+//        for (Pnj pnj : map.getPnjList()) {
+//            if (rectangle.intersects(pnj.getHitbox())) {
+//                System.out.println("je parle au pnj " + pnj.getName());
+//            }
+//        }
+//
+//        ArrayList<DecorObject> objectToRemove = new ArrayList<>();
+//        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
+//            if (decorObject.getHitbox() != null) {
+//                if (rectangle.intersects(decorObject.getHitbox())) {
+//                    System.out.println("j'active l'objet " + decorObject.getName());
+//                    if (decorObject instanceof Chest) {
+//                        ((Chest) decorObject).open();
+//                    }
+//                }
+//            }
+//
+//            if (decorObject instanceof CollectableItem) {
+//                if (((CollectableItem) decorObject).getInteractionBox() != null) {
+//                    if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
+//                        System.out.println("je rammasse l'objet " + decorObject.getName());
+//                        objectToRemove.add(decorObject);
+//                    }
+//                }
+//            }
+//        }
+//        for (DecorObject decorObject : objectToRemove) {
+//            map.getDecorObjectArraylist().remove(decorObject);
+//        }
+//
+//    }
 
 //    /**
 //     * Teste si l'action du personnage entre en collision avec un objet rammassable de la map.

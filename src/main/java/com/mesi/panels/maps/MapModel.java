@@ -141,17 +141,17 @@ public abstract class MapModel extends JPanel {
         return decorObjectArraylist;
     }
 
-//\    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist) {
-//        this.decorObjectArraylist = decorObjectArraylist;
-//    }
-//
-//    public ArrayList<Pnj> getPnjList() {
-//        return pnjList;
-//    }
-//
-//    public void setPnjList(ArrayList<Pnj> pnjList) {
-//        this.pnjList = pnjList;
-//\    }
+    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist) {
+        this.decorObjectArraylist = decorObjectArraylist;
+    }
+
+    public ArrayList<Pnj> getPnjList() {
+        return pnjList;
+    }
+
+    public void setPnjList(ArrayList<Pnj> pnjList) {
+        this.pnjList = pnjList;
+    }
 
     /**
      * Récupère la liste des hitbox.
@@ -167,12 +167,12 @@ public abstract class MapModel extends JPanel {
 
         }
 
-//\        /** ajout des hitboxs des PNJ **/
-//        for (Pnj pnj : getPnjList()) {
-//            if (pnj.getHitbox() != null) {
-//                hitboxList.add(pnj.getHitbox());
-//            }
-//\        }
+        /** ajout des hitboxs des PNJ **/
+        for (Pnj pnj : getPnjList()) {
+            if (pnj.getHitbox() != null) {
+                hitboxList.add(pnj.getHitbox());
+            }
+        }
 
         /** ajout des hitboxs des cases non traversables **/
         Enumeration<Tile> e = getTileList().elements();

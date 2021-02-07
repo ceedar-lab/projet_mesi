@@ -8,11 +8,15 @@ import java.io.IOException;
 
 public class Images {
 
-    public static BufferedImage FOLIAGE;
-    public static BufferedImage TRUNK;
+    public static BufferedImage BOOTS_LEATHER;
     public static BufferedImage BUSH;
     public static BufferedImage CHEST;
     public static BufferedImage CHEST_OPEN;
+    public static BufferedImage DAGGER;
+    public static BufferedImage FOLIAGE;
+    public static BufferedImage SHIELD;
+    public static BufferedImage SWORD;
+    public static BufferedImage TRUNK;
     public static BufferedImage MAP_1_BG;
     public static BufferedImage MAP_1_FG;
     public static BufferedImage MAP_2_BG;
@@ -20,11 +24,15 @@ public class Images {
 
     static {
         try {
-            FOLIAGE = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/tree-foliage.png")));
-            TRUNK = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/tree-trunk.png")));
+            BOOTS_LEATHER = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/boots-leather.png")));
             BUSH = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/bush.png")));
             CHEST = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/chest-closed.jpg")));
             CHEST_OPEN = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/chest-open.jpg")));
+            DAGGER = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/dagger.png")));
+            FOLIAGE = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/tree-foliage.png")));
+            SHIELD = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/shield.png")));
+            SWORD = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/sword.png")));
+            TRUNK = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/objects/tree-trunk.png")));
             MAP_1_BG = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/maps/map_1-background.jpg")));
             MAP_1_FG = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/maps/map_1-foreground.png")));
             MAP_2_BG = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/maps/map_2-background.jpg")));

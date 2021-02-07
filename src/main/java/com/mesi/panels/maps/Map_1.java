@@ -17,8 +17,6 @@ public class Map_1 extends MapModel {
     public Map_1(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
         super(width, height, startingPositionX, startingPositionY, startingDirection);
 
-//        setBackgroundURL("src/main/resources/images/map/forest_background.jpg");
-//        setForegroundURL("src/main/resources/images/map/forest_foreground.png");
         setBackgroundImage(Images.MAP_1_BG);
         setForegroundImage(Images.MAP_1_FG);
 
@@ -500,27 +498,6 @@ public class Map_1 extends MapModel {
         getTileList().get("88,27").setTraversable(false);
         getTileList().get("89,12").setTraversable(false);
         getTileList().get("89,28").setTraversable(false);
-
-
-//\        /** ajout des buissons **/
-//        for (int i = 14; i < 17; i++) {
-//            getDecorObjectArraylist().add(new Bush(i, 24));
-//        }
-//
-//        /** ajout des PNJ **/
-//        Pnj pnjTest = MainZeldo.pnjList.get("pnjTest");
-//        pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
-//        pnjTest.setDirection(1);
-//        getPnjList().add(pnjTest);
-//
-//        /** ajout coffre **/
-//        getDecorObjectArraylist().add(new Chest(13, 16));
-//
-//        /** ajout épée **/
-//        getDecorObjectArraylist().add(new Sword(12, 13));
-//
-//        /** ajout épée **/
-//\        getDecorObjectArraylist().add(new Shield(19, 18));
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
         addTeleport(getTileList().get("17,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getWidth()/2 - 1) + "," + (MainZeldo.mapList.get("MAP_2").getHeight()/2 + 6), Hitbox.NORTH_BORD);
