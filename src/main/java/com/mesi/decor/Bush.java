@@ -17,8 +17,6 @@ public class Bush extends DecorObject {
         setBackgroundImage(Images.BUSH);
 
         hitbox = Hitbox.FULL;
-//\        setName("Buisson");
-
     }
 
     public Bush(Integer tileX, Integer tileY) {

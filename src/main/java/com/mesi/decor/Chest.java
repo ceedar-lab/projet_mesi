@@ -23,7 +23,7 @@ public class Chest extends DecorObject {
         else if (state.equals("open"))
             setBackgroundImage(Images.CHEST_OPEN);
 
-        hitbox = Hitbox.FULL;;
+        hitbox = Hitbox.FULL;
     }
 
     public Chest(String state, Integer tileX, Integer tileY) {

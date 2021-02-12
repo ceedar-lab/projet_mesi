@@ -5,14 +5,11 @@ import com.mesi.animation.*;
 import com.mesi.decor.Bush;
 import com.mesi.decor.Chest;
 import com.mesi.decor.DecorObject;
-import com.mesi.decor.collectableItem.CollectableItem;
-import com.mesi.panels.maps.MapModel;
-import com.mesi.animation.*;
+import com.mesi.decor.collectable.CollectableItem;
 import com.mesi.equipement.*;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
-import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
 import com.mesi.pnj.Pnj;
 
@@ -28,46 +25,40 @@ public class Game extends JPanel {
 
     private MapModel map;
 
-    private String teleportMap;
-//    public static Integer startingPositionX = 11;
-//    public static Integer startingPositionY = 11;
     public static Integer[] characterCoordinates = new Integer[] { 11 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE };
     public static ArrayList<Integer> direction = new ArrayList() {{
         add(KeyMap.DOWN);
     }};
+    public static boolean pause = false;
+    public static boolean killThread = false;
+    public static boolean stopDebug = false;
 
     private BufferedImage[] sprites;
 
-    //private Integer[] characterCoordinates;
     private Rectangle charBounds;
     private Rectangle charActionArea;
 
-    private static boolean isMovingLeft, isMovingRight, isMovingUp, isMovingDown;
-    private static boolean isStanding = true;
+    private boolean isMovingLeft;
+    private boolean isMovingRight;
+    private boolean isMovingUp;
+    private boolean isMovingDown;
+    private boolean isStanding = true;
     private boolean isHiting = false;
     private boolean isActing = false;
     private boolean isBlocked = false;
-    private boolean isTeleport = false;
 
-    public static boolean stopDebug = false;
-
-    private Integer walkSpriteX = 0, walkSpriteY = 2;
-    private Integer count = 0, hitSprite = 0;
+    private Integer walkSpriteX = 0;
+    private Integer walkSpriteY = 2;
+    private Integer count = 0;
+    private Integer hitSprite = 0;
 
     private BufferedImage backgroundImage;
     private BufferedImage foregroundImage;
 
-    public static boolean pause = false;
-    public static boolean killThread = false;
-
-    private boolean rightEdge = false;
-    private boolean lowerEdge = false;
     private Integer translateBoundRight = (Constant.FRAME_WIDTH / 2) - Constant.TILE_SIZE;
     private Integer translateBoundDown = Constant.FRAME_HEIGHT / 2 - (Constant.TILE_SIZE * 2);
 
     Animation character = new WhiteCharacterAnimation(Hair.BLOND, Head.NONE, Torso.NONE, Hands.NONE, Legs.NONE, Feet.NONE, RightHand.DAGGER, LeftHand.NONE);
-//    Animation character = new BrownCharacterAnimation(Hair.BROWN, Head.LEATHER_HAT, Torso.LEATHER_ARMOR, Hands.NONE, Legs.LEATHER_PANTS, Feet.LEATHER_BOOTS, RightHand.SPEAR, LeftHand.SHIELD);
-//    Animation character = new WhiteCharacterAnimation(Hair.BLACK, Head.METAL_HELMET, Torso.METAL_ARMOR, Hands.METAL_GLOVES, Legs.METAL_PANTS, Feet.METAL_BOOTS, RightHand.SWORD, LeftHand.SHIELD);
 
     Thread thread = new Thread(new Runnable() {
         @Override
@@ -83,12 +74,6 @@ public class Game extends JPanel {
                         if (isHiting || isActing) {
                             hitChecker(charActionArea);
                         }
-
-//\                        if (isActing) {
-//                            actionChecker(charActionArea);
-//\                        }
-
-
                         repaint();
 
                         if (stopDebug) {
@@ -118,10 +103,7 @@ public class Game extends JPanel {
      * @throws IOException
      */
     public Game(MapModel map) throws IOException {
-        new Images();
         this.map = map;
-//        characterCoordinates = new Integer[] { startingPositionX * Constant.TILE_SIZE, startingPositionY * Constant.TILE_SIZE };
-//        charBounds = new Rectangle(characterCoordinates[0] + Constant.TILE_SIZE/2, characterCoordinates[1] + Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
         sprites = character.stand(direction.get(0));
@@ -134,6 +116,15 @@ public class Game extends JPanel {
         thread.start();
     }
 
+    /**********  Getters / Setters  **********/
+
+    public static boolean isPaused() { return pause; }
+    public static void setPause(boolean pause) { Game.pause = pause; }
+    public static boolean isThreadKilled() { return killThread; }
+    public static void setKillThread(boolean killThread) { Game.killThread = killThread; }
+    public static boolean isStopDebug() { return stopDebug; }
+    public static void setStopDebug(boolean stopDebug) { Game.stopDebug = stopDebug; }
+
     /**********  Methods  **********/
 
     @Override
@@ -144,9 +135,12 @@ public class Game extends JPanel {
         Integer offsetYChar = -Constant.TILE_SIZE;
 
         /** Fait défiler la map en fonction des mouvements du personnage **/
+        boolean rightEdge;
+        boolean lowerEdge;
+
         if (map.isScrollable()) {
-            rightEdge = (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.FRAME_WIDTH + translateBoundRight) ? true : false;
-            lowerEdge = (characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.FRAME_HEIGHT + translateBoundDown) ? true : false;
+            rightEdge = (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.FRAME_WIDTH + translateBoundRight);
+            lowerEdge = (characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.FRAME_HEIGHT + translateBoundDown);
             if (!rightEdge) {
                 if (characterCoordinates[0] > translateBoundRight) {
                     g.translate(0 - (characterCoordinates[0] - translateBoundRight), 0);
@@ -164,8 +158,8 @@ public class Game extends JPanel {
             g.drawImage(backgroundImage, 0, 0,this);
         } else {
             g.drawImage(backgroundImage,
-                    -((int)Math.floor((backgroundImage.getWidth() - Constant.FRAME_WIDTH) / 64)) * 32,
-                    -((int)Math.floor((backgroundImage.getHeight() - Constant.FRAME_HEIGHT) / 64)) * 32,
+                    -((backgroundImage.getWidth() - Constant.FRAME_WIDTH) / (Constant.TILE_SIZE * 2)) * Constant.TILE_SIZE,
+                    -((backgroundImage.getHeight() - Constant.FRAME_HEIGHT) / (Constant.TILE_SIZE * 2)) * Constant.TILE_SIZE,
                     this);
         }
 
@@ -453,20 +447,12 @@ public class Game extends JPanel {
     public boolean collisionChecker(Rectangle rectangle) {
         boolean collision = false;
 
-        /** test des collision hitbox **/
-        if (!collision) {
-            for (Rectangle block : map.getHitboxList()) {
-                if (rectangle.intersects(block)) {
-                    //isBlocked = true;
-                    collision = true;
-                    break;
-                }
+        for (Rectangle block : map.getHitboxList()) {
+            if (rectangle.intersects(block)) {
+                collision = true;
+                break;
             }
         }
-//        if (!collision) {
-//            isBlocked = false;
-//        }
-
         return collision;
     }
 
@@ -474,58 +460,19 @@ public class Game extends JPanel {
      * Teste si le personnage entre sur une case de téléportation de la map.
      */
     public void teleportChecker() {
-
-//        Rectangle charBack = getCharBack();
-
         Rectangle charCenter = new Rectangle(charBounds.x + 15, charBounds.y + 15, 2, 2);
         for (Tile tile : map.getTeleportList()) {
             if (charCenter.intersects(tile.getTeleportBounds())) {
-                String teleportCoord = (tile.getY() + Constant.TILE_SIZE) / Constant.TILE_SIZE + "," + (tile.getY() + Constant.TILE_SIZE) / Constant.TILE_SIZE;
-                teleportMap = tile.getBindedTile().split(" ")[0];
+                String teleportMap = tile.getBindedTile().split(" ")[0];
                 characterCoordinates[0] = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]) * Constant.TILE_SIZE;
                 characterCoordinates[1] = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]) * Constant.TILE_SIZE;
-                isTeleport = true;
 
-                MainZeldo.state = MainZeldo.GameState.valueOf(teleportMap);
-                MainZeldo.onStateChange = true;
+                MainZeldo.setGameState(MainZeldo.GameState.valueOf(teleportMap));
+                MainZeldo.setGameStateChange(true);
                 Thread.currentThread().stop();
             }
         }
     }
-
-
-//    public Rectangle getCharBack()
-//    {
-//
-//        Integer backWidth = 2;
-//        Rectangle charBack = null;
-//        switch ((Integer)direction.get(0))
-//        {
-//            case 37:
-//            {
-//                charBack = new Rectangle(charBounds.x+charBounds.width,charBounds.y,backWidth,charBounds.height);
-//                break;
-//            }
-//            case 38:
-//            {
-//                charBack = new Rectangle(charBounds.x,charBounds.y+charBounds.height,charBounds.width,backWidth);
-//                break;
-//            }
-//            case 39:
-//            {
-//                charBack = new Rectangle(charBounds.x-backWidth,charBounds.y,backWidth,charBounds.height);
-//                break;
-//            }
-//            case 40:
-//            {
-//                charBack = new Rectangle(charBounds.x,charBounds.y-backWidth,charBounds.width,backWidth);
-//                break;
-//            }
-//
-//        }
-//
-//        return charBack;
-//    }
 
     public void getActionArea() {
         Integer actionWidth = 10;
@@ -538,27 +485,6 @@ public class Game extends JPanel {
             charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y + 11, actionWidth, 10);
         else if (direction.get(0) == KeyMap.DOWN)
             charActionArea = new Rectangle(charBounds.x + 12, charBounds.y + charBounds.height, 10, actionWidth);
-
-
-        /*switch ((Integer) direction.get(0)) {
-            case 37: {
-                charActionArea = new Rectangle(charBounds.x - actionWidth, charBounds.y, actionWidth, charBounds.height);
-                break;
-            }
-            case 38: {
-                charActionArea = new Rectangle(charBounds.x, charBounds.y - actionWidth, charBounds.width, actionWidth);
-                break;
-            }
-            case 39: {
-                charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y, actionWidth, charBounds.height);
-                break;
-            }
-            case 40: {
-                charActionArea = new Rectangle(charBounds.x, charBounds.y + charBounds.height, charBounds.width, actionWidth);
-                break;
-            }
-        }*/
-
     }
 
 
@@ -605,57 +531,4 @@ public class Game extends JPanel {
         for (DecorObject decorObject : objectToAdd)
             map.getDecorObjectArraylist().add(decorObject);
     }
-
-//    /**
-//     * Teste si l'action du personnage entre en collision avec un des PNJ de la map.
-//     */
-//    public void actionChecker(Rectangle rectangle) {
-//
-//        for (Pnj pnj : map.getPnjList()) {
-//            if (rectangle.intersects(pnj.getHitbox())) {
-//                System.out.println("je parle au pnj " + pnj.getName());
-//            }
-//        }
-//
-//        ArrayList<DecorObject> objectToRemove = new ArrayList<>();
-//        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
-//            if (decorObject.getHitbox() != null) {
-//                if (rectangle.intersects(decorObject.getHitbox())) {
-//                    System.out.println("j'active l'objet " + decorObject.getName());
-//                    if (decorObject instanceof Chest) {
-//                        ((Chest) decorObject).open();
-//                    }
-//                }
-//            }
-//
-//            if (decorObject instanceof CollectableItem) {
-//                if (((CollectableItem) decorObject).getInteractionBox() != null) {
-//                    if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
-//                        System.out.println("je rammasse l'objet " + decorObject.getName());
-//                        objectToRemove.add(decorObject);
-//                    }
-//                }
-//            }
-//        }
-//        for (DecorObject decorObject : objectToRemove) {
-//            map.getDecorObjectArraylist().remove(decorObject);
-//        }
-//
-//    }
-
-//    /**
-//     * Teste si l'action du personnage entre en collision avec un objet rammassable de la map.
-//     */
-//    public void takeChecker(Rectangle rectangle) {
-//
-//        for (DecorObject decorObject : map.getDecorObjectArraylist()) {
-//            if (rectangle.intersects(pnj.getHitbox())) {
-//                if (decorObject instanceof Bush) {
-//                    temp.add(decorObject);
-//                }
-//            }
-//        }
-//    }
-
-
 }

@@ -12,10 +12,11 @@ import com.mesi.pnj.Pnj;
 import com.mesi.pnj.PnjGenerator;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -23,18 +24,29 @@ public class MainZeldo extends JPanel {
 
     /**********  Attributes  **********/
 
-    public static Hashtable<String, MapModel> mapList = new Hashtable<String, MapModel>();
-    public static Hashtable<String, Pnj> pnjList = new Hashtable<String, Pnj>();
+    public static final HashMap<String, MapModel> mapList = new HashMap<>();
+    public static final HashMap<String, Pnj> pnjList = new HashMap<>();
 
-    public static enum GameState {
+    public enum GameState {
         GAME_TITLE, START_MENU, MAP_1, MAP_2
     }
 
-    public static GameState state = GameState.GAME_TITLE;
-    public static boolean onStateChange = true;
+    private static GameState gameState = GameState.GAME_TITLE;
+    private static boolean gameStateChange = true;
 
     private static Game game;
     private static StartMenu startMenu;
+
+    static {
+        try {
+            game = new Game();
+            startMenu = new StartMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     /**********  Constructors  **********/
 
@@ -45,14 +57,13 @@ public class MainZeldo extends JPanel {
      */
     public MainZeldo() throws IOException, ParseException {
         setLayout(null);
-        game = new Game();
-        startMenu = new StartMenu();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (true) {
-                        if (onStateChange) {
+                        if (gameStateChange) {
+                            System.out.println("test");
                             removeAll();
                             add(displayedPanel());
                             repaint();
@@ -67,6 +78,13 @@ public class MainZeldo extends JPanel {
         }).start();
     }
 
+    /**********  Getters / Setters  **********/
+
+    public static final GameState getGameState() { return gameState; }
+    public static final void setGameState(GameState newState) { gameState = newState; }
+    public static final boolean isGameStateChange() { return gameStateChange; }
+    public static final void setGameStateChange(boolean bool) { gameStateChange = bool; }
+
     /**********  Methods  **********/
 
     /**
@@ -74,18 +92,20 @@ public class MainZeldo extends JPanel {
      *
      * @return JPanel.
      */
-    public JPanel displayedPanel() throws IOException, ParseException, InterruptedException {
-        onStateChange = false;
+    public JPanel displayedPanel() throws IOException, ParseException {
+        gameStateChange = false;
 
-        switch (state) {
+        switch (gameState) {
             case GAME_TITLE:
                 return new GameTitle();
 
             case START_MENU:
-                return startMenu = new StartMenu();
+                startMenu = new StartMenu();
+                return startMenu;
 
             default:
-                return game = new Game(mapList.get(state.toString()));
+                game = new Game(mapList.get(gameState.toString()));
+                return game;
         }
     }
 
@@ -99,42 +119,40 @@ public class MainZeldo extends JPanel {
         new PnjGenerator();//genere les PNJs
         new MapGenerator();//genere les maps
         JFrame f = new JFrame();
-        //f.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         f.setLocationRelativeTo(null);
         f.setUndecorated(true);
         f.setResizable(false);
         f.setDefaultCloseOperation(EXIT_ON_CLOSE);
         f.setVisible(true);
-        //f.pack();
-        f.setExtendedState(f.MAXIMIZED_BOTH);
+        f.setExtendedState(Frame.MAXIMIZED_BOTH);
         f.add(new MainZeldo());
 
         f.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
+                // Méthode inutilisée
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e.getKeyCode());
-                if (state == GameState.GAME_TITLE && e.getKeyCode() == KeyMap.ESCAPE) {
-                    onStateChange = true;
-                    state = GameState.START_MENU;
+                if (gameState == GameState.GAME_TITLE && e.getKeyCode() == KeyMap.ESCAPE) {
+                    gameStateChange = true;
+                    gameState = GameState.START_MENU;
                 }
 
-                if (state == GameState.START_MENU) {
+                if (gameState == GameState.START_MENU) {
                     startMenu.onKeyPressed(e.getKeyCode());
                 }
 
 
-                if (state != GameState.GAME_TITLE && state != GameState.START_MENU) {
+                if (gameState != GameState.GAME_TITLE && gameState != GameState.START_MENU) {
                     game.onKeyPressed(e.getKeyCode());
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (state != GameState.GAME_TITLE && state != GameState.START_MENU) {
+                if (gameState != GameState.GAME_TITLE && gameState != GameState.START_MENU) {
                     game.onKeyReleased(e.getKeyCode());
                 }
             }

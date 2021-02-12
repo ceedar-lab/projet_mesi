@@ -1,30 +1,34 @@
 package com.mesi.equipement;
 
+import com.mesi.params.Images;
+
+import java.awt.image.BufferedImage;
+
 /**
  * Équipement dans la main gauche du héros (bouclier).
  */
 public enum LeftHand {
 
     NONE(null, null),
-    SHIELD("src/main/resources/images/sprites/left_hand-shield.png", "src/main/resources/images/sprites/left_hand-shield_cut.png");
+    SHIELD(Images.SP_SHIELD, Images.SP_SHIELD_CUT);
 
-    private final String imageURL;
-    private final String imageURL2;
+    private final BufferedImage image;
+    private final BufferedImage image2;
 
     /**********  Constructors  **********/
 
-    LeftHand(String imageURL, String imageURL2) {
-        this.imageURL = imageURL;
-        this.imageURL2 = imageURL2;
+    LeftHand(BufferedImage image, BufferedImage image2) {
+        this.image = image;
+        this.image2 = image2;
     }
 
     /**********  Methods  **********/
 
-    public String getImageURL() {
-        return this.imageURL;
+    public BufferedImage getImage() {
+        return this.image;
     }
 
-    public String getImageURL2() {
-        return this.imageURL2;
+    public BufferedImage getImage2() {
+        return this.image2;
     }
 }

@@ -1,27 +1,31 @@
 package com.mesi.equipement;
 
+import com.mesi.params.Images;
+
+import java.awt.image.BufferedImage;
+
 /**
  * Équipement de protection de corps du héros.
  */
 public enum Torso {
 
     NONE(null),
-    METAL_ARMOR("src/main/resources/images/sprites/torso-armor_metal.png"),
-    CHAIN_ARMOR("src/main/resources/images/sprites/torso-armor_chain.png"),
-    LEATHER_ARMOR("src/main/resources/images/sprites/torso-armor_leather.png"),
-    TSHIRT("src/main/resources/images/sprites/torso-tshirt.png");
+    METAL_ARMOR(Images.SP_ARMOR_METAL),
+    CHAIN_ARMOR(Images.SP_ARMOR_CHAIN),
+    LEATHER_ARMOR(Images.SP_ARMOR_LEATHER),
+    TSHIRT(Images.SP_TSHIRT);
 
-    private final String imageURL;
+    private final BufferedImage image;
 
     /**********  Constructors  **********/
 
-    Torso(String imageURL) {
-        this.imageURL = imageURL;
+    Torso(BufferedImage image) {
+        this.image = image;
     }
 
     /**********  Methods  **********/
 
-    public String getImageURL() {
-        return this.imageURL;
+    public BufferedImage getImage() {
+        return this.image;
     }
 }

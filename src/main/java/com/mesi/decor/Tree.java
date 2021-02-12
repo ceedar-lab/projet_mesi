@@ -18,7 +18,6 @@ public class Tree extends DecorObject {
         setBackgroundImage(Images.TRUNK);
         setForegroundImage(Images.FOLIAGE);
 
-//        hitbox = new Rectangle(0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
         hitbox = Hitbox.FULL;
     }
 

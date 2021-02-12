@@ -18,17 +18,12 @@ public abstract class DecorObject {
 
     protected String name;
 
-    private Integer animPhase = 0;
-    private Boolean animLaunched = false;
-    protected BufferedImage[] decorObjectAnim;
-
     protected Rectangle hitbox;
 
     /**
      * constructor
      **/
-    public DecorObject() {
-    }
+    protected DecorObject() {}
 
     /**
      * getter setter
@@ -44,9 +39,6 @@ public abstract class DecorObject {
     public void setBackgroundImage(BufferedImage backgroundImage) {
         this.backgroundImage = backgroundImage;
     }
-//    public Rectangle getHitbox() {
-//        return hitbox;
-//    }
 
     public Rectangle getHitbox() {
         Rectangle rectangle = null;
@@ -97,20 +89,4 @@ public abstract class DecorObject {
     }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-//\    public Integer getAnimPhase() {
-//        return animPhase;
-//    }
-//
-//    public void setAnimPhase(Integer animPhase) {
-//        this.animPhase = animPhase;
-//    }
-//
-//    public Boolean getAnimLaunched() {
-//        return animLaunched;
-//    }
-//
-//    public void setAnimLaunched(Boolean animLaunched) {
-//        this.animLaunched = animLaunched;
-//\    }
 }

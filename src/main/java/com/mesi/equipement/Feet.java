@@ -1,25 +1,29 @@
 package com.mesi.equipement;
 
+import com.mesi.params.Images;
+
+import java.awt.image.BufferedImage;
+
 /**
  * Équipement de protection de pieds du héros.
  */
 public enum Feet {
 
     NONE(null),
-    METAL_BOOTS("src/main/resources/images/sprites/feet-boots_metal.png"),
-    LEATHER_BOOTS("src/main/resources/images/sprites/feet-boots_leather.png");
+    METAL_BOOTS(Images.SP_BOOTS_METAL),
+    LEATHER_BOOTS(Images.SP_BOOTS_LEATHER);
 
-    private final String imageURL;
+    private final BufferedImage image;
 
     /**********  Constructors  **********/
 
-    Feet(String imageURL) {
-        this.imageURL = imageURL;
+    Feet(BufferedImage image) {
+        this.image = image;
     }
 
     /**********  Methods  **********/
 
-    public String getImageURL() {
-        return this.imageURL;
+    public BufferedImage getImage() {
+        return this.image;
     }
 }

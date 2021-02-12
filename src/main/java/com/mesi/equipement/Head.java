@@ -1,28 +1,32 @@
 package com.mesi.equipement;
 
+import com.mesi.params.Images;
+
+import java.awt.image.BufferedImage;
+
 /**
  * Équipement de protection de tête du héros.
  */
 public enum Head {
 
     NONE(null),
-    METAL_HELMET("src/main/resources/images/sprites/head-helmet_metal.png"),
-    METAL_HAT("src/main/resources/images/sprites/head-hat_metal.png"),
-    LEATHER_HAT("src/main/resources/images/sprites/head-hat_leather.png"),
-    CHAIN_HOOD("src/main/resources/images/sprites/head-hood_chain.png"),
-    ROBE_HOOD("src/main/resources/images/sprites/head-hood_robe.png");
+    METAL_HELMET(Images.SP_HELMET_METAL),
+    METAL_HAT(Images.SP_HAT_METAL),
+    LEATHER_HAT(Images.SP_HAT_LEATHER),
+    CHAIN_HOOD(Images.SP_HOOD_CHAIN),
+    ROBE_HOOD(Images.SP_HOOD_ROBE);
 
-    private final String imageURL;
+    private final BufferedImage image;
 
     /**********  Constructors  **********/
 
-    Head(String imageURL) {
-        this.imageURL = imageURL;
+    Head(BufferedImage image) {
+        this.image = image;
     }
 
     /**********  Methods  **********/
 
-    public String getImageURL() {
-        return this.imageURL;
+    public BufferedImage getImage() {
+        return this.image;
     }
 }

@@ -1,24 +1,28 @@
 package com.mesi.equipement;
 
+import com.mesi.params.Images;
+
+import java.awt.image.BufferedImage;
+
 /**
  * Équipement de protection de mains du héros.
  */
 public enum Hands {
 
     NONE(null),
-    METAL_GLOVES("src/main/resources/images/sprites/hands-gloves_metal.png");
+    METAL_GLOVES(Images.SP_GLOVES_METAL);
 
-    private final String imageURL;
+    private final BufferedImage image;
 
     /**********  Constructors  **********/
 
-    Hands(String imageURL) {
-        this.imageURL = imageURL;
+    Hands(BufferedImage image) {
+        this.image = image;
     }
 
     /**********  Methods  **********/
 
-    public String getImageURL() {
-        return this.imageURL;
+    public BufferedImage getImage() {
+        return this.image;
     }
 }

@@ -27,33 +27,31 @@ public class GameMenu extends JDialog {
     private JButton btnMenuPrincipal = new JButton("MENU PRINCIPAL");
     private JButton btnQuitter = new JButton("QUITTER");
 
-    private ArrayList<JButton> listeBtn = new ArrayList<JButton>() {{
-        add(btnRetourAuJeu);
-        add(btnEnregistrer);
-        add(btnCharger);
-        add(btnMenuPrincipal);
-        add(btnQuitter);
-    }};
+    private ArrayList<JButton> listeBtn = new ArrayList<>();
 
     private int indexSelection = 0;
 
     /**********  Constructors  **********/
 
     public GameMenu() {
-        //setOpaque(false);
-        /*setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);*/
         setSize(300, 400);
         setUndecorated(true);
         setModal(false);
         setFocusable(true);
         setLocationRelativeTo(null);
 
+        listeBtn.add(btnRetourAuJeu);
+        listeBtn.add(btnEnregistrer);
+        listeBtn.add(btnCharger);
+        listeBtn.add(btnMenuPrincipal);
+        listeBtn.add(btnQuitter);
+
         add(getPanelPrinc());
 
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-
+                // Méthode inutilisée
             }
 
             @Override
@@ -87,7 +85,7 @@ public class GameMenu extends JDialog {
 
             @Override
             public void keyReleased(KeyEvent e) {
-
+                // Méthode inutilisée
             }
         });
 
@@ -175,8 +173,8 @@ public class GameMenu extends JDialog {
                 Game.pause = false;
                 Game.killThread = true;
                 dispose();
-                MainZeldo.state = MainZeldo.GameState.START_MENU;
-                MainZeldo.onStateChange = true;
+                MainZeldo.setGameState(MainZeldo.GameState.START_MENU);
+                MainZeldo.setGameStateChange(true);
             }
         });
 

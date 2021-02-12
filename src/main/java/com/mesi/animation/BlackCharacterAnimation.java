@@ -19,16 +19,4 @@ public class BlackCharacterAnimation extends Animation {
         setFileName("src/main/resources/images/sprites/character-black_skin.png");
         super.createNewCharacter();
     }
-
-    /**********  Methods  **********/
-
-    @Override
-    public BufferedImage[] stand(int direction) throws IOException {
-        return super.stand(direction);
-    }
-
-    @Override
-    public BufferedImage[] walkCycle(int direction) throws IOException {
-        return super.walkCycle(direction);
-    }
 }

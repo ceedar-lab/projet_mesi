@@ -1,26 +1,30 @@
 package com.mesi.equipement;
 
+import com.mesi.params.Images;
+
+import java.awt.image.BufferedImage;
+
 /**
  * Arme dans la main droite du héros.
  */
 public enum RightHand {
 
     NONE(null),
-    DAGGER("src/main/resources/images/sprites/right_hand-dagger.png"),
-    SWORD("src/main/resources/images/sprites/right_hand-sword.png"),
-    SPEAR("src/main/resources/images/sprites/right_hand-spear.png");
+    DAGGER(Images.SP_DAGGER),
+    SWORD(Images.SP_SWORD),
+    SPEAR(Images.SP_SPEAR);
 
-    private final String imageURL;
+    private final BufferedImage image;
 
     /**********  Constructors  **********/
 
-    RightHand(String imageURL) {
-        this.imageURL = imageURL;
+    RightHand(BufferedImage image) {
+        this.image = image;
     }
 
     /**********  Methods  **********/
 
-    public String getImageURL() {
-        return this.imageURL;
+    public BufferedImage getImage() {
+        return this.image;
     }
 }

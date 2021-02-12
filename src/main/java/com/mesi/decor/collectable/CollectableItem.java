@@ -1,4 +1,4 @@
-package com.mesi.decor.collectableItem;
+package com.mesi.decor.collectable;
 
 import com.mesi.decor.DecorObject;
 
@@ -8,7 +8,7 @@ public abstract class CollectableItem extends DecorObject {
 
     protected Rectangle interactionBox;
 
-    public CollectableItem() {
+    protected CollectableItem() {
         super();
     }
 

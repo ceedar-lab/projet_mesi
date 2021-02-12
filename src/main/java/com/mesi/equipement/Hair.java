@@ -1,26 +1,30 @@
 package com.mesi.equipement;
 
+import com.mesi.params.Images;
+
+import java.awt.image.BufferedImage;
+
 /**
  * Couleur de cheveux du héros du héros.
  */
 public enum Hair {
 
     NONE(null),
-    BLACK("src/main/resources/images/sprites/hair-black.png"),
-    BROWN("src/main/resources/images/sprites/hair-brown.png"),
-    BLOND("src/main/resources/images/sprites/hair-blond.png");
+    BLACK(Images.SP_HAIR_BLACK),
+    BROWN(Images.SP_HAIR_BROWN),
+    BLOND(Images.SP_HAIR_BLOND);
 
-    private final String imageURL;
+    private final BufferedImage image;
 
     /**********  Constructors  **********/
 
-    Hair(String imageURL) {
-        this.imageURL = imageURL;
+    Hair(BufferedImage image) {
+        this.image = image;
     }
 
     /**********  Methods  **********/
 
-    public String getImageURL() {
-        return this.imageURL;
+    public BufferedImage getImage() {
+        return this.image;
     }
 }

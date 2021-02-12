@@ -1,4 +1,4 @@
-package com.mesi.decor.collectableItem;
+package com.mesi.decor.collectable;
 
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
@@ -11,7 +11,7 @@ public class Sword extends CollectableItem {
         foregroundOffsetY = 0;
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
-        setName("Sword");
+        setName("Epée");
 
         setBackgroundImage(Images.SWORD);
 

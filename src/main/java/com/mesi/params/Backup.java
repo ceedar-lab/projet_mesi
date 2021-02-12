@@ -2,10 +2,10 @@ package com.mesi.params;
 
 import com.mesi.MainZeldo;
 import com.mesi.decor.*;
-import com.mesi.decor.collectableItem.BootsLeather;
-import com.mesi.decor.collectableItem.Dagger;
-import com.mesi.decor.collectableItem.Shield;
-import com.mesi.decor.collectableItem.Sword;
+import com.mesi.decor.collectable.BootsLeather;
+import com.mesi.decor.collectable.Dagger;
+import com.mesi.decor.collectable.Shield;
+import com.mesi.decor.collectable.Sword;
 import com.mesi.panels.Game;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.pnj.Pnj;
@@ -38,7 +38,7 @@ public class Backup {
 
         JSONObject character = new JSONObject();
         JSONObject location = new JSONObject();
-        location.put("map", MainZeldo.state.toString());
+        location.put("map", MainZeldo.getGameState().toString());
         location.put("positionX", Game.characterCoordinates[0]);
         location.put("positionY", Game.characterCoordinates[1]);
         location.put("direction", Game.direction.get(0));
@@ -46,10 +46,9 @@ public class Backup {
         json.put("character", character);
 
         JSONObject maps = new JSONObject();
-        Enumeration<String> e = MainZeldo.mapList.keys();
-        while (e.hasMoreElements()) {
+
+        for (String mapName : MainZeldo.mapList.keySet()) {
             JSONObject map = new JSONObject();
-            String mapName = e.nextElement();
             for (DecorObject obj : MainZeldo.mapList.get(mapName).getDecorObjectArraylist()) {
                 JSONObject object = new JSONObject();
                 if (obj instanceof Chest)
@@ -114,8 +113,8 @@ public class Backup {
         }
 
         Game.killThread = false;
-        MainZeldo.state = MainZeldo.GameState.valueOf((String)location.get("map"));
-        MainZeldo.onStateChange = true;
+        MainZeldo.setGameState(MainZeldo.GameState.valueOf((String)location.get("map")));
+        MainZeldo.setGameStateChange(true);
     }
 
     /**
@@ -145,8 +144,8 @@ public class Backup {
         map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getWidth()/2 + 3, map_2.getHeight()/2 + -2));
 
         Game.killThread = false;
-        MainZeldo.state = MainZeldo.GameState.MAP_1;
-        MainZeldo.onStateChange = true;
+        MainZeldo.setGameState(MainZeldo.GameState.MAP_1);
+        MainZeldo.setGameStateChange(true);
     }
 
     /**
