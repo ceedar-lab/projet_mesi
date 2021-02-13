@@ -2,7 +2,6 @@ package com.mesi.panels;
 
 import com.mesi.MainZeldo;
 import com.mesi.params.Backup;
-import com.mesi.params.Couleur;
 import com.mesi.params.KeyMap;
 
 import javax.swing.*;
@@ -58,7 +57,7 @@ public class GameMenu extends JDialog {
             public void keyPressed(KeyEvent e) {
 
                 if (e.getKeyCode() == KeyMap.ESCAPE) {
-                    Game.pause = false;
+                    Game.setPause(false);
                     dispose();
                 }
 
@@ -102,7 +101,7 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JPanel getPanelPrinc() {
-        panelPrinc.setBackground(Couleur.Brown_1);
+        panelPrinc.setBackground(Color.LIGHT_GRAY);
 
         GroupLayout layout = new GroupLayout(panelPrinc);
 
@@ -151,7 +150,7 @@ public class GameMenu extends JDialog {
 
         btnRetourAuJeu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Game.pause = false;
+                Game.setPause(false);
                 dispose();
             }
         });
@@ -170,8 +169,8 @@ public class GameMenu extends JDialog {
 
         btnMenuPrincipal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Game.pause = false;
-                Game.killThread = true;
+                Game.setPause(false);
+                Game.setKillThread(true);
                 dispose();
                 MainZeldo.setGameState(MainZeldo.GameState.START_MENU);
                 MainZeldo.setGameStateChange(true);
@@ -214,13 +213,8 @@ public class GameMenu extends JDialog {
 
         btnCharger.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Game.pause = false;
-                Game.killThread = true;
-                try {
-                    TimeUnit.MILLISECONDS.sleep(15);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
+                Game.setPause(false);
+                Game.setKillThread(true);
                 dispose();
                 new Backup().load("save_1");
             }

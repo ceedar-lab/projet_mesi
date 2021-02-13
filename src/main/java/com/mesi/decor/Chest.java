@@ -4,8 +4,6 @@ import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
 import com.mesi.params.Images;
 
-import java.awt.*;
-
 public class Chest extends DecorObject {
 
     private String state;

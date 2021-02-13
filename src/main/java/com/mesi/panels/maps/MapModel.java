@@ -5,15 +5,11 @@ import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
 import com.mesi.pnj.Pnj;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -23,49 +19,29 @@ public abstract class MapModel extends JPanel {
 
     /**********  Attributes  **********/
 
-    private Integer width;
-    private Integer height;
-
-    private Integer startingPositionX;
-    private Integer startingPositionY;
-    private Integer startingDirection;
+    private Integer mapWidth;
+    private Integer mapHeight;
 
     private boolean scrollable;
 
-    private Hashtable<String, Tile> tileList = new Hashtable<>();
+    private Map<String, Tile> tileList = new HashMap<>();
 
-    private String backgroundURL;
     private BufferedImage backgroundImage;
-    private String foregroundURL;
     private BufferedImage foregroundImage;
 
-    private ArrayList<DecorObject> decorObjectArraylist = new ArrayList<>();
-    private ArrayList<Pnj> pnjList = new ArrayList<>();
-
-    private ArrayList<Rectangle> hitboxs = new ArrayList<>();
-
-    private ArrayList<Rectangle> leftBounds;
-    private ArrayList<Rectangle> rightBounds;
-    private ArrayList<Rectangle> upperBounds;
-    private ArrayList<Rectangle> lowerBounds;
-
-    private ArrayList<Tile> teleportList = new ArrayList<>();
+    private List<DecorObject> decorObjectArraylist = new ArrayList<>();
+    private List<Pnj> pnjList = new ArrayList<>();
+    private List<Tile> teleportList = new ArrayList<>();
 
     /**********  Constructors  **********/
 
-    public MapModel(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
-        this.width = width;
-        this.height = height;
-        this.startingPositionX = startingPositionX;
-        this.startingPositionY = startingPositionY;
-        this.startingDirection = startingDirection;
-
-        //setOpaque(true);
-        //setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
+    protected MapModel(Integer mapWidth, Integer mapHeight) {
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
 
         /** Crée toutes les tuiles de la carte, sans bloc de collision et sans téléportation par défaut **/
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
+        for (int x = 0; x < this.mapWidth; x++) {
+            for (int y = 0; y < this.mapHeight; y++) {
                 tileList.put(x + "," + y, new Tile(x * Constant.TILE_SIZE, y * Constant.TILE_SIZE));
             }
         }
@@ -73,82 +49,59 @@ public abstract class MapModel extends JPanel {
         /** ajout de bloc de collision sur les quatre coté **/
 
         /** bord ouest **/
-        for (int y = 0; y < this.height; y++) {
+        for (int y = 0; y < this.mapHeight; y++) {
             Tile tile = tileList.get("0," + y);
-            tile.addHtibox(Hitbox.WEST_BORD);
+            tile.addHitbox(Hitbox.WEST_BORD);
         }
         /** bord est **/
-        for (int y = 0; y < this.height; y++) {
-            Tile tile = tileList.get((this.width - 1) + "," + y);
-            tile.addHtibox(Hitbox.EAST_BORD);
+        for (int y = 0; y < this.mapHeight; y++) {
+            Tile tile = tileList.get((this.mapWidth - 1) + "," + y);
+            tile.addHitbox(Hitbox.EAST_BORD);
         }
         /** bord ouest **/
-        for (int x = 0; x < this.width; x++) {
+        for (int x = 0; x < this.mapWidth; x++) {
             Tile tile = tileList.get(x + ",0");
-            tile.addHtibox(Hitbox.NORTH_BORD);
+            tile.addHitbox(Hitbox.NORTH_BORD);
         }
         /** bord ouest **/
-        for (int x = 0; x < this.width; x++) {
-            Tile tile = tileList.get(x + "," + (this.height - 1));
-            tile.addHtibox(Hitbox.SOUTH_BORD);
+        for (int x = 0; x < this.mapWidth; x++) {
+            Tile tile = tileList.get(x + "," + (this.mapHeight - 1));
+            tile.addHitbox(Hitbox.SOUTH_BORD);
         }
 
     }
 
     /**********  Getters / Setters  **********/
 
-    public int getWidth() {
-        return width;
+    public int getMapWidth() {
+        return mapWidth;
     }
-
-    public int getHeight() {
-        return height;
+    public int getMapHeight() {
+        return mapHeight;
     }
-
-    public Hashtable<String, Tile> getTileList() {
+    public Map<String, Tile> getTileList() {
         return tileList;
     }
-
     public boolean isScrollable() {
         return scrollable;
     }
-
     public void setScrollable(boolean scrollable) {
         this.scrollable = scrollable;
     }
-
-    public void setBackgroundURL(String backgroundURL) {
-        this.backgroundURL = backgroundURL;
-    }
-
-    public BufferedImage getBackgroundImage() {
-        return backgroundImage;
-    }
-
-    public void setForegroundURL(String foregroundURL) {
-        this.foregroundURL = foregroundURL;
-    }
-
-    public BufferedImage getForegroundImage() {
-        return foregroundImage;
-    }
+    public BufferedImage getBackgroundImage() { return backgroundImage; }
+    public BufferedImage getForegroundImage() { return foregroundImage; }
     public void setBackgroundImage(BufferedImage backgroundImage) { this.backgroundImage = backgroundImage; }
     public void setForegroundImage(BufferedImage foregroundImage) { this.foregroundImage = foregroundImage; }
-    public ArrayList<Tile> getTeleportList() {
+    public List<Tile> getTeleportList() {
         return teleportList;
     }
-    public ArrayList<DecorObject> getDecorObjectArraylist() {
+    public List<DecorObject> getDecorObjectArraylist() {
         return decorObjectArraylist;
     }
-
-    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist) {
-        this.decorObjectArraylist = decorObjectArraylist;
-    }
-
-    public ArrayList<Pnj> getPnjList() {
+    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist) { this.decorObjectArraylist = decorObjectArraylist; }
+    public List<Pnj> getPnjList() {
         return pnjList;
     }
-
     public void setPnjList(ArrayList<Pnj> pnjList) {
         this.pnjList = pnjList;
     }
@@ -156,7 +109,7 @@ public abstract class MapModel extends JPanel {
     /**
      * Récupère la liste des hitbox.
      **/
-    public ArrayList<Rectangle> getHitboxList() {
+    public List<Rectangle> getHitboxList() {
         ArrayList<Rectangle> hitboxList = new ArrayList<>();
 
         /** ajout des hitboxs des objet **/
@@ -175,14 +128,13 @@ public abstract class MapModel extends JPanel {
         }
 
         /** ajout des hitboxs des cases non traversables **/
-        Enumeration<Tile> e = getTileList().elements();
-        while (e.hasMoreElements()) {
-            Tile tile = e.nextElement();
+        for (String tileKey : tileList.keySet()) {
+            Tile tile = tileList.get(tileKey);
             if (!tile.isTraversable()) {
-                Rectangle hitbox = new Rectangle(tile.getX() + Hitbox.FULL.x, tile.getY() + Hitbox.FULL.y, Hitbox.FULL.width, Hitbox.FULL.height);
+                Rectangle hitbox = new Rectangle(tile.getTileX() + Hitbox.FULL.x, tile.getTileY() + Hitbox.FULL.y, Hitbox.FULL.width, Hitbox.FULL.height);
                 hitboxList.add(hitbox);
             }
-            if (tile.getHitBoxs().size() > 0) {
+            if (!tile.getHitBoxs().isEmpty()) {
                 for (Rectangle hitbox : tile.getHitBoxs()) {
                     hitboxList.add(hitbox);
                 }

@@ -156,7 +156,7 @@ public abstract class Animation {
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] stand(int direction) throws IOException {
+    public BufferedImage[] stand(int direction) {
         if (direction == KeyMap.LEFT)
             return loadSprites(9, 9, 0, 0);
         if (direction == KeyMap.UP)
@@ -174,7 +174,7 @@ public abstract class Animation {
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] walkCycle(int direction) throws IOException {
+    public BufferedImage[] walkCycle(int direction) {
         if (direction == KeyMap.LEFT)
             return loadSprites(9, 9, 0, 8);
         if (direction == KeyMap.UP)
@@ -193,7 +193,7 @@ public abstract class Animation {
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] hit(int direction, RightHand weapon) throws IOException {
+    public BufferedImage[] hit(int direction, RightHand weapon) {
         if (weapon == RightHand.DAGGER || weapon == RightHand.SWORD) {
             if (direction == KeyMap.LEFT)
                 return loadSprites(13, 13, 0, 5);

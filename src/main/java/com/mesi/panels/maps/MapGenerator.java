@@ -1,7 +1,6 @@
 package com.mesi.panels.maps;
 
 import com.mesi.MainZeldo;
-import com.mesi.panels.Game;
 import com.mesi.params.Constant;
 
 import java.io.IOException;
@@ -15,22 +14,21 @@ public class MapGenerator {
 
     public MapGenerator() throws IOException {
 
-        map_2();
-        map_1();
+        map2();
+        map1();
     }
 
     /**********  Methods  **********/
 
-    public void map_1() throws IOException {
-        MapModel map = new Map_1(90, 50, Game.characterCoordinates[0] / Constant.TILE_SIZE, Game.characterCoordinates[1] / Constant.TILE_SIZE, Game.direction.get(0));
+    public void map1() throws IOException {
+        MapModel map = new Map1(90, 50);
         String name = "MAP_1";
 
         MainZeldo.mapList.put(name, map);
     }
 
-    public void map_2() throws IOException {
-        //MapModel map = new Map_2(40, 24, Game.teleportPositionX, Game.teleportPositionY, (Integer) Game.direction.get(0));
-        MapModel map = new Map_2(Constant.FRAME_WIDTH / 32, Constant.FRAME_HEIGHT / 32, Game.characterCoordinates[0] / Constant.TILE_SIZE, Game.characterCoordinates[1] / Constant.TILE_SIZE, Game.direction.get(0));
+    public void map2() throws IOException {
+        MapModel map = new Map2(Constant.FRAME_WIDTH / 32, Constant.FRAME_HEIGHT / 32);
         String name = "MAP_2";
 
         MainZeldo.mapList.put(name, map);

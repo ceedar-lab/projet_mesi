@@ -18,6 +18,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game extends JPanel {
 
@@ -25,13 +26,14 @@ public class Game extends JPanel {
 
     private MapModel map;
 
-    public static Integer[] characterCoordinates = new Integer[] { 11 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE };
-    public static ArrayList<Integer> direction = new ArrayList() {{
-        add(KeyMap.DOWN);
-    }};
-    public static boolean pause = false;
-    public static boolean killThread = false;
-    public static boolean stopDebug = false;
+    private static Integer[] characterCoordinates = new Integer[] { 11 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE };
+    private static List<Integer> direction = new ArrayList<>();
+    static {
+        direction.add(KeyMap.DOWN);
+    }
+    private static boolean pause = false;
+    private static boolean killThread = false;
+    private static boolean stopDebug = false;
 
     private BufferedImage[] sprites;
 
@@ -45,7 +47,6 @@ public class Game extends JPanel {
     private boolean isStanding = true;
     private boolean isHiting = false;
     private boolean isActing = false;
-    private boolean isBlocked = false;
 
     private Integer walkSpriteX = 0;
     private Integer walkSpriteY = 2;
@@ -64,8 +65,7 @@ public class Game extends JPanel {
         @Override
         public void run() {
             try {
-                while (true) {
-                    if (killThread) Thread.currentThread().stop();
+                do {
                     if (!isStanding && !pause) {
                         setCharCoordinates();
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
@@ -81,10 +81,11 @@ public class Game extends JPanel {
                         }
                     }
                     Thread.sleep(Constant.FPS);
-                }
+                } while (!killThread);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Thread.currentThread().interrupt();
         }
     });
 
@@ -118,11 +119,15 @@ public class Game extends JPanel {
 
     /**********  Getters / Setters  **********/
 
+    public static Integer[] getCharacterCoordinates() { return characterCoordinates; }
+    public static void setCharacterCoordinates(Integer[] characterCoordinates) { Game.characterCoordinates = characterCoordinates; }
+    public static List<Integer> getDirection() { return direction; }
+    public static void setDirection(List<Integer> direction) { Game.direction = direction; }
     public static boolean isPaused() { return pause; }
     public static void setPause(boolean pause) { Game.pause = pause; }
     public static boolean isThreadKilled() { return killThread; }
     public static void setKillThread(boolean killThread) { Game.killThread = killThread; }
-    public static boolean isStopDebug() { return stopDebug; }
+    public static boolean isDebugStopped() { return stopDebug; }
     public static void setStopDebug(boolean stopDebug) { Game.stopDebug = stopDebug; }
 
     /**********  Methods  **********/
@@ -139,21 +144,21 @@ public class Game extends JPanel {
         boolean lowerEdge;
 
         if (map.isScrollable()) {
-            rightEdge = (characterCoordinates[0] > map.getWidth() * Constant.TILE_SIZE - Constant.FRAME_WIDTH + translateBoundRight);
-            lowerEdge = (characterCoordinates[1] > map.getHeight() * Constant.TILE_SIZE - Constant.FRAME_HEIGHT + translateBoundDown);
+            rightEdge = (characterCoordinates[0] > map.getMapWidth() * Constant.TILE_SIZE - Constant.FRAME_WIDTH + translateBoundRight);
+            lowerEdge = (characterCoordinates[1] > map.getMapHeight() * Constant.TILE_SIZE - Constant.FRAME_HEIGHT + translateBoundDown);
             if (!rightEdge) {
                 if (characterCoordinates[0] > translateBoundRight) {
                     g.translate(0 - (characterCoordinates[0] - translateBoundRight), 0);
                 }
             } else {
-                g.translate(0 - map.getWidth() * Constant.TILE_SIZE + Constant.FRAME_WIDTH, 0);
+                g.translate(0 - map.getMapWidth() * Constant.TILE_SIZE + Constant.FRAME_WIDTH, 0);
             }
             if (!lowerEdge) {
                 if (characterCoordinates[1] > translateBoundDown) {
                     g.translate(0, 0 - (characterCoordinates[1] - translateBoundDown));
                 }
             } else {
-                g.translate(0, 0 - map.getHeight() * Constant.TILE_SIZE + Constant.FRAME_HEIGHT);
+                g.translate(0, 0 - map.getMapHeight() * Constant.TILE_SIZE + Constant.FRAME_HEIGHT);
             }
             g.drawImage(backgroundImage, 0, 0,this);
         } else {
@@ -166,37 +171,22 @@ public class Game extends JPanel {
         /** Affiche les objets de décor en arrière plan **/
         for (DecorObject decorObject : map.getDecorObjectArraylist()) {
             if (decorObject.getBackgroundImage() != null) {
-//\                if (decorObject.getAnimLaunched()) {
-//                    decorObject.setAnimPhase(decorObject.getAnimPhase() + 1);
-//\
                 g.drawImage(decorObject.getBackgroundImage(), decorObject.getX() + decorObject.getBackgroundOffsetX(), decorObject.getY() + decorObject.getBackgroundOffsetY(), this);
             }
         }
 
-
         /** affiche les PNJ en arriere plan **/
         for (Pnj pnj : map.getPnjList()) {
-            try {
-                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
         }
-
 
         /** Ombre du personnage **/
         g.setColor(new Color(0, 0, 0, .5f));
         g.fillOval(characterCoordinates[0], characterCoordinates[1] + 16, 32, 14);
 
-//\        Integer offsetX = -Constant.TILE_SIZE / 2;
-//\        Integer offsetY = -Constant.TILE_SIZE;
         /** Mise à jour des mouvements du personnage **/
         if (isHiting) { // Attaque
-            try {
-                sprites = character.hit(direction.get(0), character.getRightHand());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sprites = character.hit(direction.get(0), character.getRightHand());
 
             if (character.getRightHand() == RightHand.DAGGER || character.getRightHand() == RightHand.SWORD) {
                 g.drawImage(sprites[hitSprite], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
@@ -227,11 +217,7 @@ public class Game extends JPanel {
             }
 
         } else if (isMovingRight || isMovingLeft || isMovingUp || isMovingDown) { // Déplacement
-            try {
-                sprites = character.walkCycle(direction.get(0));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sprites = character.walkCycle(direction.get(0));
             if (direction.get(0).equals(KeyMap.LEFT) || direction.get(0).equals(KeyMap.RIGHT)) {
                 g.drawImage(sprites[walkSpriteX], characterCoordinates[0] + offsetXChar, characterCoordinates[1] + offsetYChar, this);
             } else {
@@ -260,8 +246,8 @@ public class Game extends JPanel {
             g.drawImage(foregroundImage, 0, 0, this);
         } else
             g.drawImage(foregroundImage,
-                    -((int)Math.floor((foregroundImage.getWidth() - Constant.FRAME_WIDTH) / 64)) * 32,
-                    -((int)Math.floor((foregroundImage.getHeight() - Constant.FRAME_HEIGHT) / 64)) * 32,
+                    -((foregroundImage.getWidth() - Constant.FRAME_WIDTH) / (Constant.TILE_SIZE * 2)) * Constant.TILE_SIZE,
+                    -((foregroundImage.getHeight() - Constant.FRAME_HEIGHT) / (Constant.TILE_SIZE * 2)) * Constant.TILE_SIZE,
                     this);
 
         /** affiche les objet de decor au premier plan **/
@@ -275,11 +261,7 @@ public class Game extends JPanel {
         for (Pnj pnj : map.getPnjList()) {
 
             if (pnj.getCharacterCoordinates()[1] > characterCoordinates[1]) {
-                try {
-                    g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
             }
         }
 
@@ -310,13 +292,6 @@ public class Game extends JPanel {
         /** met en surbrillance orange la zone d'action du personnage **/
         g.setColor(new Color(255, 128, 0, 100));
         g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
-
-
-//        /** met en surbrillance jaune le dos du personnage **/
-//        g.setColor(new Color(255,255,0,180));
-//        g.fillRect(getCharBack().x,getCharBack().y,getCharBack().width,getCharBack().height);
-
-
     }
 
     /**
@@ -342,15 +317,15 @@ public class Game extends JPanel {
             setDirection(keyCode);
             isMovingDown = true;
         }
-        if (keyCode == KeyMap.ATTACK && character.getRightHand().toString() != "NONE") {
+        if (keyCode == KeyMap.ATTACK && !character.getRightHand().toString().equals("NONE")) {
             isHiting = true;
         }
         if (keyCode == KeyMap.ESCAPE) {
-            pause = true;
+            setPause(true);
             new GameMenu();
         }
         if (keyCode == KeyMap.STOP) {
-            stopDebug = !stopDebug;
+            setStopDebug(!isDebugStopped());
         }
         if (keyCode == KeyMap.ACTION) {
             isActing = true;
@@ -390,28 +365,29 @@ public class Game extends JPanel {
      * Modifie les coordonnées du personnage en fonction de sa direction de déplacement et de la longueur de son pas (Constant.STRIDE).
      */
     public void setCharCoordinates() {
+        // Utilisation du setter static conseillée pour la mise à jour des coordonnées en private static
         if (isMovingRight) {
             Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
             if (!collisionChecker(test)) {
-                characterCoordinates[0] += Constant.STRIDE;
+                setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0] += Constant.STRIDE, getCharacterCoordinates()[1] });
             }
         }
         if (isMovingLeft) {
             Rectangle test = new Rectangle(characterCoordinates[0] - Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
             if (!collisionChecker(test)) {
-                characterCoordinates[0] -= Constant.STRIDE;
+                setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0] -= Constant.STRIDE, getCharacterCoordinates()[1] });
             }
         }
         if (isMovingUp) {
             Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
             if (!collisionChecker(test)) {
-                characterCoordinates[1] -= Constant.STRIDE;
+                setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0], getCharacterCoordinates()[1] -= Constant.STRIDE });
             }
         }
         if (isMovingDown) {
             Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
             if (!collisionChecker(test)) {
-                characterCoordinates[1] += Constant.STRIDE;
+                setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0], getCharacterCoordinates()[1] += Constant.STRIDE });
             }
         }
     }
@@ -464,8 +440,10 @@ public class Game extends JPanel {
         for (Tile tile : map.getTeleportList()) {
             if (charCenter.intersects(tile.getTeleportBounds())) {
                 String teleportMap = tile.getBindedTile().split(" ")[0];
-                characterCoordinates[0] = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]) * Constant.TILE_SIZE;
-                characterCoordinates[1] = Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]) * Constant.TILE_SIZE;
+                setCharacterCoordinates(new Integer[]{
+                        Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]) * Constant.TILE_SIZE,
+                        Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]) * Constant.TILE_SIZE
+                });
 
                 MainZeldo.setGameState(MainZeldo.GameState.valueOf(teleportMap));
                 MainZeldo.setGameStateChange(true);
@@ -477,13 +455,13 @@ public class Game extends JPanel {
     public void getActionArea() {
         Integer actionWidth = 10;
 
-        if (direction.get(0) == KeyMap.LEFT)
+        if (direction.get(0).equals(KeyMap.LEFT))
             charActionArea = new Rectangle(charBounds.x - actionWidth, charBounds.y + 11, actionWidth, 10);
-        else if (direction.get(0) == KeyMap.UP)
+        else if (direction.get(0).equals(KeyMap.UP))
             charActionArea = new Rectangle(charBounds.x  + 12, charBounds.y - actionWidth, 10, actionWidth);
-        else if (direction.get(0) == KeyMap.RIGHT)
+        else if (direction.get(0).equals(KeyMap.RIGHT))
             charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y + 11, actionWidth, 10);
-        else if (direction.get(0) == KeyMap.DOWN)
+        else if (direction.get(0).equals(KeyMap.DOWN))
             charActionArea = new Rectangle(charBounds.x + 12, charBounds.y + charBounds.height, 10, actionWidth);
     }
 

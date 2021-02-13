@@ -22,9 +22,28 @@ import java.util.*;
 
 public class Backup {
 
-    /**********  Constructor  ***********/
+    /**********  Attributes  **********/
 
-    public Backup() {}
+    private final String SAVE_PATH = "src/main/resources/saves/";
+    private final String JSON = ".json";
+    /** Personnage **/
+    private final String CHARACTER = "character";
+    private final String LOCATION = "location";
+    private final String POSITION_X = "positionX";
+    private final String POSITION_Y = "positionY";
+    private final String MAP = "map";
+    private final String DIRECTION = "direction";
+    /** Cartes **/
+    private final String MAPS = "maps";
+    private final String MAP_1 = "MAP_1";
+    private final String MAP_2 = "MAP_2";
+    private final String STATE = "state";
+
+    /**********  Constructors  **********/
+
+    public Backup() {
+        // Initialisation classe backup.
+    }
 
     /**********  Methods  **********/
 
@@ -38,12 +57,12 @@ public class Backup {
 
         JSONObject character = new JSONObject();
         JSONObject location = new JSONObject();
-        location.put("map", MainZeldo.getGameState().toString());
-        location.put("positionX", Game.characterCoordinates[0]);
-        location.put("positionY", Game.characterCoordinates[1]);
-        location.put("direction", Game.direction.get(0));
-        character.put("location", location);
-        json.put("character", character);
+        location.put(MAP, MainZeldo.getGameState().toString());
+        location.put(POSITION_X, Game.getCharacterCoordinates()[0]);
+        location.put(POSITION_Y, Game.getCharacterCoordinates()[1]);
+        location.put(DIRECTION, Game.getDirection().get(0));
+        character.put(LOCATION, location);
+        json.put(CHARACTER, character);
 
         JSONObject maps = new JSONObject();
 
@@ -52,16 +71,16 @@ public class Backup {
             for (DecorObject obj : MainZeldo.mapList.get(mapName).getDecorObjectArraylist()) {
                 JSONObject object = new JSONObject();
                 if (obj instanceof Chest)
-                    object.put("state", ((Chest) obj).getState());
-                object.put("positionX", obj.getX());
-                object.put("positionY", obj.getY());
+                    object.put(STATE, ((Chest) obj).getState());
+                object.put(POSITION_X, obj.getX());
+                object.put(POSITION_Y, obj.getY());
                 map.put(obj.toString().split("\\.")[3].toLowerCase(), object);
             }
             maps.put(mapName, map);
         }
-        json.put("maps", maps);
+        json.put(MAPS, maps);
 
-        Files.write(Paths.get("src/main/resources/saves/"+title+".json"), json.toJSONString().getBytes());
+        Files.write(Paths.get(SAVE_PATH + title + JSON), json.toJSONString().getBytes());
     }
 
     /**
@@ -73,47 +92,49 @@ public class Backup {
 
         FileReader reader = null;
         try {
-            reader = new FileReader("src/main/resources/saves/"+title+".json");
+            reader = new FileReader(SAVE_PATH + title + JSON);
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
         }
 
         JSONParser jsonParser = new JSONParser();
-        JSONObject save = null;
+        JSONObject save = new JSONObject();
         try {
             save = (JSONObject) jsonParser.parse(reader);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } catch (ParseException parseException) {
-            parseException.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        JSONObject location = (JSONObject)((JSONObject) save.get("character")).get("location");
-        Game.characterCoordinates[0] = Integer.valueOf(location.get("positionX").toString());
-        Game.characterCoordinates[1] = Integer.valueOf(location.get("positionY").toString());
-        Game.direction = new ArrayList<>() {{ add(Integer.valueOf(location.get("direction").toString())); }};
+        JSONObject location = (JSONObject)((JSONObject) save.get(CHARACTER)).get(LOCATION);
+        Game.setCharacterCoordinates(new Integer[]{
+                Integer.valueOf(location.get(POSITION_X).toString()),
+                Integer.valueOf(location.get(POSITION_Y).toString())
+        });
+        List<Integer> direction = new ArrayList<>();
+        direction.add(Integer.valueOf(location.get(DIRECTION).toString()));
+        Game.setDirection(direction);
 
-        JSONObject maps = (JSONObject) save.get("maps");
+        JSONObject maps = (JSONObject) save.get(MAPS);
         for (Object map : maps.keySet()) {
             JSONObject m = (JSONObject) maps.get(map);
             for (Object decorObject : m.keySet()) {
                 JSONObject p = (JSONObject) m.get(decorObject);
                 if (decorObject.toString().contains("bush")) {
                     MainZeldo.mapList.get(map.toString()).getDecorObjectArraylist().add(new Bush(
-                            Integer.valueOf(p.get("positionX").toString()) / Constant.TILE_SIZE,
-                            Integer.valueOf(p.get("positionY").toString()) / Constant.TILE_SIZE
+                            Integer.valueOf(p.get(POSITION_X).toString()) / Constant.TILE_SIZE,
+                            Integer.valueOf(p.get(POSITION_Y).toString()) / Constant.TILE_SIZE
                     ));
                 } else if (decorObject.toString().contains("chest")) {
-                    MainZeldo.mapList.get(map.toString()).getDecorObjectArraylist().add(new Chest((String) p.get("state"),
-                            Integer.valueOf(p.get("positionX").toString()) / Constant.TILE_SIZE,
-                            Integer.valueOf(p.get("positionY").toString()) / Constant.TILE_SIZE
+                    MainZeldo.mapList.get(map.toString()).getDecorObjectArraylist().add(new Chest((String) p.get(STATE),
+                            Integer.valueOf(p.get(POSITION_X).toString()) / Constant.TILE_SIZE,
+                            Integer.valueOf(p.get(POSITION_Y).toString()) / Constant.TILE_SIZE
                     ));
                 }
             }
         }
 
-        Game.killThread = false;
-        MainZeldo.setGameState(MainZeldo.GameState.valueOf((String)location.get("map")));
+        Game.setKillThread(false);
+        MainZeldo.setGameState(MainZeldo.GameState.valueOf((String)location.get(MAP)));
         MainZeldo.setGameStateChange(true);
     }
 
@@ -123,10 +144,15 @@ public class Backup {
     public void startNewGame() {
         clearDecorObjectList();
 
-        Game.characterCoordinates = new Integer[] { 11 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE };
-        Game.direction = new ArrayList() {{ add(KeyMap.DOWN); }};
+        Game.setCharacterCoordinates(new Integer[] {
+                11 * Constant.TILE_SIZE,
+                11 * Constant.TILE_SIZE
+        });
+        List<Integer> direction = new ArrayList<>();
+        direction.add(KeyMap.DOWN);
+        Game.setDirection(direction);
 
-        MapModel map_1 = MainZeldo.mapList.get("MAP_1");
+        MapModel map_1 = MainZeldo.mapList.get(MAP_1);
         for (int i = 14; i < 17; i++) {
             map_1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
@@ -137,13 +163,13 @@ public class Backup {
         pnjTest.setDirection(1);
         map_1.getPnjList().add(pnjTest);
 
-        MapModel map_2 = MainZeldo.mapList.get("MAP_2");
-        map_2.getDecorObjectArraylist().add(new Dagger(map_2.getWidth()/2 - 8, map_2.getHeight()/2 + 3));
-        map_2.getDecorObjectArraylist().add(new BootsLeather(map_2.getWidth()/2 - 2, map_2.getHeight()/2 + -2));
-        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getWidth()/2, map_2.getHeight()/2 + -2));
-        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getWidth()/2 + 3, map_2.getHeight()/2 + -2));
+        MapModel map_2 = MainZeldo.mapList.get(MAP_2);
+        map_2.getDecorObjectArraylist().add(new Dagger(map_2.getMapWidth()/2 - 8, map_2.getMapHeight()/2 + 3));
+        map_2.getDecorObjectArraylist().add(new BootsLeather(map_2.getMapWidth()/2 - 2, map_2.getMapHeight()/2 + -2));
+        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getMapWidth()/2, map_2.getMapHeight()/2 + -2));
+        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getMapWidth()/2 + 3, map_2.getMapHeight()/2 + -2));
 
-        Game.killThread = false;
+        Game.setKillThread(false);
         MainZeldo.setGameState(MainZeldo.GameState.MAP_1);
         MainZeldo.setGameStateChange(true);
     }

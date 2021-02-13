@@ -5,13 +5,17 @@ package com.mesi.params;
  */
 public class KeyMap {
 
-    public static Integer LEFT = 37;
-    public static Integer RIGHT = 39;
-    public static Integer UP = 38;
-    public static Integer DOWN = 40;
-    public static Integer ESCAPE = 27;
-    public static Integer ENTER = 10;
-    public static Integer ATTACK = 32; //touche espace
-    public static Integer STOP = 83; //touche S
-    public static Integer ACTION = 65; //touche A
+    public static final Integer LEFT = 37;
+    public static final Integer RIGHT = 39;
+    public static final Integer UP = 38;
+    public static final Integer DOWN = 40;
+    public static final Integer ESCAPE = 27;
+    public static final Integer ENTER = 10;
+    public static final Integer ATTACK = 32; //touche espace
+    public static final Integer STOP = 83; //touche S
+    public static final Integer ACTION = 65; //touche A
+
+    private KeyMap() {
+        // Constructeur privé utilisé pour cacher le constructeur implicite crée par Java.
+    }
 }

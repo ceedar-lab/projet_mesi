@@ -2,7 +2,6 @@ package com.mesi.animation;
 
 import com.mesi.equipement.*;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class BrownCharacterAnimation extends Animation {

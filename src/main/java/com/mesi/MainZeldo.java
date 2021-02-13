@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -24,8 +25,8 @@ public class MainZeldo extends JPanel {
 
     /**********  Attributes  **********/
 
-    public static final HashMap<String, MapModel> mapList = new HashMap<>();
-    public static final HashMap<String, Pnj> pnjList = new HashMap<>();
+    public static final Map<String, MapModel> mapList = new HashMap<>();
+    public static final Map<String, Pnj> pnjList = new HashMap<>();
 
     public enum GameState {
         GAME_TITLE, START_MENU, MAP_1, MAP_2
@@ -63,7 +64,6 @@ public class MainZeldo extends JPanel {
                 try {
                     while (true) {
                         if (gameStateChange) {
-                            System.out.println("test");
                             removeAll();
                             add(displayedPanel());
                             repaint();
@@ -92,7 +92,7 @@ public class MainZeldo extends JPanel {
      *
      * @return JPanel.
      */
-    public JPanel displayedPanel() throws IOException, ParseException {
+    private static JPanel displayedPanel() throws IOException, ParseException {
         gameStateChange = false;
 
         switch (gameState) {

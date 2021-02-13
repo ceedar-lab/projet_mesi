@@ -1,7 +1,6 @@
 package com.mesi.panels;
 
 import com.mesi.params.Constant;
-import com.mesi.params.Couleur;
 import com.mesi.params.Backup;
 import com.mesi.params.KeyMap;
 import org.json.simple.parser.ParseException;
@@ -12,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class StartMenu extends JPanel {
 
@@ -22,12 +22,7 @@ public class StartMenu extends JPanel {
     private JButton btnOptions = new JButton("OPTIONS");
     private JButton btnQuitter = new JButton("QUITTER");
 
-    private ArrayList<JButton> listeBtn = new ArrayList<JButton>() {{
-        add(btnNouvellePartie);
-        add(btnContinuer);
-        add(btnOptions);
-        add(btnQuitter);
-    }};
+    private List<JButton> listeBtn = new ArrayList<>();
 
     private int indexSelection = 0;
 
@@ -38,12 +33,17 @@ public class StartMenu extends JPanel {
      */
     public StartMenu() throws IOException, ParseException {
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
-        setBackground(Couleur.Brown_1);
+        setBackground(Color.CYAN);
 
         GroupLayout layout = new GroupLayout(this);
 
         int largeurBtn = 140;
         int hauteurBtn = 20;
+
+        listeBtn.add(btnNouvellePartie);
+        listeBtn.add(btnContinuer);
+        listeBtn.add(btnOptions);
+        listeBtn.add(btnQuitter);
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -117,16 +117,14 @@ public class StartMenu extends JPanel {
      * @return
      */
     public JButton getBtnOptions() {
-        /*btnOptions.setFocusable(false);
+        btnOptions.setFocusable(false);
         btnContinuer.setBackground(Color.LIGHT_GRAY);
 
-        if (btnOptions.getActionListeners().length == 0) {
-            btnOptions.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                }
-            });
-        }*/
+        btnOptions.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Méthode à venir
+            }
+        });
 
         return btnOptions;
     }

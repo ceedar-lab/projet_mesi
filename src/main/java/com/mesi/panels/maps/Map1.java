@@ -10,12 +10,12 @@ import java.io.IOException;
  * Paramétrage de l'image de fond, des blocs de collisions et de téléportation de la map.
  * L'initialisation se fait partir de la classe MapGenerator.
  */
-public class Map_1 extends MapModel {
+public class Map1 extends MapModel {
 
     /**********  Constructors  **********/
 
-    public Map_1(Integer width, Integer height, Integer startingPositionX, Integer startingPositionY, Integer startingDirection) throws IOException {
-        super(width, height, startingPositionX, startingPositionY, startingDirection);
+    public Map1(Integer width, Integer height) throws IOException {
+        super(width, height);
 
         setBackgroundImage(Images.MAP_1_BG);
         setForegroundImage(Images.MAP_1_FG);
@@ -500,8 +500,8 @@ public class Map_1 extends MapModel {
         getTileList().get("89,28").setTraversable(false);
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
-        addTeleport(getTileList().get("17,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getWidth()/2 - 1) + "," + (MainZeldo.mapList.get("MAP_2").getHeight()/2 + 6), Hitbox.NORTH_BORD);
-        addTeleport(getTileList().get("18,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getWidth()/2) + "," + (MainZeldo.mapList.get("MAP_2").getHeight()/2 + 6), Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("17,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getMapWidth()/2 - 1) + "," + (MainZeldo.mapList.get("MAP_2").getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("18,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getMapWidth()/2) + "," + (MainZeldo.mapList.get("MAP_2").getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
 
     }
 }
