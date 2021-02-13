@@ -500,8 +500,9 @@ public class Map1 extends MapModel {
         getTileList().get("89,28").setTraversable(false);
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
-        addTeleport(getTileList().get("17,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getMapWidth()/2 - 1) + "," + (MainZeldo.mapList.get("MAP_2").getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
-        addTeleport(getTileList().get("18,14"), true, "MAP_2 " + (MainZeldo.mapList.get("MAP_2").getMapWidth()/2) + "," + (MainZeldo.mapList.get("MAP_2").getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
+        final String MAP2 = "MAP_2";
+        addTeleport(getTileList().get("17,14"), true, MAP2 + " " + (MainZeldo.mapList.get(MAP2).getMapWidth()/2 - 1) + "," + (MainZeldo.mapList.get(MAP2).getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("18,14"), true, MAP2 + " " + (MainZeldo.mapList.get(MAP2).getMapWidth()/2) + "," + (MainZeldo.mapList.get(MAP2).getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
 
     }
 }

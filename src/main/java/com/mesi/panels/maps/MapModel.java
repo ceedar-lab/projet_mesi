@@ -102,7 +102,7 @@ public abstract class MapModel extends JPanel {
     public List<Pnj> getPnjList() {
         return pnjList;
     }
-    public void setPnjList(ArrayList<Pnj> pnjList) {
+    public void setPnjList(List<Pnj> pnjList) {
         this.pnjList = pnjList;
     }
 

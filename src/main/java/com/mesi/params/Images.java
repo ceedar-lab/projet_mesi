@@ -1,6 +1,5 @@
 package com.mesi.params;
 
-import com.mesi.MainZeldo;
 import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;

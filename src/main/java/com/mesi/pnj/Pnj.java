@@ -46,8 +46,7 @@ public class Pnj extends Animation {
     }
 
     public Rectangle getHitbox() {
-        Rectangle rectangle = new Rectangle(characterCoordinates[0] + hitbox.x, characterCoordinates[1] + hitbox.y, hitbox.width, hitbox.height);
-        return rectangle;
+        return new Rectangle(characterCoordinates[0] + hitbox.x, characterCoordinates[1] + hitbox.y, hitbox.width, hitbox.height);
     }
 
     public void setHitbox(Rectangle rectangle) {

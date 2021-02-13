@@ -154,22 +154,22 @@ public class Backup {
         direction.add(KeyMap.DOWN);
         Game.setDirection(direction);
 
-        MapModel map_1 = MainZeldo.mapList.get(MAP_1);
+        MapModel map1 = MainZeldo.mapList.get(MAP_1);
         for (int i = 14; i < 17; i++) {
-            map_1.getDecorObjectArraylist().add(new Bush(i, 24));
+            map1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
-        map_1.getDecorObjectArraylist().add(new Sword(12, 13));
-        map_1.getDecorObjectArraylist().add(new Shield(19, 18));
+        map1.getDecorObjectArraylist().add(new Sword(12, 13));
+        map1.getDecorObjectArraylist().add(new Shield(19, 18));
         Pnj pnjTest = MainZeldo.pnjList.get("pnjTest");
         pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
         pnjTest.setDirection(1);
-        map_1.getPnjList().add(pnjTest);
+        map1.getPnjList().add(pnjTest);
 
-        MapModel map_2 = MainZeldo.mapList.get(MAP_2);
-        map_2.getDecorObjectArraylist().add(new Dagger(map_2.getMapWidth()/2 - 8, map_2.getMapHeight()/2 + 3));
-        map_2.getDecorObjectArraylist().add(new BootsLeather(map_2.getMapWidth()/2 - 2, map_2.getMapHeight()/2 + -2));
-        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getMapWidth()/2, map_2.getMapHeight()/2 + -2));
-        map_2.getDecorObjectArraylist().add(new Chest("closed", map_2.getMapWidth()/2 + 3, map_2.getMapHeight()/2 + -2));
+        MapModel map2 = MainZeldo.mapList.get(MAP_2);
+        map2.getDecorObjectArraylist().add(new Dagger(map2.getMapWidth()/2 - 8, map2.getMapHeight()/2 + 3));
+        map2.getDecorObjectArraylist().add(new BootsLeather(map2.getMapWidth()/2 - 2, map2.getMapHeight()/2 + -2));
+        map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2, map2.getMapHeight()/2 + -2));
+        map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + -2));
 
         Game.setKillThread(false);
         MainZeldo.setGameState(MainZeldo.GameState.MAP_1);

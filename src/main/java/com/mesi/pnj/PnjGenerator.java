@@ -4,39 +4,33 @@ import com.mesi.MainZeldo;
 import com.mesi.equipement.*;
 import com.mesi.params.Hitbox;
 
+import java.io.IOException;
+
 public class PnjGenerator {
 
 
-    public PnjGenerator() {
+    public PnjGenerator() throws IOException {
 
-        PnjTest("pnjTest");
-
-    }
-
-    private void PnjTest(String name) {
-        try {
-            Pnj pnjTest = new Pnj
-                    (
-                            Hair.BLOND,
-                            Head.NONE,
-                            Torso.TSHIRT,
-                            Hands.NONE,
-                            Legs.LEATHER_PANTS,
-                            Feet.LEATHER_BOOTS,
-                            RightHand.NONE,
-                            LeftHand.NONE,
-                            "src/main/resources/images/sprites/character-white_skin.png"
-                    );
-            pnjTest.setName(name);
-            pnjTest.setHitbox(Hitbox.FULL);
-
-            MainZeldo.pnjList.put(name, pnjTest);
-
-        } catch (Exception e) {
-
-        }
+        pnjTest("pnjTest");
 
     }
 
+    private void pnjTest(String name) throws IOException {
+        Pnj pnjTest = new Pnj
+                (
+                        Hair.BLOND,
+                        Head.NONE,
+                        Torso.TSHIRT,
+                        Hands.NONE,
+                        Legs.LEATHER_PANTS,
+                        Feet.LEATHER_BOOTS,
+                        RightHand.NONE,
+                        LeftHand.NONE,
+                        "src/main/resources/images/sprites/character-white_skin.png"
+                );
+        pnjTest.setName(name);
+        pnjTest.setHitbox(Hitbox.FULL);
 
+        MainZeldo.pnjList.put(name, pnjTest);
+    }
 }

@@ -12,6 +12,7 @@ import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 import com.mesi.pnj.Pnj;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,8 @@ import java.util.List;
 public class Game extends JPanel {
 
     /**********  Attributes  **********/
+
+    private static Logger logger = Logger.getLogger(Game.class);
 
     private MapModel map;
 
@@ -77,13 +80,13 @@ public class Game extends JPanel {
                         repaint();
 
                         if (stopDebug) {
-                            System.out.println("petite pause");
+                            logger.info("Petite pause");
                         }
                     }
                     Thread.sleep(Constant.FPS);
                 } while (!killThread);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Erreur lors de l'exécution du thread");
             }
             Thread.currentThread().interrupt();
         }
@@ -472,7 +475,7 @@ public class Game extends JPanel {
     public void hitChecker(Rectangle rectangle) {
         for (Pnj pnj : map.getPnjList()) {
             if (rectangle.intersects(pnj.getHitbox())) {
-                System.out.println("je parle au pnj " + pnj.getName());
+                logger.info("Je parle au pnj " + pnj.getName());
             }
         }
 
@@ -497,7 +500,7 @@ public class Game extends JPanel {
             if (decorObject instanceof CollectableItem) {
                 if (((CollectableItem) decorObject).getInteractionBox() != null) {
                     if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
-                        System.out.println("je rammasse l'objet " + decorObject.getName());
+                        logger.info("Je ramasse l'objet " + decorObject.getName());
                         objectToRemove.add(decorObject);
                     }
                 }
