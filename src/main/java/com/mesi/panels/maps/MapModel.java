@@ -98,7 +98,7 @@ public abstract class MapModel extends JPanel {
     public List<DecorObject> getDecorObjectArraylist() {
         return decorObjectArraylist;
     }
-    public void setDecorObjectArraylist(ArrayList<DecorObject> decorObjectArraylist) { this.decorObjectArraylist = decorObjectArraylist; }
+    public void setDecorObjectArraylist(List<DecorObject> decorObjectArraylist) { this.decorObjectArraylist = decorObjectArraylist; }
     public List<Pnj> getPnjList() {
         return pnjList;
     }
@@ -128,8 +128,8 @@ public abstract class MapModel extends JPanel {
         }
 
         /** ajout des hitboxs des cases non traversables **/
-        for (String tileKey : tileList.keySet()) {
-            Tile tile = tileList.get(tileKey);
+        for (Map.Entry<String, Tile> entry : tileList.entrySet()) {
+            Tile tile = entry.getValue();
             if (!tile.isTraversable()) {
                 Rectangle hitbox = new Rectangle(tile.getTileX() + Hitbox.FULL.x, tile.getTileY() + Hitbox.FULL.y, Hitbox.FULL.width, Hitbox.FULL.height);
                 hitboxList.add(hitbox);

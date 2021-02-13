@@ -7,6 +7,7 @@ import com.mesi.panels.maps.MapGenerator;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
+import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import com.mesi.pnj.Pnj;
 import com.mesi.pnj.PnjGenerator;
@@ -25,6 +26,8 @@ public class MainZeldo extends JPanel {
 
     /**********  Attributes  **********/
 
+    private static Logger logger = Logger.getLogger(MainZeldo.class);
+
     public static final Map<String, MapModel> mapList = new HashMap<>();
     public static final Map<String, Pnj> pnjList = new HashMap<>();
 
@@ -36,18 +39,15 @@ public class MainZeldo extends JPanel {
     private static boolean gameStateChange = true;
 
     private static Game game;
-    private static StartMenu startMenu;
+    private static StartMenu startMenu = new StartMenu();
 
     static {
         try {
             game = new Game();
-            startMenu = new StartMenu();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Erreur IO lors de l'initialisation du jeu");
         }
     }
-
-
 
     /**********  Constructors  **********/
 
@@ -56,7 +56,7 @@ public class MainZeldo extends JPanel {
      * Le thread contrôle de l'état du panel à chaque rotation.
      * Si l'état change, un nouveau panel est affiché.
      */
-    public MainZeldo() throws IOException, ParseException {
+    public MainZeldo() {
         setLayout(null);
         new Thread(new Runnable() {
             @Override
@@ -72,7 +72,7 @@ public class MainZeldo extends JPanel {
                         Thread.sleep(Constant.FPS);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("Erreur lors de l'exécution du thread");
                 }
             }
         }).start();

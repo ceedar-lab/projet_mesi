@@ -3,7 +3,6 @@ package com.mesi.panels;
 import com.mesi.params.Constant;
 import com.mesi.params.Backup;
 import com.mesi.params.KeyMap;
-import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ public class StartMenu extends JPanel {
     /**
      * Menu du jeu.
      */
-    public StartMenu() throws IOException, ParseException {
+    public StartMenu() {
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         setBackground(Color.CYAN);
 

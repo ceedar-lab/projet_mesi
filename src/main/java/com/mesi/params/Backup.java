@@ -9,9 +9,9 @@ import com.mesi.decor.collectable.Sword;
 import com.mesi.panels.Game;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.pnj.Pnj;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,20 +24,22 @@ public class Backup {
 
     /**********  Attributes  **********/
 
-    private final String SAVE_PATH = "src/main/resources/saves/";
-    private final String JSON = ".json";
+    private static Logger logger = Logger.getLogger(Backup.class);
+
+    private static final String SAVE_PATH = "src/main/resources/saves/";
+    private static final String JSON = ".json";
     /** Personnage **/
-    private final String CHARACTER = "character";
-    private final String LOCATION = "location";
-    private final String POSITION_X = "positionX";
-    private final String POSITION_Y = "positionY";
-    private final String MAP = "map";
-    private final String DIRECTION = "direction";
+    private static final String CHARACTER = "character";
+    private static final String LOCATION = "location";
+    private static final String POSITION_X = "positionX";
+    private static final String POSITION_Y = "positionY";
+    private static final String MAP = "map";
+    private static final String DIRECTION = "direction";
     /** Cartes **/
-    private final String MAPS = "maps";
-    private final String MAP_1 = "MAP_1";
-    private final String MAP_2 = "MAP_2";
-    private final String STATE = "state";
+    private static final String MAPS = "maps";
+    private static final String MAP_1 = "MAP_1";
+    private static final String MAP_2 = "MAP_2";
+    private static final String STATE = "state";
 
     /**********  Constructors  **********/
 
@@ -94,7 +96,7 @@ public class Backup {
         try {
             reader = new FileReader(SAVE_PATH + title + JSON);
         } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
+            logger.error("Erreur : le fichier recherché n'existe plus");
         }
 
         JSONParser jsonParser = new JSONParser();
@@ -102,7 +104,7 @@ public class Backup {
         try {
             save = (JSONObject) jsonParser.parse(reader);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Erreur lors du chargement de la partie");
         }
 
         JSONObject location = (JSONObject)((JSONObject) save.get(CHARACTER)).get(LOCATION);

@@ -1,5 +1,8 @@
 package com.mesi.params;
 
+import com.mesi.MainZeldo;
+import org.apache.log4j.Logger;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class Images {
+
+    private static Logger logger = Logger.getLogger(Images.class);
 
     /** Sprites **/
     private static BufferedImage spriteArmorMetal;
@@ -90,7 +95,7 @@ public class Images {
             map2Background = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/maps/map_2-background.jpg")));
             map2Foreground = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/maps/map_2-foreground.png")));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Erreur lors du chargement des images");
         }
     }
 

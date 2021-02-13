@@ -3,6 +3,7 @@ package com.mesi.panels;
 import com.mesi.MainZeldo;
 import com.mesi.params.Backup;
 import com.mesi.params.KeyMap;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,11 +13,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class GameMenu extends JDialog {
 
     /**********  Attributes  **********/
+
+    private static Logger logger = Logger.getLogger(GameMenu.class);
 
     private JPanel panelPrinc = new JPanel();
 
@@ -194,7 +196,7 @@ public class GameMenu extends JDialog {
                 try {
                     new Backup().save("save_1");
                 } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                    logger.error("Erreur lors de la sauvegarde");
                 }
             }
         });
