@@ -73,7 +73,7 @@ public class Game extends JPanel {
                         setCharCoordinates();
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                         getActionArea();
-                        teleportChecker();
+                        teleportChecker(charBounds,map.getTeleportList());
                         if (isHiting || isActing) {
                             hitChecker(charActionArea);
                         }
@@ -371,25 +371,25 @@ public class Game extends JPanel {
         // Utilisation du setter static conseillée pour la mise à jour des coordonnées en private static
         if (isMovingRight) {
             Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0] += Constant.STRIDE, getCharacterCoordinates()[1] });
             }
         }
         if (isMovingLeft) {
             Rectangle test = new Rectangle(characterCoordinates[0] - Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0] -= Constant.STRIDE, getCharacterCoordinates()[1] });
             }
         }
         if (isMovingUp) {
             Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0], getCharacterCoordinates()[1] -= Constant.STRIDE });
             }
         }
         if (isMovingDown) {
             Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0], getCharacterCoordinates()[1] += Constant.STRIDE });
             }
         }
@@ -423,11 +423,11 @@ public class Game extends JPanel {
     /**
      * Teste si le personnage entre en collision avec un des blocs de collision de la map.
      */
-    public boolean collisionChecker(Rectangle rectangle) {
+    public boolean collisionChecker(Rectangle character, List<Rectangle>rectangleList) {
         boolean collision = false;
 
-        for (Rectangle block : map.getHitboxList()) {
-            if (rectangle.intersects(block)) {
+        for (Rectangle block : rectangleList) {
+            if (character.intersects(block)) {
                 collision = true;
                 break;
             }
@@ -438,9 +438,9 @@ public class Game extends JPanel {
     /**
      * Teste si le personnage entre sur une case de téléportation de la map.
      */
-    public void teleportChecker() {
-        Rectangle charCenter = new Rectangle(charBounds.x + 15, charBounds.y + 15, 2, 2);
-        for (Tile tile : map.getTeleportList()) {
+    public void teleportChecker(Rectangle character, List<Tile>tileList) {
+        Rectangle charCenter = new Rectangle(character.x + 15, character.y + 15, 2, 2);
+        for (Tile tile : tileList) {
             if (charCenter.intersects(tile.getTeleportBounds())) {
                 String teleportMap = tile.getBindedTile().split(" ")[0];
                 setCharacterCoordinates(new Integer[]{
