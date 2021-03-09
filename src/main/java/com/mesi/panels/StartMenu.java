@@ -3,11 +3,15 @@ package com.mesi.panels;
 import com.mesi.params.Constant;
 import com.mesi.params.Backup;
 import com.mesi.params.KeyMap;
+import com.mesi.params.Sound;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +33,7 @@ public class StartMenu extends JPanel {
     /**
      * Menu du jeu.
      */
-    public StartMenu() {
+    public StartMenu() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         setBackground(Color.CYAN);
 
@@ -150,8 +154,9 @@ public class StartMenu extends JPanel {
      *
      * @param keyCode
      */
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(int keyCode) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         if (keyCode == KeyMap.UP) {
+            Sound.play(Sound.MENU);
             indexSelection--;
             if (indexSelection < 0) {
                 indexSelection = listeBtn.size() - 1;
@@ -160,6 +165,7 @@ public class StartMenu extends JPanel {
         }
 
         if (keyCode == KeyMap.DOWN) {
+            Sound.play(Sound.MENU);
             indexSelection++;
             if (indexSelection >= listeBtn.size()) {
                 indexSelection = 0;

@@ -12,6 +12,8 @@ import org.json.simple.parser.ParseException;
 import com.mesi.pnj.Pnj;
 import com.mesi.pnj.PnjGenerator;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -39,9 +41,18 @@ public class MainZeldo extends JPanel {
     private static boolean gameStateChange = true;
 
     private static Game game;
-    private static StartMenu startMenu = new StartMenu();
+    private static StartMenu startMenu;
 
     static {
+        try {
+            startMenu = new StartMenu();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
         try {
             game = new Game();
         } catch (IOException e) {
@@ -92,7 +103,7 @@ public class MainZeldo extends JPanel {
      *
      * @return JPanel.
      */
-    private static JPanel displayedPanel() throws IOException, ParseException {
+    private static JPanel displayedPanel() throws IOException, ParseException, LineUnavailableException, UnsupportedAudioFileException {
         gameStateChange = false;
 
         switch (gameState) {
@@ -141,7 +152,15 @@ public class MainZeldo extends JPanel {
                 }
 
                 if (gameState == GameState.START_MENU) {
-                    startMenu.onKeyPressed(e.getKeyCode());
+                    try {
+                        startMenu.onKeyPressed(e.getKeyCode());
+                    } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
+                        unsupportedAudioFileException.printStackTrace();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    } catch (LineUnavailableException lineUnavailableException) {
+                        lineUnavailableException.printStackTrace();
+                    }
                 }
 
 
