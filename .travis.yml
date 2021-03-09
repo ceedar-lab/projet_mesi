@@ -1,5 +1,9 @@
 language: java
 
+
+jdk:
+  - oraclejdk14
+
 addons:
   sonarcloud:
     organization: "olivierargaud"
