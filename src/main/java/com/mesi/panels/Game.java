@@ -473,11 +473,17 @@ public class Game extends JPanel {
      * Teste si l'action du personnage entre en collision avec un des blocs d'interaction de la map.
      */
     public void hitChecker(Rectangle rectangle) {
-        for (Pnj pnj : map.getPnjList()) {
-            if (rectangle.intersects(pnj.getHitbox())) {
-                logger.info("Je parle au pnj " + pnj.getName());
+        if(isActing){
+            for (Pnj pnj : map.getPnjList()) {
+                if (rectangle.intersects(pnj.getHitbox())) {
+//                logger.info("Je parle au pnj " + pnj.getName());
+                    new DialoguePanel(pnj.getDialogue());
+                    isActing = false;
+                    pause = true;
+                }
             }
         }
+
 
         ArrayList<DecorObject> objectToRemove = new ArrayList<>();
         ArrayList<DecorObject> objectToAdd = new ArrayList<>();

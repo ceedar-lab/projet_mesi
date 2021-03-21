@@ -30,6 +30,7 @@ public class PnjGenerator {
                 );
         pnjTest.setName(name);
         pnjTest.setHitbox(Hitbox.FULL);
+        pnjTest.setDialogue(MainZeldo.dialogueList.get("test"));
 
         MainZeldo.pnjList.put(name, pnjTest);
     }

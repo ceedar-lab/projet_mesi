@@ -1,6 +1,7 @@
 package com.mesi.pnj;
 
 import com.mesi.animation.Animation;
+import com.mesi.dialogue.Dialogue;
 import com.mesi.equipement.*;
 
 import java.awt.*;
@@ -12,6 +13,7 @@ public class Pnj extends Animation {
     private Integer[] characterCoordinates;
     private Integer direction;
     private Rectangle hitbox;
+    private Dialogue dialogue;
 
     /**********  Constructors
      * @param hair
@@ -59,5 +61,13 @@ public class Pnj extends Animation {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Dialogue getDialogue() {
+        return dialogue;
+    }
+
+    public void setDialogue(Dialogue dialogue) {
+        this.dialogue = dialogue;
     }
 }
