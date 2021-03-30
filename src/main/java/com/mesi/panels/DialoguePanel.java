@@ -48,7 +48,7 @@ public class DialoguePanel extends JDialog {
                     dispose();
                 }
 
-                if (e.getKeyCode() == KeyMap.LEFT) {
+                if (e.getKeyCode() == KeyMap.UP) {
                     indexSelection--;
                     if (indexSelection < 0) {
                         indexSelection = listeBtn.size() - 1;
@@ -56,7 +56,7 @@ public class DialoguePanel extends JDialog {
                     selectButton(indexSelection);
                 }
 
-                if (e.getKeyCode() == KeyMap.RIGHT) {
+                if (e.getKeyCode() == KeyMap.DOWN) {
                     indexSelection++;
                     if (indexSelection >= listeBtn.size()) {
                         indexSelection = 0;
@@ -86,7 +86,7 @@ public class DialoguePanel extends JDialog {
     public JPanel getPanelPrinc() {
 //        panelPrinc = new JPanel();
         panelPrinc.setBackground(Color.LIGHT_GRAY);
-        panelPrinc.setBackground(new Color(0,0,255));
+//        panelPrinc.setBackground(new Color(0,0,255));
         GroupLayout layout = new GroupLayout(panelPrinc);
 
         int largeurBtn = 800;
@@ -102,11 +102,11 @@ public class DialoguePanel extends JDialog {
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGap(10, 10, Short.MAX_VALUE)
+//                .addGap(10, 10, Short.MAX_VALUE)
                 .addComponent(questionPanel, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(20)
+//                .addGap(20)
                 .addComponent(responsePanel, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(10, 10, Short.MAX_VALUE)
+//                .addGap(10, 10, Short.MAX_VALUE)
         );
 
         panelPrinc.setLayout(layout);
@@ -117,7 +117,8 @@ public class DialoguePanel extends JDialog {
 
 
     public JPanel getQuestionPanel() {
-        questionPanel.setBackground(new Color(255,0,0));
+        questionPanel.setBackground(Color.LIGHT_GRAY);
+//        questionPanel.setBackground(new Color(255,0,0));
         JLabel jLabel = new JLabel();
         jLabel.setText(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getMessage());
         questionPanel.add(jLabel);
@@ -129,8 +130,9 @@ public class DialoguePanel extends JDialog {
     }
 
     public JPanel getResponsePanel() {
-        responsePanel.setBackground(new Color(255,255,0));
-
+        responsePanel.setBackground(Color.LIGHT_GRAY);
+//        responsePanel.setBackground(new Color(255,255,0));
+        GridLayout gridLayout = new GridLayout(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getResponseList().size(),1);
 
         for (String mapKey : dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getResponseList().keySet()) {
 
@@ -152,6 +154,7 @@ public class DialoguePanel extends JDialog {
             listeBtn.add(jButton);
         }
 
+        responsePanel.setLayout(gridLayout);
 
         return responsePanel;
     }

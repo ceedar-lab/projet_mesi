@@ -171,6 +171,11 @@ public class Backup {
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2, map2.getMapHeight()/2 + -2));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + -2));
 
+        Pnj pnjTest2 = MainZeldo.pnjList.get("pnjTest2");
+        pnjTest2.setCharacterCoordinates(new Integer[]{map2.getMapWidth()/2 * Constant.TILE_SIZE, map2.getMapHeight()/2 * Constant.TILE_SIZE});
+        pnjTest2.setDirection(1);
+        map2.getPnjList().add(pnjTest2);
+
         Game.setKillThread(false);
         MainZeldo.setGameState(MainZeldo.GameState.MAP_1);
         MainZeldo.setGameStateChange(true);
