@@ -25,6 +25,7 @@ public class GameMenu extends JDialog {
     private JButton btnRetourAuJeu = new JButton("RETOUR AU JEU");
     private JButton btnEnregistrer = new JButton("ENREGISTRER");
     private JButton btnCharger = new JButton("CHARGER");
+    private JButton btnInventory = new JButton("INVENTAIRE");
     private JButton btnMenuPrincipal = new JButton("MENU PRINCIPAL");
     private JButton btnQuitter = new JButton("QUITTER");
 
@@ -44,6 +45,7 @@ public class GameMenu extends JDialog {
         listeBtn.add(btnRetourAuJeu);
         listeBtn.add(btnEnregistrer);
         listeBtn.add(btnCharger);
+        listeBtn.add(btnInventory);
         listeBtn.add(btnMenuPrincipal);
         listeBtn.add(btnQuitter);
 
@@ -116,6 +118,7 @@ public class GameMenu extends JDialog {
                         .addComponent(getBtnRetourAuJeu(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnEnregistrer(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnCharger(), largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnInventory(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnMenuPrincipal(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnQuitter(), largeurBtn, largeurBtn, largeurBtn)
                 )
@@ -129,6 +132,8 @@ public class GameMenu extends JDialog {
                 .addComponent(btnEnregistrer, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnCharger, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(20)
+                .addComponent(btnInventory, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnMenuPrincipal, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
@@ -151,6 +156,7 @@ public class GameMenu extends JDialog {
         btnRetourAuJeu.setBackground(Color.LIGHT_GRAY);
 
         btnRetourAuJeu.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Game.setPause(false);
                 dispose();
@@ -170,6 +176,7 @@ public class GameMenu extends JDialog {
         btnMenuPrincipal.setBackground(Color.LIGHT_GRAY);
 
         btnMenuPrincipal.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Game.setPause(false);
                 Game.setKillThread(true);
@@ -192,6 +199,7 @@ public class GameMenu extends JDialog {
         btnEnregistrer.setBackground(Color.LIGHT_GRAY);
 
         btnEnregistrer.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     new Backup().save("save_1");
@@ -214,6 +222,7 @@ public class GameMenu extends JDialog {
         btnCharger.setBackground(Color.LIGHT_GRAY);
 
         btnCharger.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Game.setPause(false);
                 Game.setKillThread(true);
@@ -226,6 +235,25 @@ public class GameMenu extends JDialog {
     }
 
     /**
+     * Ouvre l'inventaire.
+     *
+     * @return
+     */
+    public JButton getBtnInventory() {
+        btnInventory.setFocusable(false);
+        btnInventory.setBackground(Color.LIGHT_GRAY);
+
+        btnInventory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Inventory();
+            }
+        });
+
+        return btnInventory;
+    }
+
+    /**
      * Retourne à Windows.
      *
      * @return
@@ -235,6 +263,7 @@ public class GameMenu extends JDialog {
         btnQuitter.setBackground(Color.LIGHT_GRAY);
 
         btnQuitter.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }

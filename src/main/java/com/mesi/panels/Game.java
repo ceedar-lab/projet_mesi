@@ -39,6 +39,7 @@ public class Game extends JPanel {
     private static boolean stopDebug = false;
 
     private BufferedImage[] sprites;
+    public static BufferedImage charPic;
 
     private Rectangle charBounds;
     private Rectangle charActionArea;
@@ -62,7 +63,15 @@ public class Game extends JPanel {
     private Integer translateBoundRight = (Constant.FRAME_WIDTH / 2) - Constant.TILE_SIZE;
     private Integer translateBoundDown = Constant.FRAME_HEIGHT / 2 - (Constant.TILE_SIZE * 2);
 
-    Animation character = new WhiteCharacterAnimation(Hair.BLOND, Head.NONE, Torso.NONE, Hands.NONE, Legs.NONE, Feet.NONE, RightHand.DAGGER, LeftHand.NONE);
+    private static Animation character;
+
+    static {
+        try {
+            character = new WhiteCharacterAnimation(Hair.BLOND, Head.NONE, Torso.NONE, Hands.NONE, Legs.NONE, Feet.NONE, RightHand.NONE, LeftHand.NONE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     Thread thread = new Thread(new Runnable() {
         @Override
@@ -111,6 +120,7 @@ public class Game extends JPanel {
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
         sprites = character.stand(direction.get(0));
+        charPic = character.stand(KeyMap.DOWN)[0];
         backgroundImage = map.getBackgroundImage();
         foregroundImage = map.getForegroundImage();
         setOpaque(false);
@@ -132,6 +142,7 @@ public class Game extends JPanel {
     public static void setKillThread(boolean killThread) { Game.killThread = killThread; }
     public static boolean isDebugStopped() { return stopDebug; }
     public static void setStopDebug(boolean stopDebug) { Game.stopDebug = stopDebug; }
+    public static Animation getCharacter() { return character; }
 
     /**********  Methods  **********/
 
@@ -268,33 +279,33 @@ public class Game extends JPanel {
             }
         }
 
-        /** Affichage des cases de téléportation en jaune **/
-        for (Tile teleport : map.getTeleportList()) {
-            g.setColor(new Color(255, 255, 0, 180));
-            g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
-        }
-
-        /** met en surbrillance rouge les zone de collision **/
-        for (Rectangle hitbox : map.getHitboxList()) {
-            g.setColor(new Color(255, 0, 0, 100));
-            g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-        }
-
-        /** met en surbrillance rouge les zone de collision **/
-        for (DecorObject object : map.getDecorObjectArraylist()) {
-            if (object instanceof CollectableItem) {
-                g.setColor(new Color(0, 0, 255, 100));
-                g.fillRect(object.getX(), object.getY(), Constant.TILE_SIZE, Constant.TILE_SIZE);
-            }
-        }
-
-        /** met en surbrillance violete la zone de collision du perso **/
-        g.setColor(new Color(255, 0, 255, 100));
-        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
-
-        /** met en surbrillance orange la zone d'action du personnage **/
-        g.setColor(new Color(255, 128, 0, 100));
-        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
+//        /** Affichage des cases de téléportation en jaune **/
+//        for (Tile teleport : map.getTeleportList()) {
+//            g.setColor(new Color(255, 255, 0, 180));
+//            g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
+//        }
+//
+//        /** met en surbrillance rouge les zone de collision **/
+//        for (Rectangle hitbox : map.getHitboxList()) {
+//            g.setColor(new Color(255, 0, 0, 100));
+//            g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+//        }
+//
+//        /** met en surbrillance rouge les zone de collision **/
+//        for (DecorObject object : map.getDecorObjectArraylist()) {
+//            if (object instanceof CollectableItem) {
+//                g.setColor(new Color(0, 0, 255, 100));
+//                g.fillRect(object.getX(), object.getY(), Constant.TILE_SIZE, Constant.TILE_SIZE);
+//            }
+//        }
+//
+//        /** met en surbrillance violete la zone de collision du perso **/
+//        g.setColor(new Color(255, 0, 255, 100));
+//        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
+//
+//        /** met en surbrillance orange la zone d'action du personnage **/
+//        g.setColor(new Color(255, 128, 0, 100));
+//        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
     }
 
     /**
@@ -302,7 +313,7 @@ public class Game extends JPanel {
      *
      * @param keyCode
      */
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(int keyCode) throws IOException {
         isStanding = false;
         if (keyCode == KeyMap.LEFT && !isMovingLeft) {
             setDirection(keyCode);
@@ -502,6 +513,7 @@ public class Game extends JPanel {
                     if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
                         logger.info("Je ramasse l'objet " + decorObject.getName());
                         objectToRemove.add(decorObject);
+                        character.itemList.add((CollectableItem)decorObject);
                     }
                 }
             }

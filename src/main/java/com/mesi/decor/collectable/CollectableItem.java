@@ -8,6 +8,8 @@ public abstract class CollectableItem extends DecorObject {
 
     protected Rectangle interactionBox;
 
+    protected Integer quantity;
+
     protected CollectableItem() {
         super();
     }
@@ -20,8 +22,15 @@ public abstract class CollectableItem extends DecorObject {
         return rectangle;
     }
 
-    public void setInteractionBox(Rectangle interactionBox) {
+    public void setInteractionBox(Rectangle interactionBox) { this.interactionBox = interactionBox; }
 
-        this.interactionBox = interactionBox;
+    public Integer getQuantity() {
+        return quantity;
     }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+
 }

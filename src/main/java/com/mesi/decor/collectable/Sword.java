@@ -11,7 +11,7 @@ public class Sword extends CollectableItem {
         foregroundOffsetY = 0;
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
-        setName("Epée");
+        setName("épée");
 
         setBackgroundImage(Images.SWORD);
 
@@ -19,9 +19,10 @@ public class Sword extends CollectableItem {
 
     }
 
-    public Sword(Integer tileX, Integer tileY) {
+    public Sword(Integer tileX, Integer tileY, Integer quantity) {
         this();
         setX(tileX * Constant.TILE_SIZE);
         setY(tileY * Constant.TILE_SIZE);
+        this.quantity = quantity;
     }
 }

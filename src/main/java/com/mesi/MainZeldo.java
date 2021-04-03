@@ -165,7 +165,11 @@ public class MainZeldo extends JPanel {
 
 
                 if (gameState != GameState.GAME_TITLE && gameState != GameState.START_MENU) {
-                    game.onKeyPressed(e.getKeyCode());
+                    try {
+                        game.onKeyPressed(e.getKeyCode());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                 }
             }
 

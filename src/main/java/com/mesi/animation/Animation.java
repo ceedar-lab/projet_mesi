@@ -1,5 +1,7 @@
 package com.mesi.animation;
 
+import com.mesi.decor.DecorObject;
+import com.mesi.decor.collectable.CollectableItem;
 import com.mesi.equipement.*;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
@@ -9,6 +11,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Animation {
 
@@ -24,6 +28,8 @@ public abstract class Animation {
     private RightHand rightHand;
     private LeftHand leftHand;
     private BufferedImage characterImage;
+
+    public List<CollectableItem> itemList = new ArrayList<>();
 
     /**********  Constructors  **********/
 

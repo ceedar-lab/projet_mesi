@@ -158,16 +158,17 @@ public class Backup {
         for (int i = 14; i < 17; i++) {
             map1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
-        map1.getDecorObjectArraylist().add(new Sword(12, 13));
-        map1.getDecorObjectArraylist().add(new Shield(19, 18));
+        map1.getDecorObjectArraylist().add(new Sword(12, 13, 1));
+        map1.getDecorObjectArraylist().add(new Sword(9, 13, 2));
+        map1.getDecorObjectArraylist().add(new Shield(19, 18, 1));
         Pnj pnjTest = MainZeldo.pnjList.get("pnjTest");
         pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
         pnjTest.setDirection(1);
         map1.getPnjList().add(pnjTest);
 
         MapModel map2 = MainZeldo.mapList.get(MAP_2);
-        map2.getDecorObjectArraylist().add(new Dagger(map2.getMapWidth()/2 - 8, map2.getMapHeight()/2 + 3));
-        map2.getDecorObjectArraylist().add(new BootsLeather(map2.getMapWidth()/2 - 2, map2.getMapHeight()/2 + -2));
+        map2.getDecorObjectArraylist().add(new Dagger(map2.getMapWidth()/2 - 8, map2.getMapHeight()/2 + 3, 1));
+        map2.getDecorObjectArraylist().add(new BootsLeather(map2.getMapWidth()/2 - 2, map2.getMapHeight()/2 + -2, 1));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2, map2.getMapHeight()/2 + -2));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + -2));
 
