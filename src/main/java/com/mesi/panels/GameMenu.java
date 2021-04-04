@@ -3,8 +3,11 @@ package com.mesi.panels;
 import com.mesi.MainZeldo;
 import com.mesi.params.Backup;
 import com.mesi.params.KeyMap;
+import com.mesi.sound.Player;
+import com.mesi.sound.Sounds;
 import org.apache.log4j.Logger;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -66,6 +69,7 @@ public class GameMenu extends JDialog {
                 }
 
                 if (e.getKeyCode() == KeyMap.UP) {
+                    new Player(Sounds.MENU, false);
                     indexSelection--;
                     if (indexSelection < 0) {
                         indexSelection = listeBtn.size() - 1;
@@ -74,6 +78,7 @@ public class GameMenu extends JDialog {
                 }
 
                 if (e.getKeyCode() == KeyMap.DOWN) {
+                    new Player(Sounds.MENU, false);
                     indexSelection++;
                     if (indexSelection >= listeBtn.size()) {
                         indexSelection = 0;
@@ -82,6 +87,7 @@ public class GameMenu extends JDialog {
                 }
 
                 if (e.getKeyCode() == KeyMap.ENTER) {
+                    new Player(Sounds.MENU_CLIC, false);
                     listeBtn.get(indexSelection).doClick();
                 }
             }
@@ -181,6 +187,7 @@ public class GameMenu extends JDialog {
                 Game.setPause(false);
                 Game.setKillThread(true);
                 dispose();
+                MainZeldo.generic = new Player(Sounds.GENERIC_START, true);
                 MainZeldo.setGameState(MainZeldo.GameState.START_MENU);
                 MainZeldo.setGameStateChange(true);
             }

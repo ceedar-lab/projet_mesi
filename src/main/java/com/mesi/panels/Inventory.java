@@ -6,6 +6,8 @@ import com.mesi.equipement.RightHand;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 import com.mesi.pojo.Item;
+import com.mesi.sound.Player;
+import com.mesi.sound.Sounds;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -274,6 +276,7 @@ public class Inventory extends JDialog {
     }
 
     public void setEquipement(String equipement) throws IOException {
+        new Player(Sounds.EQUIP_WEAPON, false);
         Animation character = Game.getCharacter();
         switch (equipement) {
             case "épée": character.setRightHand(RightHand.SWORD); break;

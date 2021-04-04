@@ -7,6 +7,8 @@ import com.mesi.panels.maps.MapGenerator;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
+import com.mesi.sound.Player;
+import com.mesi.sound.Sounds;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import com.mesi.pnj.Pnj;
@@ -25,6 +27,8 @@ import java.util.Map;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class MainZeldo extends JPanel {
+
+    public static Player generic;
 
     /**********  Attributes  **********/
 
@@ -46,11 +50,7 @@ public class MainZeldo extends JPanel {
     static {
         try {
             startMenu = new StartMenu();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
         try {
@@ -127,6 +127,7 @@ public class MainZeldo extends JPanel {
      */
     public static void main(String[] args) throws IOException, ParseException {
         //new Images();//charge les images en buffer
+        generic = new Player(Sounds.GENERIC_START, true);
         new PnjGenerator();//genere les PNJs
         new MapGenerator();//genere les maps
         JFrame f = new JFrame();
@@ -154,12 +155,8 @@ public class MainZeldo extends JPanel {
                 if (gameState == GameState.START_MENU) {
                     try {
                         startMenu.onKeyPressed(e.getKeyCode());
-                    } catch (UnsupportedAudioFileException unsupportedAudioFileException) {
+                    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException unsupportedAudioFileException) {
                         unsupportedAudioFileException.printStackTrace();
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    } catch (LineUnavailableException lineUnavailableException) {
-                        lineUnavailableException.printStackTrace();
                     }
                 }
 

@@ -12,11 +12,15 @@ import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 import com.mesi.pnj.Pnj;
+import com.mesi.sound.Player;
+import com.mesi.sound.Sounds;
 import org.apache.log4j.Logger;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,8 @@ import java.util.List;
 public class Game extends JPanel {
 
     /**********  Attributes  **********/
+
+    private Player music;
 
     private static Logger logger = Logger.getLogger(Game.class);
 
@@ -117,6 +123,10 @@ public class Game extends JPanel {
      */
     public Game(MapModel map) throws IOException {
         this.map = map;
+        switch (map.getClass().getSimpleName()) {
+            case "Map1": music = new Player(Sounds.FOREST, true); break;
+            case "Map2": music = new Player(Sounds.HOME, true); break;
+        }
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
         sprites = character.stand(direction.get(0));
@@ -332,6 +342,7 @@ public class Game extends JPanel {
             isMovingDown = true;
         }
         if (keyCode == KeyMap.ATTACK && !character.getRightHand().toString().equals("NONE")) {
+            new Player(Sounds.ATTACK, false);
             isHiting = true;
         }
         if (keyCode == KeyMap.ESCAPE) {
@@ -340,6 +351,7 @@ public class Game extends JPanel {
         }
         if (keyCode == KeyMap.STOP) {
             setStopDebug(!isDebugStopped());
+            new Player(Sounds.GENERIC_START, true);
         }
         if (keyCode == KeyMap.ACTION) {
             isActing = true;
@@ -453,12 +465,12 @@ public class Game extends JPanel {
         Rectangle charCenter = new Rectangle(charBounds.x + 15, charBounds.y + 15, 2, 2);
         for (Tile tile : map.getTeleportList()) {
             if (charCenter.intersects(tile.getTeleportBounds())) {
+                music.stop();
                 String teleportMap = tile.getBindedTile().split(" ")[0];
                 setCharacterCoordinates(new Integer[]{
                         Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]) * Constant.TILE_SIZE,
                         Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]) * Constant.TILE_SIZE
                 });
-
                 MainZeldo.setGameState(MainZeldo.GameState.valueOf(teleportMap));
                 MainZeldo.setGameStateChange(true);
                 Thread.currentThread().stop();
@@ -502,6 +514,7 @@ public class Game extends JPanel {
                     }
                     if (isActing) {
                         if (decorObject instanceof Chest) {
+                            new Player(Sounds.CHEST, false);
                             objectToAdd.add(new Chest("open", decorObject.getX() / Constant.TILE_SIZE, decorObject.getY() / Constant.TILE_SIZE));
                             objectToRemove.add(decorObject);
                         }
@@ -523,5 +536,6 @@ public class Game extends JPanel {
             map.getDecorObjectArraylist().remove(decorObject);
         for (DecorObject decorObject : objectToAdd)
             map.getDecorObjectArraylist().add(decorObject);
+
     }
 }

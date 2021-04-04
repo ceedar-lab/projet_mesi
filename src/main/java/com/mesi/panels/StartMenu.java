@@ -1,9 +1,12 @@
 package com.mesi.panels;
 
+import com.mesi.MainZeldo;
 import com.mesi.params.Constant;
 import com.mesi.params.Backup;
+import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
-import com.mesi.params.Sound;
+import com.mesi.sound.Player;
+import com.mesi.sound.Sounds;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -11,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,8 @@ import java.util.List;
 public class StartMenu extends JPanel {
 
     /**********  Attributes  **********/
+
+    private JLabel title = new JLabel(new ImageIcon(Images.TITLE.getScaledInstance(600, 300, Image.SCALE_SMOOTH)));
 
     private JButton btnNouvellePartie = new JButton("NOUVELLE PARTIE");
     private JButton btnContinuer = new JButton("CONTINUER");
@@ -28,38 +34,60 @@ public class StartMenu extends JPanel {
 
     private int indexSelection = 0;
 
+    Font custom = null;
+
     /**********  Constructors  **********/
 
     /**
      * Menu du jeu.
      */
     public StartMenu() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        try {
+            custom = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/florante.ttf")).deriveFont(28f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(custom);
+        } catch (IOException |FontFormatException e) {
+            //Handle exception
+        }
+
+        title.setBounds(0, 0, 600, 300);
+
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
         setBackground(Color.CYAN);
 
         GroupLayout layout = new GroupLayout(this);
 
-        int largeurBtn = 140;
-        int hauteurBtn = 20;
+        int largeurBtn = 250;
+        int hauteurBtn = 40;
 
         listeBtn.add(btnNouvellePartie);
         listeBtn.add(btnContinuer);
         listeBtn.add(btnOptions);
         listeBtn.add(btnQuitter);
 
+        for (int i = 0; i < listeBtn.size(); i++) {
+            listeBtn.get(i).setFocusable(false);
+            listeBtn.get(i).setBackground(Color.WHITE);
+            listeBtn.get(i).setFont(custom.deriveFont(15f));
+            listeBtn.get(i).setOpaque(false);
+            listeBtn.get(i).setBorderPainted(false);
+        }
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(title)
+                        .addGap(10, 10, Short.MAX_VALUE)
                         .addComponent(getBtnNouvellePartie(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnContinuer(), largeurBtn, largeurBtn, largeurBtn)
-                        .addComponent(btnOptions, largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnOptions(), largeurBtn, largeurBtn, largeurBtn)
                         .addComponent(getBtnQuitter(), largeurBtn, largeurBtn, largeurBtn)
                 )
-                .addGap(0, 0, Short.MAX_VALUE)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGap(10, 10, Short.MAX_VALUE)
+                .addGap(120)
+                .addComponent(title)
+                .addGap(105)
                 .addComponent(btnNouvellePartie, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnContinuer, hauteurBtn, hauteurBtn, hauteurBtn)
@@ -67,12 +95,13 @@ public class StartMenu extends JPanel {
                 .addComponent(btnOptions, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnQuitter, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(10, 10, Short.MAX_VALUE)
+                .addGap(150, 150, Short.MAX_VALUE)
         );
 
         setLayout(layout);
 
-        btnNouvellePartie.setBackground(Color.GREEN);
+        btnNouvellePartie.setOpaque(true);
+        btnNouvellePartie.setBackground(Color.LIGHT_GRAY.brighter());
     }
 
     /**********  Methods  **********/
@@ -83,11 +112,9 @@ public class StartMenu extends JPanel {
      * @return
      */
     public JButton getBtnNouvellePartie() {
-        btnNouvellePartie.setFocusable(false);
-        btnNouvellePartie.setBackground(Color.LIGHT_GRAY);
-
         btnNouvellePartie.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                MainZeldo.generic.stop();
                 new Backup().startNewGame();
             }
         });
@@ -101,9 +128,6 @@ public class StartMenu extends JPanel {
      * @return
      */
     public JButton getBtnContinuer() {
-        btnContinuer.setFocusable(false);
-        btnContinuer.setBackground(Color.LIGHT_GRAY);
-
         btnContinuer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new Backup().load("save_1");
@@ -119,9 +143,6 @@ public class StartMenu extends JPanel {
      * @return
      */
     public JButton getBtnOptions() {
-        btnOptions.setFocusable(false);
-        btnContinuer.setBackground(Color.LIGHT_GRAY);
-
         btnOptions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Méthode à venir
@@ -137,9 +158,6 @@ public class StartMenu extends JPanel {
      * @return
      */
     public JButton getBtnQuitter() {
-        btnQuitter.setFocusable(false);
-        btnQuitter.setBackground(Color.LIGHT_GRAY);
-
         btnQuitter.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
@@ -156,7 +174,7 @@ public class StartMenu extends JPanel {
      */
     public void onKeyPressed(int keyCode) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         if (keyCode == KeyMap.UP) {
-            Sound.play(Sound.MENU);
+            new Player(Sounds.MENU, false);
             indexSelection--;
             if (indexSelection < 0) {
                 indexSelection = listeBtn.size() - 1;
@@ -165,7 +183,7 @@ public class StartMenu extends JPanel {
         }
 
         if (keyCode == KeyMap.DOWN) {
-            Sound.play(Sound.MENU);
+            new Player(Sounds.MENU, false);
             indexSelection++;
             if (indexSelection >= listeBtn.size()) {
                 indexSelection = 0;
@@ -174,6 +192,7 @@ public class StartMenu extends JPanel {
         }
 
         if (keyCode == KeyMap.ENTER) {
+            new Player(Sounds.MENU_CLIC, false);
             listeBtn.get(indexSelection).doClick();
         }
     }
@@ -184,10 +203,20 @@ public class StartMenu extends JPanel {
      * @param buttonNumber
      */
     public void selectButton(int buttonNumber) {
-        for (int i = 0; i < listeBtn.size(); i++) {
-            listeBtn.get(i).setBackground(Color.LIGHT_GRAY);
-        }
+        listeBtn.forEach(btn -> {
+            btn.setOpaque(false);
+            btn.setBackground(Color.GREEN);
+        });
 
-        listeBtn.get(buttonNumber).setBackground(Color.GREEN);
+        listeBtn.get(buttonNumber).setOpaque(true);
+        listeBtn.get(buttonNumber).setBackground(Color.LIGHT_GRAY.brighter());
+
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.drawImage(Images.TITLE_SCREEN, 0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT, this);
     }
 }
