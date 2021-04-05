@@ -15,6 +15,7 @@ public class Images {
     /** Menu **/
     private static BufferedImage titleScreen;
     private static BufferedImage title;
+    private static BufferedImage gameMenu;
     /** Sprites **/
     private static BufferedImage spriteArmorMetal;
     private static BufferedImage spriteArmorChain;
@@ -60,6 +61,7 @@ public class Images {
             /** Menu **/
             titleScreen = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/menu/title_screen.jpg")));
             title = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/menu/title.png")));
+            gameMenu = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/menu/game_menu.png")));
             /** Sprites **/
             spriteArmorMetal = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/sprites/torso-armor_metal.png")));
             spriteArmorChain = toCompatibleImage(ImageIO.read(new File("src/main/resources/images/sprites/torso-armor_chain.png")));
@@ -107,6 +109,7 @@ public class Images {
     /** Menu **/
     public static final BufferedImage TITLE_SCREEN = titleScreen;
     public static final BufferedImage TITLE = title;
+    public static final BufferedImage GAME_MENU = gameMenu;
     /** Sprites **/
     public static final BufferedImage SP_ARMOR_CHAIN = spriteArmorChain;
     public static final BufferedImage SP_ARMOR_METAL = spriteArmorMetal;

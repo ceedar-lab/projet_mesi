@@ -87,7 +87,7 @@ public class StartMenu extends JPanel {
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(120)
                 .addComponent(title)
-                .addGap(105)
+                .addGap(105, 105, Short.MAX_VALUE)
                 .addComponent(btnNouvellePartie, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnContinuer, hauteurBtn, hauteurBtn, hauteurBtn)
@@ -95,13 +95,14 @@ public class StartMenu extends JPanel {
                 .addComponent(btnOptions, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(20)
                 .addComponent(btnQuitter, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(150, 150, Short.MAX_VALUE)
+                .addGap(150)
         );
 
         setLayout(layout);
 
-        btnNouvellePartie.setOpaque(true);
-        btnNouvellePartie.setBackground(Color.LIGHT_GRAY.brighter());
+        btnNouvellePartie.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnNouvellePartie.setForeground(Color.LIGHT_GRAY.brighter());
+        btnNouvellePartie.setIcon( new ImageIcon("src/main/resources/images/menu/menu_item-long.png"));
     }
 
     /**********  Methods  **********/
@@ -204,13 +205,13 @@ public class StartMenu extends JPanel {
      */
     public void selectButton(int buttonNumber) {
         listeBtn.forEach(btn -> {
-            btn.setOpaque(false);
-            btn.setBackground(Color.GREEN);
+            btn.setIcon(null);
+            btn.setForeground(Color.DARK_GRAY);
         });
 
-        listeBtn.get(buttonNumber).setOpaque(true);
-        listeBtn.get(buttonNumber).setBackground(Color.LIGHT_GRAY.brighter());
-
+        listeBtn.get(buttonNumber).setForeground(Color.LIGHT_GRAY.brighter());
+        listeBtn.get(buttonNumber).setIcon( new ImageIcon("src/main/resources/images/menu/menu_item-long.png"));
+        listeBtn.get(buttonNumber).setHorizontalTextPosition(SwingConstants.CENTER);
     }
 
     @Override

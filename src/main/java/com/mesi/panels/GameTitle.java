@@ -57,7 +57,7 @@ public class GameTitle extends JPanel {
                 .addComponent(title)
                 .addGap(200, 200, Short.MAX_VALUE)
                 .addComponent(goToMenu)
-                .addGap(150, 150, Short.MAX_VALUE)
+                .addGap(150)
         );
 
         setLayout(layout);

@@ -2,6 +2,8 @@ package com.mesi.panels;
 
 import com.mesi.MainZeldo;
 import com.mesi.params.Backup;
+import com.mesi.params.Constant;
+import com.mesi.params.Images;
 import com.mesi.params.KeyMap;
 import com.mesi.sound.Player;
 import com.mesi.sound.Sounds;
@@ -14,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,9 +24,20 @@ public class GameMenu extends JDialog {
 
     /**********  Attributes  **********/
 
+    private Font custom;
+
     private static Logger logger = Logger.getLogger(GameMenu.class);
 
-    private JPanel panelPrinc = new JPanel();
+    private JPanel panelPrinc = new JPanel(new BorderLayout()) {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            setOpaque(false);
+            setBackground(Color.BLACK);
+            g.drawImage(Images.GAME_MENU, 0, 0, 360, 480, this);
+        }
+    };
 
     private JButton btnRetourAuJeu = new JButton("RETOUR AU JEU");
     private JButton btnEnregistrer = new JButton("ENREGISTRER");
@@ -39,11 +53,21 @@ public class GameMenu extends JDialog {
     /**********  Constructors  **********/
 
     public GameMenu() {
-        setSize(300, 400);
+        try {
+            custom = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/florante.ttf")).deriveFont(28f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(custom);
+        } catch (IOException |FontFormatException e) {
+            //Handle exception
+        }
+
+        setSize(360, 480);
+        getRootPane().setOpaque(false);
         setUndecorated(true);
         setModal(false);
         setFocusable(true);
         setLocationRelativeTo(null);
+        setBackground(new Color(0, 0, 0, 0));
 
         listeBtn.add(btnRetourAuJeu);
         listeBtn.add(btnEnregistrer);
@@ -51,6 +75,14 @@ public class GameMenu extends JDialog {
         listeBtn.add(btnInventory);
         listeBtn.add(btnMenuPrincipal);
         listeBtn.add(btnQuitter);
+
+        for (int i = 0; i < listeBtn.size(); i++) {
+            listeBtn.get(i).setFocusable(false);
+            listeBtn.get(i).setBackground(Color.LIGHT_GRAY);
+            listeBtn.get(i).setFont(custom.deriveFont(15f));
+            listeBtn.get(i).setOpaque(false);
+            listeBtn.get(i).setBorderPainted(false);
+        }
 
         add(getPanelPrinc());
 
@@ -100,7 +132,11 @@ public class GameMenu extends JDialog {
 
         setVisible(true);
 
-        btnRetourAuJeu.setBackground(Color.GREEN);
+//        btnRetourAuJeu.setOpaque(true);
+//        btnRetourAuJeu.setBackground(Color.LIGHT_GRAY.brighter());
+        btnRetourAuJeu.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnRetourAuJeu.setForeground(Color.LIGHT_GRAY.brighter());
+        btnRetourAuJeu.setIcon( new ImageIcon("src/main/resources/images/menu/menu_item.png"));
     }
 
     /**********  Methods  **********/
@@ -111,12 +147,10 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JPanel getPanelPrinc() {
-        panelPrinc.setBackground(Color.LIGHT_GRAY);
-
         GroupLayout layout = new GroupLayout(panelPrinc);
 
-        int largeurBtn = 140;
-        int hauteurBtn = 20;
+        int largeurBtn = 220;
+        int hauteurBtn = 40;
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -134,15 +168,15 @@ public class GameMenu extends JDialog {
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(10, 10, Short.MAX_VALUE)
                 .addComponent(btnRetourAuJeu, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(20)
+                .addGap(15)
                 .addComponent(btnEnregistrer, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(20)
+                .addGap(15)
                 .addComponent(btnCharger, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(20)
+                .addGap(15)
                 .addComponent(btnInventory, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(20)
+                .addGap(15)
                 .addComponent(btnMenuPrincipal, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(20)
+                .addGap(15)
                 .addComponent(btnQuitter, hauteurBtn, hauteurBtn, hauteurBtn)
                 .addGap(10, 10, Short.MAX_VALUE)
         );
@@ -158,8 +192,6 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JButton getBtnRetourAuJeu() {
-        btnRetourAuJeu.setFocusable(false);
-        btnRetourAuJeu.setBackground(Color.LIGHT_GRAY);
 
         btnRetourAuJeu.addActionListener(new ActionListener() {
             @Override
@@ -178,17 +210,15 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JButton getBtnMenuPrincipal() {
-        btnMenuPrincipal.setFocusable(false);
-        btnMenuPrincipal.setBackground(Color.LIGHT_GRAY);
-
         btnMenuPrincipal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Game.setPause(false);
                 Game.setKillThread(true);
                 dispose();
+                Game.music.stop();
                 MainZeldo.generic = new Player(Sounds.GENERIC_START, true);
-                MainZeldo.setGameState(MainZeldo.GameState.START_MENU);
+                MainZeldo.setGameState(MainZeldo.GameState.GAME_TITLE);
                 MainZeldo.setGameStateChange(true);
             }
         });
@@ -202,9 +232,6 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JButton getBtnEnregistrer() {
-        btnEnregistrer.setFocusable(false);
-        btnEnregistrer.setBackground(Color.LIGHT_GRAY);
-
         btnEnregistrer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -225,9 +252,6 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JButton getBtnCharger() {
-        btnCharger.setFocusable(false);
-        btnCharger.setBackground(Color.LIGHT_GRAY);
-
         btnCharger.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -247,9 +271,6 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JButton getBtnInventory() {
-        btnInventory.setFocusable(false);
-        btnInventory.setBackground(Color.LIGHT_GRAY);
-
         btnInventory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -266,9 +287,6 @@ public class GameMenu extends JDialog {
      * @return
      */
     public JButton getBtnQuitter() {
-        btnQuitter.setFocusable(false);
-        btnQuitter.setBackground(Color.LIGHT_GRAY);
-
         btnQuitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -285,10 +303,13 @@ public class GameMenu extends JDialog {
      * @param buttonNumber
      */
     public void selectButton(int buttonNumber) {
-        for (int i = 0; i < listeBtn.size(); i++) {
-            listeBtn.get(i).setBackground(Color.LIGHT_GRAY);
-        }
+        listeBtn.forEach(btn -> {
+            btn.setIcon(null);
+            btn.setForeground(Color.DARK_GRAY);
+        });
 
-        listeBtn.get(buttonNumber).setBackground(Color.GREEN);
+        listeBtn.get(buttonNumber).setForeground(Color.LIGHT_GRAY.brighter());
+        listeBtn.get(buttonNumber).setIcon( new ImageIcon("src/main/resources/images/menu/menu_item.png"));
+        listeBtn.get(buttonNumber).setHorizontalTextPosition(SwingConstants.CENTER);
     }
 }

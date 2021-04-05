@@ -29,7 +29,7 @@ public class Game extends JPanel {
 
     /**********  Attributes  **********/
 
-    private Player music;
+    public static Player music;
 
     private static Logger logger = Logger.getLogger(Game.class);
 
@@ -461,7 +461,7 @@ public class Game extends JPanel {
     /**
      * Teste si le personnage entre sur une case de téléportation de la map.
      */
-    public void teleportChecker() {
+    public void teleportChecker() throws IOException {
         Rectangle charCenter = new Rectangle(charBounds.x + 15, charBounds.y + 15, 2, 2);
         for (Tile tile : map.getTeleportList()) {
             if (charCenter.intersects(tile.getTeleportBounds())) {
