@@ -9,11 +9,15 @@ import com.mesi.panels.maps.MapGenerator;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
+import com.mesi.sound.Player;
+import com.mesi.sound.Sounds;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import com.mesi.pnj.Pnj;
 import com.mesi.pnj.PnjGenerator;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,6 +29,8 @@ import java.util.Map;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class MainZeldo extends JPanel {
+
+    public static Player generic;
 
     /**********  Attributes  **********/
 
@@ -43,9 +49,14 @@ public class MainZeldo extends JPanel {
     private static boolean gameStateChange = true;
 
     private static Game game;
-    private static StartMenu startMenu = new StartMenu();
+    private static StartMenu startMenu;
 
     static {
+        try {
+            startMenu = new StartMenu();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
         try {
             game = new Game();
         } catch (IOException e) {
@@ -96,7 +107,7 @@ public class MainZeldo extends JPanel {
      *
      * @return JPanel.
      */
-    private static JPanel displayedPanel() throws IOException, ParseException {
+    private static JPanel displayedPanel() throws IOException, ParseException, LineUnavailableException, UnsupportedAudioFileException {
         gameStateChange = false;
 
         switch (gameState) {
@@ -120,6 +131,7 @@ public class MainZeldo extends JPanel {
      */
     public static void main(String[] args) throws IOException, ParseException {
         //new Images();//charge les images en buffer
+        generic = new Player(Sounds.GENERIC_START, true);
         new DialogueGenerator();
         new PnjGenerator();//genere les PNJs
         new MapGenerator();//genere les maps
@@ -146,12 +158,20 @@ public class MainZeldo extends JPanel {
                 }
 
                 if (gameState == GameState.START_MENU) {
-                    startMenu.onKeyPressed(e.getKeyCode());
+                    try {
+                        startMenu.onKeyPressed(e.getKeyCode());
+                    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException unsupportedAudioFileException) {
+                        unsupportedAudioFileException.printStackTrace();
+                    }
                 }
 
 
                 if (gameState != GameState.GAME_TITLE && gameState != GameState.START_MENU) {
-                    game.onKeyPressed(e.getKeyCode());
+                    try {
+                        game.onKeyPressed(e.getKeyCode());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                 }
             }
 

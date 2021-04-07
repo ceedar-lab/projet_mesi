@@ -11,7 +11,7 @@ public class Shield extends CollectableItem {
         foregroundOffsetY = 0;
         backgroundOffsetX = 0;
         backgroundOffsetY = 0;
-        setName("Bouclier");
+        setName("bouclier");
 
         setBackgroundImage(Images.SHIELD);
 
@@ -19,9 +19,10 @@ public class Shield extends CollectableItem {
 
     }
 
-    public Shield(Integer tileX, Integer tileY) {
+    public Shield(Integer tileX, Integer tileY, Integer quantity) {
         this();
         setX(tileX * Constant.TILE_SIZE);
         setY(tileY * Constant.TILE_SIZE);
+        this.quantity = quantity;
     }
 }
