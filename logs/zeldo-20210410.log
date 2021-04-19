@@ -1,0 +1,68 @@
+2021-04-10 23:58:50.840 INFO  com.mesi.resources.Fonts - Start loading files
+2021-04-10 23:58:50.845 DEBUG com.mesi.resources.Fonts - src\main\resources\font\florante.ttf loaded
+2021-04-10 23:58:50.876 INFO  com.mesi.resources.Fonts - Files loaded
+2021-04-10 23:58:50.877 INFO  com.mesi.resources.Images - Start loading files
+2021-04-10 23:58:50.878 DEBUG com.mesi.resources.Images - src\main\resources\images\menu\menu-background.png loaded
+2021-04-10 23:58:50.944 DEBUG com.mesi.resources.Images - src\main\resources\images\menu\menu-item_long.png loaded
+2021-04-10 23:58:50.948 DEBUG com.mesi.resources.Images - src\main\resources\images\menu\menu-item_short.png loaded
+2021-04-10 23:58:50.951 DEBUG com.mesi.resources.Images - src\main\resources\images\menu\title.png loaded
+2021-04-10 23:58:50.994 DEBUG com.mesi.resources.Images - src\main\resources\images\menu\title_screen.jpg loaded
+2021-04-10 23:58:53.933 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\torso-armor_metal.png loaded
+2021-04-10 23:58:53.973 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\torso-armor_chain.png loaded
+2021-04-10 23:58:54.003 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\torso-armor_leather.png loaded
+2021-04-10 23:58:54.035 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\feet-boots_metal.png loaded
+2021-04-10 23:58:54.066 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\feet-boots_leather.png loaded
+2021-04-10 23:58:54.098 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\right_hand-dagger.png loaded
+2021-04-10 23:58:54.128 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\hands-gloves_metal.png loaded
+2021-04-10 23:58:54.162 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\hair-black.png loaded
+2021-04-10 23:58:54.191 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\hair-brown.png loaded
+2021-04-10 23:58:54.225 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\hair-blond.png loaded
+2021-04-10 23:58:54.257 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\head-hat_leather.png loaded
+2021-04-10 23:58:54.284 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\head-hat_metal.png loaded
+2021-04-10 23:58:54.313 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\head-helmet_metal.png loaded
+2021-04-10 23:58:54.349 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\head-hood_chain.png loaded
+2021-04-10 23:58:54.379 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\head-hood_robe.png loaded
+2021-04-10 23:58:54.414 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\legs-pants_leather.png loaded
+2021-04-10 23:58:54.444 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\legs-pants_metal.png loaded
+2021-04-10 23:58:54.472 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\left_hand-shield.png loaded
+2021-04-10 23:58:54.500 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\left_hand-shield_cut.png loaded
+2021-04-10 23:58:54.528 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\legs-skirt.png loaded
+2021-04-10 23:58:54.559 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\right_hand-spear.png loaded
+2021-04-10 23:58:54.585 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\right_hand-sword.png loaded
+2021-04-10 23:58:54.608 DEBUG com.mesi.resources.Images - src\main\resources\images\sprites\torso-tshirt.png loaded
+2021-04-10 23:58:54.634 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\boots-leather.png loaded
+2021-04-10 23:58:54.635 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\bush.png loaded
+2021-04-10 23:58:54.636 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\chest-closed.jpg loaded
+2021-04-10 23:58:54.647 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\chest-open.jpg loaded
+2021-04-10 23:58:54.657 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\dagger.png loaded
+2021-04-10 23:58:54.659 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\tree-foliage.png loaded
+2021-04-10 23:58:54.661 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\shield.png loaded
+2021-04-10 23:58:54.663 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\sword.png loaded
+2021-04-10 23:58:54.664 DEBUG com.mesi.resources.Images - src\main\resources\images\objects\tree-trunk.png loaded
+2021-04-10 23:58:54.665 DEBUG com.mesi.resources.Images - src\main\resources\images\maps\map_1-background.jpg loaded
+2021-04-10 23:58:54.763 DEBUG com.mesi.resources.Images - src\main\resources\images\maps\map_1-foreground.png loaded
+2021-04-10 23:58:54.940 DEBUG com.mesi.resources.Images - src\main\resources\images\maps\map_2-background.jpg loaded
+2021-04-10 23:58:56.458 DEBUG com.mesi.resources.Images - src\main\resources\images\maps\map_2-foreground.png loaded
+2021-04-10 23:58:56.576 INFO  com.mesi.resources.Images - Files loaded
+2021-04-10 23:58:56.690 INFO  com.mesi.panels.StartMenu - User in START_MENU
+2021-04-10 23:58:56.744 INFO  com.mesi.resources.Sounds - Start loading files
+2021-04-10 23:58:56.745 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\effects\attack.ogg loaded
+2021-04-10 23:58:56.745 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\effects\chest.ogg loaded
+2021-04-10 23:58:56.746 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\effects\equip_clothes.ogg loaded
+2021-04-10 23:58:56.746 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\effects\equip_weapon.ogg loaded
+2021-04-10 23:58:56.746 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\effects\menu.ogg loaded
+2021-04-10 23:58:56.746 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\effects\menu_clic.ogg loaded
+2021-04-10 23:58:56.747 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\music\forest.ogg loaded
+2021-04-10 23:58:56.747 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\music\start.ogg loaded
+2021-04-10 23:58:56.747 DEBUG com.mesi.resources.Sounds - src\main\resources\sounds\music\tent.ogg loaded
+2021-04-10 23:58:56.748 INFO  com.mesi.resources.Sounds - Files loaded
+2021-04-10 23:58:56.815 INFO  com.mesi.panels.maps.MapGenerator - MapGenerator is initializing game maps
+2021-04-10 23:58:56.861 DEBUG com.mesi.panels.maps.MapGenerator - MAP_2 created
+2021-04-10 23:58:56.923 DEBUG com.mesi.panels.maps.MapGenerator - MAP_1 created
+2021-04-10 23:58:57.003 DEBUG com.mesi.MainZeldo - Starting MainZeldo on main
+2021-04-10 23:58:57.006 DEBUG com.mesi.MainZeldo - GAME_TITLE panel called
+2021-04-10 23:58:57.124 INFO  com.mesi.panels.GameTitle - User in GAME_TITLE
+2021-04-10 23:59:12.412 DEBUG com.mesi.MainZeldo - START_MENU panel called
+2021-04-10 23:59:12.442 INFO  com.mesi.panels.StartMenu - User in START_MENU
+2021-04-10 23:59:13.919 DEBUG com.mesi.panels.StartMenu - Clic on 'Quitter'
+2021-04-10 23:59:13.920 INFO  com.mesi.panels.StartMenu - <--------------- GAME END --------------->

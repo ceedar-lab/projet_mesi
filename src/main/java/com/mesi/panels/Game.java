@@ -12,15 +12,14 @@ import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 import com.mesi.pnj.Pnj;
-import com.mesi.sound.Player;
-import com.mesi.sound.Sounds;
-import org.apache.log4j.Logger;
+import com.mesi.resources.Player;
+import com.mesi.resources.Sounds;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class Game extends JPanel {
 
     public static Player music;
 
-    private static Logger logger = Logger.getLogger(Game.class);
+    private static final Logger logger = LogManager.getLogger(Game.class);
 
     private MapModel map;
 
@@ -82,6 +81,7 @@ public class Game extends JPanel {
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
+            logger.debug("Game launched on " +Thread.currentThread().getName());
             try {
                 do {
                     if (!isStanding && !pause) {
@@ -95,14 +95,15 @@ public class Game extends JPanel {
                         repaint();
 
                         if (stopDebug) {
-                            logger.info("Petite pause");
+                            logger.debug("Stop debug");
                         }
                     }
                     Thread.sleep(Constant.FPS);
                 } while (!killThread);
             } catch (Exception e) {
-                logger.error("Erreur lors de l'exécution du thread");
+                logger.debug("Error running thread : " +e.getMessage());
             }
+            logger.info(Thread.currentThread().getName() + " interrupted");
             Thread.currentThread().interrupt();
         }
     });
@@ -122,10 +123,12 @@ public class Game extends JPanel {
      * @throws IOException
      */
     public Game(MapModel map) throws IOException {
+        logger.info("User in " + (map.getClass().getSimpleName()).substring(0, 3).toUpperCase() + "_" + (map.getClass().getSimpleName()).substring(3));
+
         this.map = map;
         switch (map.getClass().getSimpleName()) {
             case "Map1": music = new Player(Sounds.FOREST, true); break;
-            case "Map2": music = new Player(Sounds.HOME, true); break;
+            case "Map2": music = new Player(Sounds.TENT, true); break;
         }
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
@@ -346,6 +349,7 @@ public class Game extends JPanel {
             isHiting = true;
         }
         if (keyCode == KeyMap.ESCAPE) {
+            logger.info("Game paused");
             setPause(true);
             new GameMenu();
         }
@@ -473,6 +477,7 @@ public class Game extends JPanel {
                 });
                 MainZeldo.setGameState(MainZeldo.GameState.valueOf(teleportMap));
                 MainZeldo.setGameStateChange(true);
+                logger.debug(Thread.currentThread().getName() + " stopped");
                 Thread.currentThread().stop();
             }
         }
@@ -498,7 +503,7 @@ public class Game extends JPanel {
     public void hitChecker(Rectangle rectangle) {
         for (Pnj pnj : map.getPnjList()) {
             if (rectangle.intersects(pnj.getHitbox())) {
-                logger.info("Je parle au pnj " + pnj.getName());
+                logger.debug("Speaking to " + pnj.getName());
             }
         }
 
@@ -524,7 +529,7 @@ public class Game extends JPanel {
             if (decorObject instanceof CollectableItem) {
                 if (((CollectableItem) decorObject).getInteractionBox() != null) {
                     if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
-                        logger.info("Je ramasse l'objet " + decorObject.getName());
+                        logger.debug("Picking up " + decorObject.getName());
                         objectToRemove.add(decorObject);
                         character.itemList.add((CollectableItem)decorObject);
                     }

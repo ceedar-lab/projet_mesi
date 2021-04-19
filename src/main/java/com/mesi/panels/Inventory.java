@@ -1,35 +1,30 @@
 package com.mesi.panels;
 
 import com.mesi.animation.Animation;
-import com.mesi.decor.collectable.CollectableItem;
 import com.mesi.equipement.RightHand;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 import com.mesi.pojo.Item;
-import com.mesi.sound.Player;
-import com.mesi.sound.Sounds;
-import org.apache.log4j.Logger;
+import com.mesi.resources.Player;
+import com.mesi.resources.Sounds;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.IOException;
-import java.lang.invoke.TypeDescriptor;
-import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Inventory extends JDialog {
 
     /**********  Attributes  **********/
 
-    private static Logger logger = Logger.getLogger(GameMenu.class);
+    private static final Logger logger = LogManager.getLogger(GameMenu.class);
 
     private JPanel panelInventory = new JPanel();
 
@@ -82,7 +77,7 @@ public class Inventory extends JDialog {
             public void keyPressed(KeyEvent e) {
 
                 if (e.getKeyCode() == KeyMap.ESCAPE) {
-                    Game.setPause(false);
+                    //Game.setPause(false);
                     dispose();
                 }
 

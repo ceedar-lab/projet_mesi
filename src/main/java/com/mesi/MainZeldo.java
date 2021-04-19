@@ -7,9 +7,10 @@ import com.mesi.panels.maps.MapGenerator;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
-import com.mesi.sound.Player;
-import com.mesi.sound.Sounds;
-import org.apache.log4j.Logger;
+import com.mesi.resources.Player;
+import com.mesi.resources.Sounds;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import com.mesi.pnj.Pnj;
 import com.mesi.pnj.PnjGenerator;
@@ -32,7 +33,7 @@ public class MainZeldo extends JPanel {
 
     /**********  Attributes  **********/
 
-    private static Logger logger = Logger.getLogger(MainZeldo.class);
+    private static final Logger logger = LogManager.getLogger(MainZeldo.class);
 
     public static final Map<String, MapModel> mapList = new HashMap<>();
     public static final Map<String, Pnj> pnjList = new HashMap<>();
@@ -51,12 +52,12 @@ public class MainZeldo extends JPanel {
         try {
             startMenu = new StartMenu();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            logger.error("Error initializing start menu : " + e.getMessage());
         }
         try {
             game = new Game();
         } catch (IOException e) {
-            logger.error("Erreur IO lors de l'initialisation du jeu");
+            logger.error("Error initializing new game : " + e.getMessage());
         }
     }
 
@@ -68,6 +69,7 @@ public class MainZeldo extends JPanel {
      * Si l'état change, un nouveau panel est affiché.
      */
     public MainZeldo() {
+        logger.debug("Starting MainZeldo on " + Thread.currentThread().getName());
         setLayout(null);
         new Thread(new Runnable() {
             @Override
@@ -83,7 +85,7 @@ public class MainZeldo extends JPanel {
                         Thread.sleep(Constant.FPS);
                     }
                 } catch (Exception e) {
-                    logger.error("Erreur lors de l'exécution du thread");
+                    logger.error("Error loading thread : " +e.getMessage());
                 }
             }
         }).start();
@@ -103,8 +105,9 @@ public class MainZeldo extends JPanel {
      *
      * @return JPanel.
      */
-    private static JPanel displayedPanel() throws IOException, ParseException, LineUnavailableException, UnsupportedAudioFileException {
+    private static JPanel displayedPanel() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         gameStateChange = false;
+        logger.debug(gameState+ " panel called");
 
         switch (gameState) {
             case GAME_TITLE:
@@ -126,7 +129,6 @@ public class MainZeldo extends JPanel {
      * @param args
      */
     public static void main(String[] args) throws IOException, ParseException {
-        //new Images();//charge les images en buffer
         generic = new Player(Sounds.GENERIC_START, true);
         new PnjGenerator();//genere les PNJs
         new MapGenerator();//genere les maps
@@ -159,7 +161,6 @@ public class MainZeldo extends JPanel {
                         unsupportedAudioFileException.printStackTrace();
                     }
                 }
-
 
                 if (gameState != GameState.GAME_TITLE && gameState != GameState.START_MENU) {
                     try {

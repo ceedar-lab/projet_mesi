@@ -1,22 +1,21 @@
 package com.mesi.panels;
 
 import com.mesi.MainZeldo;
-import com.mesi.params.Backup;
-import com.mesi.params.Constant;
-import com.mesi.params.Images;
-import com.mesi.params.KeyMap;
-import com.mesi.sound.Player;
-import com.mesi.sound.Sounds;
-import org.apache.log4j.Logger;
+import com.mesi.resources.Fonts;
+import com.mesi.resources.Images;
+import com.mesi.params.*;
+import com.mesi.resources.Player;
+import com.mesi.resources.Sounds;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,18 +23,22 @@ public class GameMenu extends JDialog {
 
     /**********  Attributes  **********/
 
-    private Font custom;
+    private static final Logger logger = LogManager.getLogger(GameMenu.class);
 
-    private static Logger logger = Logger.getLogger(GameMenu.class);
+    private final Integer MENU_WIDTH = 360;
+    private final Integer MENU_HEIGHT = 480;
+    private final Font ITEM_FONT = Fonts.FLORANTE;
+    private final Color ITEM_SELECTED = Color.LIGHT_GRAY.brighter();
+    private final BufferedImage MENU_ITEM_S = Images.MENU_ITEM_S;
 
-    private JPanel panelPrinc = new JPanel(new BorderLayout()) {
+    private JPanel menuPanel = new JPanel(new BorderLayout()) {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
             setOpaque(false);
             setBackground(Color.BLACK);
-            g.drawImage(Images.GAME_MENU, 0, 0, 360, 480, this);
+            g.drawImage(Images.MENU_BACKGROUND, 0, 0, MENU_WIDTH, MENU_HEIGHT, this);
         }
     };
 
@@ -53,15 +56,8 @@ public class GameMenu extends JDialog {
     /**********  Constructors  **********/
 
     public GameMenu() {
-        try {
-            custom = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/florante.ttf")).deriveFont(28f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(custom);
-        } catch (IOException |FontFormatException e) {
-            //Handle exception
-        }
 
-        setSize(360, 480);
+        setSize(MENU_WIDTH, MENU_HEIGHT);
         getRootPane().setOpaque(false);
         setUndecorated(true);
         setModal(false);
@@ -79,12 +75,12 @@ public class GameMenu extends JDialog {
         for (int i = 0; i < listeBtn.size(); i++) {
             listeBtn.get(i).setFocusable(false);
             listeBtn.get(i).setBackground(Color.LIGHT_GRAY);
-            listeBtn.get(i).setFont(custom.deriveFont(15f));
+            listeBtn.get(i).setFont(ITEM_FONT.deriveFont(15f));
             listeBtn.get(i).setOpaque(false);
             listeBtn.get(i).setBorderPainted(false);
         }
 
-        add(getPanelPrinc());
+        add(getMenuPanel());
 
         addKeyListener(new KeyListener() {
             @Override
@@ -132,11 +128,9 @@ public class GameMenu extends JDialog {
 
         setVisible(true);
 
-//        btnRetourAuJeu.setOpaque(true);
-//        btnRetourAuJeu.setBackground(Color.LIGHT_GRAY.brighter());
         btnRetourAuJeu.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnRetourAuJeu.setForeground(Color.LIGHT_GRAY.brighter());
-        btnRetourAuJeu.setIcon( new ImageIcon("src/main/resources/images/menu/menu_item.png"));
+        btnRetourAuJeu.setForeground(ITEM_SELECTED);
+        btnRetourAuJeu.setIcon(new ImageIcon(MENU_ITEM_S));
     }
 
     /**********  Methods  **********/
@@ -146,8 +140,8 @@ public class GameMenu extends JDialog {
      *
      * @return
      */
-    public JPanel getPanelPrinc() {
-        GroupLayout layout = new GroupLayout(panelPrinc);
+    public JPanel getMenuPanel() {
+        GroupLayout layout = new GroupLayout(menuPanel);
 
         int largeurBtn = 220;
         int hauteurBtn = 40;
@@ -181,9 +175,9 @@ public class GameMenu extends JDialog {
                 .addGap(10, 10, Short.MAX_VALUE)
         );
 
-        panelPrinc.setLayout(layout);
+        menuPanel.setLayout(layout);
 
-        return panelPrinc;
+        return menuPanel;
     }
 
     /**
@@ -196,6 +190,9 @@ public class GameMenu extends JDialog {
         btnRetourAuJeu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.debug("Clic on 'Retour au jeu'");
+
+                logger.info("Game resumed");
                 Game.setPause(false);
                 dispose();
             }
@@ -213,6 +210,8 @@ public class GameMenu extends JDialog {
         btnMenuPrincipal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.debug("Clic on 'Menu principal'");
+
                 Game.setPause(false);
                 Game.setKillThread(true);
                 dispose();
@@ -235,10 +234,12 @@ public class GameMenu extends JDialog {
         btnEnregistrer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.debug("Clic on 'Enregistrer'");
+
                 try {
                     new Backup().save("save_1");
                 } catch (IOException ioException) {
-                    logger.error("Erreur lors de la sauvegarde");
+                    logger.error("Error while saving : " + ioException.getMessage());
                 }
             }
         });
@@ -255,6 +256,8 @@ public class GameMenu extends JDialog {
         btnCharger.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.debug("Clic on 'Charger'");
+
                 Game.setPause(false);
                 Game.setKillThread(true);
                 dispose();
@@ -274,7 +277,10 @@ public class GameMenu extends JDialog {
         btnInventory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Inventory();
+                logger.debug("Clic on 'Inventaire'");
+
+                new Inventory2();
+                dispose();
             }
         });
 
@@ -290,6 +296,9 @@ public class GameMenu extends JDialog {
         btnQuitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.debug("Clic on 'Quitter'");
+
+                logger.info("<--------------- GAME END --------------->");
                 System.exit(0);
             }
         });
@@ -308,8 +317,8 @@ public class GameMenu extends JDialog {
             btn.setForeground(Color.DARK_GRAY);
         });
 
-        listeBtn.get(buttonNumber).setForeground(Color.LIGHT_GRAY.brighter());
-        listeBtn.get(buttonNumber).setIcon( new ImageIcon("src/main/resources/images/menu/menu_item.png"));
+        listeBtn.get(buttonNumber).setForeground(ITEM_SELECTED);
+        listeBtn.get(buttonNumber).setIcon(new ImageIcon(MENU_ITEM_S));
         listeBtn.get(buttonNumber).setHorizontalTextPosition(SwingConstants.CENTER);
     }
 }

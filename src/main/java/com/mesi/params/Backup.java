@@ -9,7 +9,8 @@ import com.mesi.decor.collectable.Sword;
 import com.mesi.panels.Game;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.pnj.Pnj;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -24,7 +25,7 @@ public class Backup {
 
     /**********  Attributes  **********/
 
-    private static Logger logger = Logger.getLogger(Backup.class);
+    private static final Logger logger = LogManager.getLogger(Backup.class);
 
     private static final String SAVE_PATH = "src/main/resources/saves/";
     private static final String JSON = ".json";
@@ -55,6 +56,8 @@ public class Backup {
      * @throws IOException
      */
     public void save(String title) throws IOException {
+        logger.info("Saving game");
+
         JSONObject json = new JSONObject();
 
         JSONObject character = new JSONObject();
@@ -90,13 +93,15 @@ public class Backup {
      * @param title
      */
     public void load(String title) {
+        logger.info("Loading last game");
+
         clearDecorObjectList();
 
         FileReader reader = null;
         try {
             reader = new FileReader(SAVE_PATH + title + JSON);
         } catch (FileNotFoundException fileNotFoundException) {
-            logger.error("Erreur : le fichier recherché n'existe plus");
+            logger.error("File doesn't exists : " + fileNotFoundException.getMessage());
         }
 
         JSONParser jsonParser = new JSONParser();
@@ -104,7 +109,7 @@ public class Backup {
         try {
             save = (JSONObject) jsonParser.parse(reader);
         } catch (Exception e) {
-            logger.error("Erreur lors du chargement de la partie");
+            logger.error("Error loading game : " + e.getMessage());
         }
 
         JSONObject location = (JSONObject)((JSONObject) save.get(CHARACTER)).get(LOCATION);
@@ -144,6 +149,8 @@ public class Backup {
      * Charge les paramètre initiaux comme la position du joueur, objets dynamiques etc... et lance une nouvelle partie.
      */
     public void startNewGame() {
+        logger.info("Starting new game");
+
         clearDecorObjectList();
 
         Game.setCharacterCoordinates(new Integer[] {

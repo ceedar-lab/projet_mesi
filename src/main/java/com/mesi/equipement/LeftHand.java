@@ -1,6 +1,6 @@
 package com.mesi.equipement;
 
-import com.mesi.params.Images;
+import com.mesi.resources.Images;
 
 import java.awt.image.BufferedImage;
 

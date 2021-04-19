@@ -1,4 +1,7 @@
-package com.mesi.sound;
+package com.mesi.resources;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -6,35 +9,29 @@ import java.io.IOException;
 
 public class Player {
 
-    AudioInputStream inputFile;
-    AudioInputStream dataIn;
-    SourceDataLine line;
-
-    private Boolean loop = false;
+    private static final Logger logger = LogManager.getLogger(Player.class);
 
     Thread player;
 
     public Player(File file, Boolean loop) {
-        //this.file = file;
         player = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
-                        inputFile = AudioSystem.getAudioInputStream(file);
+                        AudioInputStream inputFile = AudioSystem.getAudioInputStream(file);
                         if (inputFile != null) {
                             AudioFormat baseFormat = inputFile.getFormat();
 
                             AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(),
                                     16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
 
-                            dataIn = AudioSystem.getAudioInputStream(targetFormat, inputFile);
+                            AudioInputStream dataIn = AudioSystem.getAudioInputStream(targetFormat, inputFile);
 
                             byte[] buffer = new byte[4096];
 
-                            // get a line from a mixer in the system with the wanted format
                             DataLine.Info info = new DataLine.Info(SourceDataLine.class, targetFormat);
-                            line = (SourceDataLine) AudioSystem.getLine(info);
+                            SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 
                             if (line != null) {
                                 line.open();
@@ -56,15 +53,14 @@ public class Player {
                             }
 
                             inputFile.close();
-                            if (loop == false) stop();
 
-                            //playAgain();
+                            if (!loop) stop();
                         }
                     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                        // failed
+                        logger.error("Player unable to read sound : " +e.getMessage());
+                        logger.fatal("<--------------- GAME STOP --------------->");
+                        System.exit(1);
                     }
-
-
                 }
             }
         });

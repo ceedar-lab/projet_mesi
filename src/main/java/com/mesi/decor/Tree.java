@@ -2,7 +2,7 @@ package com.mesi.decor;
 
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
-import com.mesi.params.Images;
+import com.mesi.resources.Images;
 
 public class Tree extends DecorObject {
 
