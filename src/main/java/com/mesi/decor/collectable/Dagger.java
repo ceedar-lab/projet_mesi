@@ -6,12 +6,15 @@ import com.mesi.resources.Images;
 
 public class Dagger extends CollectableItem {
 
+    /**********  Constructors  **********/
+
     public Dagger() {
         foregroundOffsetX = 0;
         foregroundOffsetY = 0;
         backgroundOffsetX = 0;
         backgroundOffsetY = 0;
-        setName("dague");
+
+        category = "weapon";
 
         setBackgroundImage(Images.DAGGER);
 

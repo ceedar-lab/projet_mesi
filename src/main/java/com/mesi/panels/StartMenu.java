@@ -132,7 +132,11 @@ public class StartMenu extends JPanel {
                 logger.debug("Clic on 'Nouvelle Partie'");
 
                 MainZeldo.generic.stop();
-                new Backup().startNewGame();
+                try {
+                    new Backup().startNewGame();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 

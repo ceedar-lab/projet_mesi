@@ -6,13 +6,19 @@ import java.awt.*;
 
 public abstract class CollectableItem extends DecorObject {
 
-    protected Rectangle interactionBox;
+    /**********  Attributes  **********/
 
+    protected Rectangle interactionBox;
     protected Integer quantity;
+    protected String category;
+
+    /**********  Constructors  **********/
 
     protected CollectableItem() {
         super();
     }
+
+    /**********  Getters / Setters  **********/
 
     public Rectangle getInteractionBox() {
         Rectangle rectangle = null;
@@ -21,16 +27,13 @@ public abstract class CollectableItem extends DecorObject {
         }
         return rectangle;
     }
-
     public void setInteractionBox(Rectangle interactionBox) { this.interactionBox = interactionBox; }
-
     public Integer getQuantity() {
         return quantity;
     }
-
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
-
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 }

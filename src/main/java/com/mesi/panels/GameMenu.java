@@ -279,7 +279,7 @@ public class GameMenu extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 logger.debug("Clic on 'Inventaire'");
 
-                new Inventory2();
+                new Inventory();
                 dispose();
             }
         });

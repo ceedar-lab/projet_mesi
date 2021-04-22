@@ -6,17 +6,19 @@ import com.mesi.resources.Images;
 
 public class BootsLeather extends CollectableItem {
 
+    /**********  Constructors  **********/
+
     public BootsLeather() {
         foregroundOffsetX = 0;
         foregroundOffsetY = 0;
         backgroundOffsetX = 0;
         backgroundOffsetY = 0;
-        setName("bottes");
+
+        category = "armor";
 
         setBackgroundImage(Images.BOOTS_LEATHER);
 
         setInteractionBox(Hitbox.FULL);
-
     }
 
     public BootsLeather(Integer tileX, Integer tileY, Integer quantity) {

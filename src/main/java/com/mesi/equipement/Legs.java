@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
  */
 public enum Legs {
     NONE(null),
+    BLUE_PANTS(Images.SP_PANTS_BLUE),
     METAL_PANTS(Images.SP_PANTS_METAL),
     LEATHER_PANTS(Images.SP_PANTS_LEATHER),
     SKIRT(Images.SP_SKIRT);

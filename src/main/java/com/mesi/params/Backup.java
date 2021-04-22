@@ -1,11 +1,11 @@
 package com.mesi.params;
 
 import com.mesi.MainZeldo;
+import com.mesi.animation.Animation;
+import com.mesi.animation.WhiteCharacterAnimation;
 import com.mesi.decor.*;
-import com.mesi.decor.collectable.BootsLeather;
-import com.mesi.decor.collectable.Dagger;
-import com.mesi.decor.collectable.Shield;
-import com.mesi.decor.collectable.Sword;
+import com.mesi.decor.collectable.*;
+import com.mesi.equipement.*;
 import com.mesi.panels.Game;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.pnj.Pnj;
@@ -148,11 +148,20 @@ public class Backup {
     /**
      * Charge les paramètre initiaux comme la position du joueur, objets dynamiques etc... et lance une nouvelle partie.
      */
-    public void startNewGame() {
+    public void startNewGame() throws IOException {
         logger.info("Starting new game");
 
         clearDecorObjectList();
 
+        Game.getCharacter().setRightHand(RightHand.NONE);
+        Game.getCharacter().setLeftHand(LeftHand.NONE);
+        Game.getCharacter().setLegs(Legs.NONE);
+        Game.getCharacter().setFeet(Feet.NONE);
+        Game.getCharacter().setHands(Hands.NONE);
+        Game.getCharacter().setTorso(Torso.NONE);
+        Game.getCharacter().setHead(Head.NONE);
+        Game.getCharacter().setHair(Hair.BLOND);
+        Game.getCharacter().createNewCharacter();
         Game.setCharacterCoordinates(new Integer[] {
                 11 * Constant.TILE_SIZE,
                 11 * Constant.TILE_SIZE
@@ -165,9 +174,9 @@ public class Backup {
         for (int i = 14; i < 17; i++) {
             map1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
-        map1.getDecorObjectArraylist().add(new Sword(12, 13, 1));
-        map1.getDecorObjectArraylist().add(new Sword(9, 13, 2));
-        map1.getDecorObjectArraylist().add(new Shield(19, 18, 1));
+//        map1.getDecorObjectArraylist().add(new Sword(12, 13, 1));
+//        map1.getDecorObjectArraylist().add(new Sword(9, 13, 2));
+//        map1.getDecorObjectArraylist().add(new Shield(19, 18, 1));
         Pnj pnjTest = MainZeldo.pnjList.get("pnjTest");
         pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
         pnjTest.setDirection(1);
@@ -175,6 +184,8 @@ public class Backup {
 
         MapModel map2 = MainZeldo.mapList.get(MAP_2);
         map2.getDecorObjectArraylist().add(new Dagger(map2.getMapWidth()/2 - 8, map2.getMapHeight()/2 + 3, 1));
+        map2.getDecorObjectArraylist().add(new PantsBlue(map2.getMapWidth()/2 - 4, map2.getMapHeight()/2 + 4, 1));
+        map2.getDecorObjectArraylist().add(new TShirtGreen(map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + 3, 1));
         map2.getDecorObjectArraylist().add(new BootsLeather(map2.getMapWidth()/2 - 2, map2.getMapHeight()/2 + -2, 1));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2, map2.getMapHeight()/2 + -2));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + -2));
@@ -191,5 +202,8 @@ public class Backup {
         for (MapModel map : MainZeldo.mapList.values()) {
             map.getDecorObjectArraylist().clear();
         }
+        Game.getCharacter().weaponsList.clear();
+        Game.getCharacter().armorsList.clear();
+        Game.getCharacter().foodList.clear();
     }
 }

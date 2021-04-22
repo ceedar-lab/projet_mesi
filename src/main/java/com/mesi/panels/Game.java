@@ -42,9 +42,10 @@ public class Game extends JPanel {
     private static boolean pause = false;
     private static boolean killThread = false;
     private static boolean stopDebug = false;
+    public static boolean changePicture = false;
 
     private BufferedImage[] sprites;
-    public static BufferedImage charPic;
+//    public static BufferedImage charPic;
 
     private Rectangle charBounds;
     private Rectangle charActionArea;
@@ -132,8 +133,8 @@ public class Game extends JPanel {
         }
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
+        setCharPic();
         sprites = character.stand(direction.get(0));
-        charPic = character.stand(KeyMap.DOWN)[0];
         backgroundImage = map.getBackgroundImage();
         foregroundImage = map.getForegroundImage();
         setOpaque(false);
@@ -346,6 +347,7 @@ public class Game extends JPanel {
         }
         if (keyCode == KeyMap.ATTACK && !character.getRightHand().toString().equals("NONE")) {
             new Player(Sounds.ATTACK, false);
+            logger.debug("Attack !");
             isHiting = true;
         }
         if (keyCode == KeyMap.ESCAPE) {
@@ -484,16 +486,16 @@ public class Game extends JPanel {
     }
 
     public void getActionArea() {
-        Integer actionWidth = 10;
+        Integer actionWidth = 23;
 
         if (direction.get(0).equals(KeyMap.LEFT))
-            charActionArea = new Rectangle(charBounds.x - actionWidth, charBounds.y + 11, actionWidth, 10);
+            charActionArea = new Rectangle(charBounds.x - actionWidth + 10, charBounds.y + 8, actionWidth, 14);
         else if (direction.get(0).equals(KeyMap.UP))
-            charActionArea = new Rectangle(charBounds.x  + 12, charBounds.y - actionWidth, 10, actionWidth);
+            charActionArea = new Rectangle(charBounds.x  + 8, charBounds.y - actionWidth + 10, 14, actionWidth);
         else if (direction.get(0).equals(KeyMap.RIGHT))
-            charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y + 11, actionWidth, 10);
+            charActionArea = new Rectangle(charBounds.x + charBounds.width - 10, charBounds.y + 8, actionWidth, 14);
         else if (direction.get(0).equals(KeyMap.DOWN))
-            charActionArea = new Rectangle(charBounds.x + 12, charBounds.y + charBounds.height, 10, actionWidth);
+            charActionArea = new Rectangle(charBounds.x + 8, charBounds.y + charBounds.height - 10, 14, actionWidth);
     }
 
 
@@ -529,9 +531,26 @@ public class Game extends JPanel {
             if (decorObject instanceof CollectableItem) {
                 if (((CollectableItem) decorObject).getInteractionBox() != null) {
                     if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
-                        logger.debug("Picking up " + decorObject.getName());
+                        logger.debug("Picking up " + decorObject.getClass().toString().split("\\.")[4]);
                         objectToRemove.add(decorObject);
                         character.itemList.add((CollectableItem)decorObject);
+                        switch (((CollectableItem) decorObject).getCategory()) {
+                            case "weapon":
+                                if (character.weaponsList.size() < 26) character.weaponsList.add((CollectableItem) decorObject);
+                                else logger.warn("Maximum number of weapons reached"); break;
+                            case "armor":
+                                if (character.armorsList.size() < 26) character.armorsList.add((CollectableItem) decorObject);
+                                else logger.warn("Maximum number of armors reached"); break;
+                        }
+
+//                        if (character.weaponsList.size() < 26) {
+//                            switch (((CollectableItem) decorObject).getCategory()) {
+//                                case "weapon": character.weaponsList.add((CollectableItem) decorObject);
+//                                    System.out.println("add : " +decorObject);
+//                            }
+//                        } else {
+//                            logger.warn("Limite d'armes atteinte");
+//                        }
                     }
                 }
             }
@@ -541,6 +560,18 @@ public class Game extends JPanel {
             map.getDecorObjectArraylist().remove(decorObject);
         for (DecorObject decorObject : objectToAdd)
             map.getDecorObjectArraylist().add(decorObject);
+    }
 
+//    public void dispatchItems() {
+//        character.itemList.forEach(e -> {
+//            switch (e.getCategory()) {
+//                case "weapon": character.weaponsList.add(e);
+//                System.out.println("add : " +e);
+//            }
+//        });
+//    }
+
+    public static BufferedImage setCharPic() {
+        return character.stand(KeyMap.DOWN)[0];
     }
 }

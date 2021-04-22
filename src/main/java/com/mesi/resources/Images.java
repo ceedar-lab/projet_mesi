@@ -14,11 +14,28 @@ public class Images {
     private static final Logger logger = LogManager.getLogger(Images.class);
 
     /** Menu **/
+    private static BufferedImage armorBootsLeather;
+    private static BufferedImage armorPantsBlue;
+    private static BufferedImage armorTshirtGreen;
+    private static BufferedImage iconClothes;
+    private static BufferedImage iconClothesSelected;
+    private static BufferedImage iconItemBackground;
+    private static BufferedImage iconItemBackgroundSelected;
+    private static BufferedImage iconLeftArrow;
+    private static BufferedImage iconLeftArrowSelected;
+    private static BufferedImage iconRightArrow;
+    private static BufferedImage iconRightArrowSelected;
+    private static BufferedImage iconOthers;
+    private static BufferedImage iconOthersSelected;
+    private static BufferedImage iconWeapon;
+    private static BufferedImage iconWeaponSelected;
     private static BufferedImage menuBackground;
     private static BufferedImage menuItemLong;
     private static BufferedImage menuItemShort;
     private static BufferedImage title;
     private static BufferedImage titleScreen;
+    private static BufferedImage weaponDagger;
+    private static BufferedImage weaponSword;
     /** Sprites **/
     private static BufferedImage spriteArmorMetal;
     private static BufferedImage spriteArmorChain;
@@ -35,6 +52,7 @@ public class Images {
     private static BufferedImage spriteHelmetMetal;
     private static BufferedImage spriteHoodChain;
     private static BufferedImage spriteHoodRobe;
+    private static BufferedImage spritePantsBlue;
     private static BufferedImage spritePantsLeather;
     private static BufferedImage spritePantsMetal;
     private static BufferedImage spriteShield;
@@ -43,6 +61,7 @@ public class Images {
     private static BufferedImage spriteSpear;
     private static BufferedImage spriteSword;
     private static BufferedImage spriteTshirt;
+    private static BufferedImage spriteTshirtGreen;
     /** Objets **/
     private static BufferedImage bootsLeather;
     private static BufferedImage bush;
@@ -50,9 +69,11 @@ public class Images {
     private static BufferedImage chestOpen;
     private static BufferedImage dagger;
     private static BufferedImage foliage;
+    private static BufferedImage pantsBlue;
     private static BufferedImage shield;
     private static BufferedImage sword;
     private static BufferedImage trunk;
+    private static BufferedImage tshirtGreen;
     /** Maps **/
     private static BufferedImage map1Background;
     private static BufferedImage map1Foreground;
@@ -64,11 +85,28 @@ public class Images {
             logger.info("Start loading files");
 
             /** Menu **/
+            armorBootsLeather = toCompatibleImage(new File("src/main/resources/images/menu/armor-boots_leather.png"));
+            armorPantsBlue = toCompatibleImage(new File("src/main/resources/images/menu/armor-pants_blue.png"));
+            armorTshirtGreen = toCompatibleImage(new File("src/main/resources/images/menu/armor-tshirt_green.png"));
+            iconClothes = toCompatibleImage(new File("src/main/resources/images/menu/icon-clothes.png"));
+            iconClothesSelected = toCompatibleImage(new File("src/main/resources/images/menu/icon-clothes_selected.png"));
+            iconItemBackground = toCompatibleImage(new File("src/main/resources/images/menu/icon-item_bg.jpg"));
+            iconItemBackgroundSelected = toCompatibleImage(new File("src/main/resources/images/menu/icon-item_bg_selected.png"));
+            iconLeftArrow = toCompatibleImage(new File("src/main/resources/images/menu/icon-left_arrow.png"));
+            iconLeftArrowSelected = toCompatibleImage(new File("src/main/resources/images/menu/icon-left_arrow_selected.png"));
+            iconRightArrow = toCompatibleImage(new File("src/main/resources/images/menu/icon-right_arrow.png"));
+            iconRightArrowSelected = toCompatibleImage(new File("src/main/resources/images/menu/icon-right_arrow_selected.png"));
+            iconOthers = toCompatibleImage(new File("src/main/resources/images/menu/icon-others.png"));
+            iconOthersSelected = toCompatibleImage(new File("src/main/resources/images/menu/icon-others_selected.png"));
+            iconWeapon = toCompatibleImage(new File("src/main/resources/images/menu/icon-weapon.png"));
+            iconWeaponSelected = toCompatibleImage(new File("src/main/resources/images/menu/icon-weapon_selected.png"));
             menuBackground = toCompatibleImage(new File("src/main/resources/images/menu/menu-background.png"));
             menuItemLong = toCompatibleImage(new File("src/main/resources/images/menu/menu-item_long.png"));
             menuItemShort = toCompatibleImage(new File("src/main/resources/images/menu/menu-item_short.png"));
             title = toCompatibleImage(new File("src/main/resources/images/menu/title.png"));
             titleScreen = toCompatibleImage(new File("src/main/resources/images/menu/title_screen.jpg"));
+            weaponDagger = toCompatibleImage(new File("src/main/resources/images/menu/weapon-dagger.png"));
+            weaponSword = toCompatibleImage(new File("src/main/resources/images/menu/weapon-sword.png"));
             /** Sprites **/
             spriteArmorMetal = toCompatibleImage(new File("src/main/resources/images/sprites/torso-armor_metal.png"));
             spriteArmorChain = toCompatibleImage(new File("src/main/resources/images/sprites/torso-armor_chain.png"));
@@ -85,6 +123,7 @@ public class Images {
             spriteHelmetMetal = toCompatibleImage(new File("src/main/resources/images/sprites/head-helmet_metal.png"));
             spriteHoodChain = toCompatibleImage(new File("src/main/resources/images/sprites/head-hood_chain.png"));
             spriteHoodRobe = toCompatibleImage(new File("src/main/resources/images/sprites/head-hood_robe.png"));
+            spritePantsBlue = toCompatibleImage(new File("src/main/resources/images/sprites/legs-pants_blue.png"));
             spritePantsLeather = toCompatibleImage(new File("src/main/resources/images/sprites/legs-pants_leather.png"));
             spritePantsMetal = toCompatibleImage(new File("src/main/resources/images/sprites/legs-pants_metal.png"));
             spriteShield = toCompatibleImage(new File("src/main/resources/images/sprites/left_hand-shield.png"));
@@ -93,6 +132,7 @@ public class Images {
             spriteSpear = toCompatibleImage(new File("src/main/resources/images/sprites/right_hand-spear.png"));
             spriteSword = toCompatibleImage(new File("src/main/resources/images/sprites/right_hand-sword.png"));
             spriteTshirt = toCompatibleImage(new File("src/main/resources/images/sprites/torso-tshirt.png"));
+            spriteTshirtGreen = toCompatibleImage(new File("src/main/resources/images/sprites/torso-tshirt_green.png"));
             /** Objets **/
             bootsLeather = toCompatibleImage(new File("src/main/resources/images/objects/boots-leather.png"));
             bush = toCompatibleImage(new File("src/main/resources/images/objects/bush.png"));
@@ -100,9 +140,11 @@ public class Images {
             chestOpen = toCompatibleImage(new File("src/main/resources/images/objects/chest-open.jpg"));
             dagger = toCompatibleImage(new File("src/main/resources/images/objects/dagger.png"));
             foliage = toCompatibleImage(new File("src/main/resources/images/objects/tree-foliage.png"));
+            pantsBlue = toCompatibleImage(new File("src/main/resources/images/objects/pants_blue.png"));
             shield = toCompatibleImage(new File("src/main/resources/images/objects/shield.png"));
             sword = toCompatibleImage(new File("src/main/resources/images/objects/sword.png"));
             trunk = toCompatibleImage(new File("src/main/resources/images/objects/tree-trunk.png"));
+            tshirtGreen = toCompatibleImage(new File("src/main/resources/images/objects/tshirt_green.png"));
             /** Maps **/
             map1Background = toCompatibleImage(new File("src/main/resources/images/maps/map_1-background.jpg"));
             map1Foreground = toCompatibleImage(new File("src/main/resources/images/maps/map_1-foreground.png"));
@@ -118,11 +160,28 @@ public class Images {
     }
 
     /** Menu **/
+    public static final BufferedImage ARMOR_LEATHER_BOOTS = armorBootsLeather;
+    public static final BufferedImage ARMOR_PANTS_BLUE = armorPantsBlue;
+    public static final BufferedImage ARMOR_TSHIRT_GREEN = armorTshirtGreen;
+    public static final BufferedImage ICON_CLOTHES = iconClothes;
+    public static final BufferedImage ICON_CLOTHES_SELECTED = iconClothesSelected;
+    public static final BufferedImage ICON_ITEM_BG = iconItemBackground;
+    public static final BufferedImage ICON_ITEM_BG_SELECTED = iconItemBackgroundSelected;
+    public static final BufferedImage ICON_LEFT_ARROW = iconLeftArrow;
+    public static final BufferedImage ICON_LEFT_ARROW_SELECTED = iconLeftArrowSelected;
+    public static final BufferedImage ICON_RIGHT_ARROW = iconRightArrow;
+    public static final BufferedImage ICON_RIGHT_ARROW_SELECTED = iconRightArrowSelected;
+    public static final BufferedImage ICON_OTHERS = iconOthers;
+    public static final BufferedImage ICON_OTHERS_SELECTED = iconOthersSelected;
+    public static final BufferedImage ICON_WEAPON = iconWeapon;
+    public static final BufferedImage ICON_WEAPON_SELECTED = iconWeaponSelected;
     public static final BufferedImage MENU_BACKGROUND = menuBackground;
     public static final BufferedImage MENU_ITEM_L = menuItemLong;
     public static final BufferedImage MENU_ITEM_S = menuItemShort;
     public static final BufferedImage TITLE = title;
     public static final BufferedImage TITLE_SCREEN = titleScreen;
+    public static final BufferedImage WEAPON_DAGGER = weaponDagger;
+    public static final BufferedImage WEAPON_SWORD = weaponSword;
     /** Sprites **/
     public static final BufferedImage SP_ARMOR_CHAIN = spriteArmorChain;
     public static final BufferedImage SP_ARMOR_METAL = spriteArmorMetal;
@@ -139,6 +198,7 @@ public class Images {
     public static final BufferedImage SP_HELMET_METAL = spriteHelmetMetal;
     public static final BufferedImage SP_HOOD_CHAIN = spriteHoodChain;
     public static final BufferedImage SP_HOOD_ROBE = spriteHoodRobe;
+    public static final BufferedImage SP_PANTS_BLUE = spritePantsBlue;
     public static final BufferedImage SP_PANTS_LEATHER = spritePantsLeather;
     public static final BufferedImage SP_PANTS_METAL = spritePantsMetal;
     public static final BufferedImage SP_SHIELD = spriteShield;
@@ -147,6 +207,7 @@ public class Images {
     public static final BufferedImage SP_SPEAR = spriteSpear;
     public static final BufferedImage SP_SWORD = spriteSword;
     public static final BufferedImage SP_TSHIRT = spriteTshirt;
+    public static final BufferedImage SP_TSHIRT_GREEN = spriteTshirtGreen;
     /** Objets **/
     public static final BufferedImage BOOTS_LEATHER = bootsLeather;
     public static final BufferedImage BUSH = bush;
@@ -154,9 +215,11 @@ public class Images {
     public static final BufferedImage CHEST_OPEN = chestOpen;
     public static final BufferedImage DAGGER = dagger;
     public static final BufferedImage FOLIAGE = foliage;
+    public static final BufferedImage PANTS_BLUE = pantsBlue;
     public static final BufferedImage SHIELD = shield;
     public static final BufferedImage SWORD = sword;
     public static final BufferedImage TRUNK = trunk;
+    public static final BufferedImage TSHIRT_GREEN = tshirtGreen;
     /** Maps **/
     public static final BufferedImage MAP_1_BG = map1Background;
     public static final BufferedImage MAP_1_FG = map1Foreground;
