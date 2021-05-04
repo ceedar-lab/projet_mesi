@@ -1,23 +1,25 @@
 package com.mesi.panels;
 
 import com.mesi.params.Constant;
-import com.mesi.params.Images;
+import com.mesi.resources.Fonts;
+import com.mesi.resources.Images;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.text.AttributedCharacterIterator;
 
 public class GameTitle extends JPanel {
 
     /**********  Attributes  **********/
 
-    private JLabel title = new JLabel(new ImageIcon(Images.TITLE.getScaledInstance(600, 300, Image.SCALE_SMOOTH)));
-    private JLabel goToMenu = new JLabel("ESC pour acceder au MENU");
+    private static final Logger logger = LogManager.getLogger(GameTitle.class);
 
-    //private JPanel title = new JPanel();
+    private final Integer TITLE_WIDTH = 600;
+    private final Integer TITLE_HEIGHT = 300;
+
+    private JLabel title = new JLabel(new ImageIcon(Images.TITLE.getScaledInstance(TITLE_WIDTH, TITLE_HEIGHT, Image.SCALE_SMOOTH)));
+    private JLabel goToMenu = new JLabel("ESC pour acceder au MENU");
 
     /**********  Constructors  **********/
 
@@ -27,17 +29,9 @@ public class GameTitle extends JPanel {
      */
 
     public GameTitle() {
-        Font custom = null;
-        try {
-            custom = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/font/florante.ttf")).deriveFont(28f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(custom);
-        } catch (IOException |FontFormatException e) {
-            //Handle exception
-        }
+        title.setBounds(0, 0, TITLE_WIDTH, TITLE_HEIGHT);
 
-        title.setBounds(0, 0, 600, 300);
-        goToMenu.setFont(custom.deriveFont(Font.BOLD));
+        goToMenu.setFont(Fonts.FLORANTE.deriveFont(28f).deriveFont(Font.BOLD));
         //goToMenu.setForeground(Color.black);
 
         setBounds(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
@@ -61,17 +55,17 @@ public class GameTitle extends JPanel {
         );
 
         setLayout(layout);
+
+        logger.info("User in GAME_TITLE");
     }
 
-//    private JPanel title() {
-//        title.setBackground(Color.YELLOW);
-//        Graphics g = getGraphics();
-//        title.paintComponents(g);
-//        g.drawImage(Images.TITLE, 0, 0, 600, 300, this);
-//        g.dispose();
-//        return title;
-//    }
+    /**********  Methods  **********/
 
+    /**
+     * Affiche l'image de fond de l'écran titre.
+     *
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

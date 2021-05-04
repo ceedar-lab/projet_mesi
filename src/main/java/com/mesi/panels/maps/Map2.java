@@ -1,10 +1,7 @@
 package com.mesi.panels.maps;
 
-import com.mesi.MainZeldo;
-import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
-import com.mesi.params.Images;
-import com.mesi.pnj.Pnj;
+import com.mesi.resources.Images;
 
 import java.io.IOException;
 
@@ -54,9 +51,6 @@ public class Map2 extends MapModel {
         getTileList().get(getMapWidth()/2 + 6 + "," + (getMapHeight()/2 + 4)).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 7 + "," + getMapHeight()/2).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 7 + "," + (getMapHeight()/2 + 4)).setTraversable(false);
-
-
-
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
         addTeleport(getTileList().get(getMapWidth()/2 - 1 + "," + (getMapHeight()/2 + 6)), true, "MAP_1 17,15", Hitbox.SOUTH_BORD);

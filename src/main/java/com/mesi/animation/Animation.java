@@ -30,6 +30,9 @@ public abstract class Animation {
     private BufferedImage characterImage;
 
     public List<CollectableItem> itemList = new ArrayList<>();
+    public List<CollectableItem> weaponsList = new ArrayList<>();
+    public List<CollectableItem> armorsList = new ArrayList<>();
+    public List<CollectableItem> foodList = new ArrayList<>();
 
     /**********  Constructors  **********/
 

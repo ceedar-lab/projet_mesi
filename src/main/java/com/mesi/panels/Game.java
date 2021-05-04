@@ -12,15 +12,14 @@ import com.mesi.panels.maps.Tile;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
 import com.mesi.pnj.Pnj;
-import com.mesi.sound.Player;
-import com.mesi.sound.Sounds;
-import org.apache.log4j.Logger;
+import com.mesi.resources.Player;
+import com.mesi.resources.Sounds;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class Game extends JPanel {
 
     public static Player music;
 
-    private static Logger logger = Logger.getLogger(Game.class);
+    private static final Logger logger = LogManager.getLogger(Game.class);
 
     private MapModel map;
 
@@ -43,9 +42,10 @@ public class Game extends JPanel {
     private static boolean pause = false;
     private static boolean killThread = false;
     private static boolean stopDebug = false;
+    public static boolean changePicture = false;
 
     private BufferedImage[] sprites;
-    public static BufferedImage charPic;
+//    public static BufferedImage charPic;
 
     private Rectangle charBounds;
     private Rectangle charActionArea;
@@ -82,6 +82,7 @@ public class Game extends JPanel {
     Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
+            logger.debug("Game launched on " +Thread.currentThread().getName());
             try {
                 do {
                     if (!isStanding && !pause) {
@@ -95,14 +96,15 @@ public class Game extends JPanel {
                         repaint();
 
                         if (stopDebug) {
-                            logger.info("Petite pause");
+                            logger.debug("Stop debug");
                         }
                     }
                     Thread.sleep(Constant.FPS);
                 } while (!killThread);
             } catch (Exception e) {
-                logger.error("Erreur lors de l'exécution du thread");
+                logger.debug("Error running thread : " +e.getMessage());
             }
+            logger.info(Thread.currentThread().getName() + " interrupted");
             Thread.currentThread().interrupt();
         }
     });
@@ -122,15 +124,17 @@ public class Game extends JPanel {
      * @throws IOException
      */
     public Game(MapModel map) throws IOException {
+        logger.info("User in " + (map.getClass().getSimpleName()).substring(0, 3).toUpperCase() + "_" + (map.getClass().getSimpleName()).substring(3));
+
         this.map = map;
         switch (map.getClass().getSimpleName()) {
             case "Map1": music = new Player(Sounds.FOREST, true); break;
-            case "Map2": music = new Player(Sounds.HOME, true); break;
+            case "Map2": music = new Player(Sounds.TENT, true); break;
         }
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();
+        setCharPic();
         sprites = character.stand(direction.get(0));
-        charPic = character.stand(KeyMap.DOWN)[0];
         backgroundImage = map.getBackgroundImage();
         foregroundImage = map.getForegroundImage();
         setOpaque(false);
@@ -343,9 +347,11 @@ public class Game extends JPanel {
         }
         if (keyCode == KeyMap.ATTACK && !character.getRightHand().toString().equals("NONE")) {
             new Player(Sounds.ATTACK, false);
+            logger.debug("Attack !");
             isHiting = true;
         }
         if (keyCode == KeyMap.ESCAPE) {
+            logger.info("Game paused");
             setPause(true);
             new GameMenu();
         }
@@ -471,25 +477,25 @@ public class Game extends JPanel {
                         Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]) * Constant.TILE_SIZE,
                         Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[1]) * Constant.TILE_SIZE
                 });
-
                 MainZeldo.setGameState(MainZeldo.GameState.valueOf(teleportMap));
                 MainZeldo.setGameStateChange(true);
+                logger.debug(Thread.currentThread().getName() + " stopped");
                 Thread.currentThread().stop();
             }
         }
     }
 
     public void getActionArea() {
-        Integer actionWidth = 10;
+        Integer actionWidth = 23;
 
         if (direction.get(0).equals(KeyMap.LEFT))
-            charActionArea = new Rectangle(charBounds.x - actionWidth, charBounds.y + 11, actionWidth, 10);
+            charActionArea = new Rectangle(charBounds.x - actionWidth + 10, charBounds.y + 8, actionWidth, 14);
         else if (direction.get(0).equals(KeyMap.UP))
-            charActionArea = new Rectangle(charBounds.x  + 12, charBounds.y - actionWidth, 10, actionWidth);
+            charActionArea = new Rectangle(charBounds.x  + 8, charBounds.y - actionWidth + 10, 14, actionWidth);
         else if (direction.get(0).equals(KeyMap.RIGHT))
-            charActionArea = new Rectangle(charBounds.x + charBounds.width, charBounds.y + 11, actionWidth, 10);
+            charActionArea = new Rectangle(charBounds.x + charBounds.width - 10, charBounds.y + 8, actionWidth, 14);
         else if (direction.get(0).equals(KeyMap.DOWN))
-            charActionArea = new Rectangle(charBounds.x + 12, charBounds.y + charBounds.height, 10, actionWidth);
+            charActionArea = new Rectangle(charBounds.x + 8, charBounds.y + charBounds.height - 10, 14, actionWidth);
     }
 
 
@@ -501,13 +507,13 @@ public class Game extends JPanel {
             for (Pnj pnj : map.getPnjList()) {
                 if (rectangle.intersects(pnj.getHitbox())) {
 //                logger.info("Je parle au pnj " + pnj.getName());
+                    logger.debug("Speaking to " + pnj.getName());
                     new DialoguePanel(pnj.getDialogue());
                     isActing = false;
                     pause = true;
                 }
             }
         }
-
 
         ArrayList<DecorObject> objectToRemove = new ArrayList<>();
         ArrayList<DecorObject> objectToAdd = new ArrayList<>();
@@ -531,9 +537,26 @@ public class Game extends JPanel {
             if (decorObject instanceof CollectableItem) {
                 if (((CollectableItem) decorObject).getInteractionBox() != null) {
                     if (rectangle.intersects(((CollectableItem) decorObject).getInteractionBox())) {
-                        logger.info("Je ramasse l'objet " + decorObject.getName());
+                        logger.debug("Picking up " + decorObject.getClass().toString().split("\\.")[4]);
                         objectToRemove.add(decorObject);
                         character.itemList.add((CollectableItem)decorObject);
+                        switch (((CollectableItem) decorObject).getCategory()) {
+                            case "weapon":
+                                if (character.weaponsList.size() < 26) character.weaponsList.add((CollectableItem) decorObject);
+                                else logger.warn("Maximum number of weapons reached"); break;
+                            case "armor":
+                                if (character.armorsList.size() < 26) character.armorsList.add((CollectableItem) decorObject);
+                                else logger.warn("Maximum number of armors reached"); break;
+                        }
+
+//                        if (character.weaponsList.size() < 26) {
+//                            switch (((CollectableItem) decorObject).getCategory()) {
+//                                case "weapon": character.weaponsList.add((CollectableItem) decorObject);
+//                                    System.out.println("add : " +decorObject);
+//                            }
+//                        } else {
+//                            logger.warn("Limite d'armes atteinte");
+//                        }
                     }
                 }
             }
@@ -543,6 +566,18 @@ public class Game extends JPanel {
             map.getDecorObjectArraylist().remove(decorObject);
         for (DecorObject decorObject : objectToAdd)
             map.getDecorObjectArraylist().add(decorObject);
+    }
 
+//    public void dispatchItems() {
+//        character.itemList.forEach(e -> {
+//            switch (e.getCategory()) {
+//                case "weapon": character.weaponsList.add(e);
+//                System.out.println("add : " +e);
+//            }
+//        });
+//    }
+
+    public static BufferedImage setCharPic() {
+        return character.stand(KeyMap.DOWN)[0];
     }
 }

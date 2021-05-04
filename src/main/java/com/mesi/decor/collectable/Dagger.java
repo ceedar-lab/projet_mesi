@@ -2,16 +2,19 @@ package com.mesi.decor.collectable;
 
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
-import com.mesi.params.Images;
+import com.mesi.resources.Images;
 
 public class Dagger extends CollectableItem {
+
+    /**********  Constructors  **********/
 
     public Dagger() {
         foregroundOffsetX = 0;
         foregroundOffsetY = 0;
         backgroundOffsetX = 0;
         backgroundOffsetY = 0;
-        setName("dague");
+
+        category = "weapon";
 
         setBackgroundImage(Images.DAGGER);
 

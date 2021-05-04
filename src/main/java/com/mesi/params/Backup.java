@@ -1,15 +1,16 @@
 package com.mesi.params;
 
 import com.mesi.MainZeldo;
+import com.mesi.animation.Animation;
+import com.mesi.animation.WhiteCharacterAnimation;
 import com.mesi.decor.*;
-import com.mesi.decor.collectable.BootsLeather;
-import com.mesi.decor.collectable.Dagger;
-import com.mesi.decor.collectable.Shield;
-import com.mesi.decor.collectable.Sword;
+import com.mesi.decor.collectable.*;
+import com.mesi.equipement.*;
 import com.mesi.panels.Game;
 import com.mesi.panels.maps.MapModel;
 import com.mesi.pnj.Pnj;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -24,7 +25,7 @@ public class Backup {
 
     /**********  Attributes  **********/
 
-    private static Logger logger = Logger.getLogger(Backup.class);
+    private static final Logger logger = LogManager.getLogger(Backup.class);
 
     private static final String SAVE_PATH = "src/main/resources/saves/";
     private static final String JSON = ".json";
@@ -55,6 +56,8 @@ public class Backup {
      * @throws IOException
      */
     public void save(String title) throws IOException {
+        logger.info("Saving game");
+
         JSONObject json = new JSONObject();
 
         JSONObject character = new JSONObject();
@@ -90,13 +93,15 @@ public class Backup {
      * @param title
      */
     public void load(String title) {
+        logger.info("Loading last game");
+
         clearDecorObjectList();
 
         FileReader reader = null;
         try {
             reader = new FileReader(SAVE_PATH + title + JSON);
         } catch (FileNotFoundException fileNotFoundException) {
-            logger.error("Erreur : le fichier recherché n'existe plus");
+            logger.error("File doesn't exists : " + fileNotFoundException.getMessage());
         }
 
         JSONParser jsonParser = new JSONParser();
@@ -104,7 +109,7 @@ public class Backup {
         try {
             save = (JSONObject) jsonParser.parse(reader);
         } catch (Exception e) {
-            logger.error("Erreur lors du chargement de la partie");
+            logger.error("Error loading game : " + e.getMessage());
         }
 
         JSONObject location = (JSONObject)((JSONObject) save.get(CHARACTER)).get(LOCATION);
@@ -143,9 +148,20 @@ public class Backup {
     /**
      * Charge les paramètre initiaux comme la position du joueur, objets dynamiques etc... et lance une nouvelle partie.
      */
-    public void startNewGame() {
+    public void startNewGame() throws IOException {
+        logger.info("Starting new game");
+
         clearDecorObjectList();
 
+        Game.getCharacter().setRightHand(RightHand.NONE);
+        Game.getCharacter().setLeftHand(LeftHand.NONE);
+        Game.getCharacter().setLegs(Legs.NONE);
+        Game.getCharacter().setFeet(Feet.NONE);
+        Game.getCharacter().setHands(Hands.NONE);
+        Game.getCharacter().setTorso(Torso.NONE);
+        Game.getCharacter().setHead(Head.NONE);
+        Game.getCharacter().setHair(Hair.BLOND);
+        Game.getCharacter().createNewCharacter();
         Game.setCharacterCoordinates(new Integer[] {
                 11 * Constant.TILE_SIZE,
                 11 * Constant.TILE_SIZE
@@ -158,9 +174,9 @@ public class Backup {
         for (int i = 14; i < 17; i++) {
             map1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
-        map1.getDecorObjectArraylist().add(new Sword(12, 13, 1));
-        map1.getDecorObjectArraylist().add(new Sword(9, 13, 2));
-        map1.getDecorObjectArraylist().add(new Shield(19, 18, 1));
+//        map1.getDecorObjectArraylist().add(new Sword(12, 13, 1));
+//        map1.getDecorObjectArraylist().add(new Sword(9, 13, 2));
+//        map1.getDecorObjectArraylist().add(new Shield(19, 18, 1));
         Pnj pnjTest = MainZeldo.pnjList.get("pnjTest");
         pnjTest.setCharacterCoordinates(new Integer[]{12 * Constant.TILE_SIZE, 16 * Constant.TILE_SIZE});
         pnjTest.setDirection(1);
@@ -168,6 +184,8 @@ public class Backup {
 
         MapModel map2 = MainZeldo.mapList.get(MAP_2);
         map2.getDecorObjectArraylist().add(new Dagger(map2.getMapWidth()/2 - 8, map2.getMapHeight()/2 + 3, 1));
+        map2.getDecorObjectArraylist().add(new PantsBlue(map2.getMapWidth()/2 - 4, map2.getMapHeight()/2 + 4, 1));
+        map2.getDecorObjectArraylist().add(new TShirtGreen(map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + 3, 1));
         map2.getDecorObjectArraylist().add(new BootsLeather(map2.getMapWidth()/2 - 2, map2.getMapHeight()/2 + -2, 1));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2, map2.getMapHeight()/2 + -2));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + -2));
@@ -189,5 +207,8 @@ public class Backup {
         for (MapModel map : MainZeldo.mapList.values()) {
             map.getDecorObjectArraylist().clear();
         }
+        Game.getCharacter().weaponsList.clear();
+        Game.getCharacter().armorsList.clear();
+        Game.getCharacter().foodList.clear();
     }
 }

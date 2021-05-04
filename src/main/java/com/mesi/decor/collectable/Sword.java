@@ -2,21 +2,23 @@ package com.mesi.decor.collectable;
 
 import com.mesi.params.Constant;
 import com.mesi.params.Hitbox;
-import com.mesi.params.Images;
+import com.mesi.resources.Images;
 
 public class Sword extends CollectableItem {
+
+    /**********  Constructors  **********/
 
     public Sword() {
         foregroundOffsetX = -Constant.TILE_SIZE / 2;
         foregroundOffsetY = 0;
         backgroundOffsetX = -Constant.TILE_SIZE / 2;
         backgroundOffsetY = 0;
-        setName("épée");
+
+        category = "weapon";
 
         setBackgroundImage(Images.SWORD);
 
         setInteractionBox(Hitbox.FULL);
-
     }
 
     public Sword(Integer tileX, Integer tileY, Integer quantity) {

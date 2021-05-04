@@ -1,6 +1,6 @@
 package com.mesi.equipement;
 
-import com.mesi.params.Images;
+import com.mesi.resources.Images;
 
 import java.awt.image.BufferedImage;
 
@@ -13,7 +13,8 @@ public enum Torso {
     METAL_ARMOR(Images.SP_ARMOR_METAL),
     CHAIN_ARMOR(Images.SP_ARMOR_CHAIN),
     LEATHER_ARMOR(Images.SP_ARMOR_LEATHER),
-    TSHIRT(Images.SP_TSHIRT);
+    TSHIRT(Images.SP_TSHIRT),
+    TSHIRT_GREEN(Images.SP_TSHIRT_GREEN);
 
     private final BufferedImage image;
 
