@@ -30,6 +30,8 @@ public class Images {
     private static BufferedImage iconWeapon;
     private static BufferedImage iconWeaponSelected;
     private static BufferedImage menuBackground;
+    private static BufferedImage menuBackground800400;
+    private static BufferedImage menuBackground800200;
     private static BufferedImage menuItemLong;
     private static BufferedImage menuItemShort;
     private static BufferedImage title;
@@ -101,6 +103,8 @@ public class Images {
             iconWeapon = toCompatibleImage(new File("src/main/resources/images/menu/icon-weapon.png"));
             iconWeaponSelected = toCompatibleImage(new File("src/main/resources/images/menu/icon-weapon_selected.png"));
             menuBackground = toCompatibleImage(new File("src/main/resources/images/menu/menu-background.png"));
+            menuBackground800400 = toCompatibleImage(new File("src/main/resources/images/menu/menu-background-800-400.png"));
+            menuBackground800200 = toCompatibleImage(new File("src/main/resources/images/menu/menu-background-800-200.png"));
             menuItemLong = toCompatibleImage(new File("src/main/resources/images/menu/menu-item_long.png"));
             menuItemShort = toCompatibleImage(new File("src/main/resources/images/menu/menu-item_short.png"));
             title = toCompatibleImage(new File("src/main/resources/images/menu/title.png"));
@@ -176,6 +180,8 @@ public class Images {
     public static final BufferedImage ICON_WEAPON = iconWeapon;
     public static final BufferedImage ICON_WEAPON_SELECTED = iconWeaponSelected;
     public static final BufferedImage MENU_BACKGROUND = menuBackground;
+    public static final BufferedImage MENU_BACKGROUND_800_400 = menuBackground800400;
+    public static final BufferedImage MENU_BACKGROUND_800_200 = menuBackground800200;
     public static final BufferedImage MENU_ITEM_L = menuItemLong;
     public static final BufferedImage MENU_ITEM_S = menuItemShort;
     public static final BufferedImage TITLE = title;

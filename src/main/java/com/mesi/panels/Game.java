@@ -506,11 +506,19 @@ public class Game extends JPanel {
         if(isActing){
             for (Pnj pnj : map.getPnjList()) {
                 if (rectangle.intersects(pnj.getHitbox())) {
-//                logger.info("Je parle au pnj " + pnj.getName());
+//                    logger.info("Je parle au pnj " + pnj.getName());
                     logger.debug("Speaking to " + pnj.getName());
+
+
+//                    new DialoguePanel("text court");
+//                    new DialoguePanel("ceci est un text de test vraiment long pour tester la fenetre");
+//                    DialoguePanel dialoguePanel =   new DialoguePanel("test",2);
+
                     new DialoguePanel(pnj.getDialogue());
+
+
                     isActing = false;
-                    pause = true;
+//                    pause = true;
                 }
             }
         }

@@ -2,6 +2,8 @@ package com.mesi.panels;
 
 import com.mesi.dialogue.Dialogue;
 import com.mesi.params.KeyMap;
+import com.mesi.resources.Fonts;
+import com.mesi.resources.Images;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +11,41 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class DialoguePanel extends JDialog {
 
-    private JPanel panelPrinc = new JPanel();
+
+    private final Font ITEM_FONT = Fonts.FLORANTE;
+    private final Color ITEM_SELECTED = Color.LIGHT_GRAY.brighter();
+    private final BufferedImage MENU_ITEM_S = Images.MENU_ITEM_S;
+
+
+    private JPanel panelPrinc = new JPanel(new BorderLayout()) {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            setSize(800,400);
+            setOpaque(false);
+            setBackground(Color.BLACK);
+            g.drawImage(Images.MENU_BACKGROUND_800_400, 0, 0, 800, 400, this);
+        }
+    };
+    private JPanel panelPrincPopup = new JPanel(new BorderLayout()) {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            setSize(800,200);
+            setOpaque(false);
+            setBackground(Color.BLACK);
+            g.drawImage(Images.MENU_BACKGROUND_800_200, 0, 0, 800, 200, this);
+        }
+    };
+
+    //    private JPanel panelPrinc = new JPanel();
     private JPanel questionPanel = new JPanel();
     private JPanel responsePanel = new JPanel();
     private Dialogue dialogue;
@@ -21,11 +53,79 @@ public class DialoguePanel extends JDialog {
     private ArrayList<JButton> listeBtn = new ArrayList<>();
     private int indexSelection = 0;
 
+
+
+    public DialoguePanel(String text,Integer time){
+
+        setFocusableWindowState(false);
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        getParent().requestFocus();
+        setAlwaysOnTop(true);
+        setSize(1000,200);
+//        setLocationRelativeTo(null);
+        setLocation((screen.width-1000)/2,screen.height/12);
+        setUndecorated(true);
+        setFocusable(false);
+
+        getRootPane().setOpaque(false);
+        setModal(false);
+        setBackground(new Color(0, 0, 0, 0));
+
+        add(getPanelPrincPopup(text));
+
+        setVisible(true);
+
+
+    }
+
+    public DialoguePanel(String text){
+
+        Game.setPause(true);
+
+        setSize(800,400);
+        setLocationRelativeTo(null);
+        setUndecorated(true);
+        setFocusable(true);
+        getRootPane().setOpaque(false);
+        setModal(false);
+        setBackground(new Color(0, 0, 0, 0));
+
+        add(getPanelPrincText(text));
+
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Méthode inutilisée
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                if (e.getKeyCode() == KeyMap.ESCAPE || e.getKeyCode() == KeyMap.ENTER ) {
+                    Game.setPause(false);
+                    dispose();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+        setVisible(true);
+
+    }
+
+
     public DialoguePanel(Dialogue dialogue) {
         this.dialogue = dialogue;
-        Dimension sizeScreen = Toolkit.getDefaultToolkit().getScreenSize();
 
-        setSize(sizeScreen.width,200);
+        Game.setPause(true);
+
+        Dimension sizeScreen = Toolkit.getDefaultToolkit().getScreenSize();
+//        setSize(sizeScreen.width,200);
+
+        setSize(800,400);
         setUndecorated(true);
         setFocusable(true);
 
@@ -89,6 +189,8 @@ public class DialoguePanel extends JDialog {
 //        panelPrinc.setBackground(new Color(0,0,255));
         GroupLayout layout = new GroupLayout(panelPrinc);
 
+
+
         int largeurBtn = 800;
         int hauteurBtn = 100;
 
@@ -103,9 +205,9 @@ public class DialoguePanel extends JDialog {
 
         layout.setVerticalGroup(layout.createSequentialGroup()
 //                .addGap(10, 10, Short.MAX_VALUE)
-                .addComponent(questionPanel, hauteurBtn, hauteurBtn, hauteurBtn)
+                        .addComponent(questionPanel, hauteurBtn, hauteurBtn, hauteurBtn)
 //                .addGap(20)
-                .addComponent(responsePanel, hauteurBtn, hauteurBtn, hauteurBtn)
+                        .addComponent(responsePanel, hauteurBtn, hauteurBtn, hauteurBtn)
 //                .addGap(10, 10, Short.MAX_VALUE)
         );
 
@@ -162,6 +264,92 @@ public class DialoguePanel extends JDialog {
     public void setResponsePanel(JPanel responsePanel) {
         this.responsePanel = responsePanel;
     }
+
+
+
+    public JPanel getPanelPrincPopup(String text){
+
+        GroupLayout layout = new GroupLayout(panelPrincPopup);
+
+        int largeurBtn = 220;
+        int hauteurBtn = 40;
+
+        JLabel labelText = new JLabel(text ,SwingConstants.CENTER);
+
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(labelText)
+                .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGap(10, 10, Short.MAX_VALUE)
+                .addComponent(labelText, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(10, 10, Short.MAX_VALUE)
+        );
+
+        panelPrincPopup.setLayout(layout);
+
+        return panelPrincPopup;
+    }
+
+    public JPanel getPanelPrincText(String text){
+
+        GroupLayout layout = new GroupLayout(panelPrinc);
+
+        int largeurBtn = 220;
+        int hauteurBtn = 40;
+
+        JLabel labelText = new JLabel(text ,SwingConstants.CENTER);
+        labelText.setFont(ITEM_FONT.deriveFont(30f));
+
+        JTextArea jTextArea = new JTextArea(text);
+        jTextArea.setFont(ITEM_FONT.deriveFont(30f));
+        jTextArea.setBackground(new Color(0,0,0,0));
+        jTextArea.setLineWrap(true);
+        jTextArea.setWrapStyleWord(true);
+
+
+        JButton button = new JButton("Fin");
+        button.addActionListener(e -> {
+            Game.setPause(false);
+            dispose();
+        });
+
+        button.setFocusable(false);
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setFont(ITEM_FONT.deriveFont(15f));
+        button.setOpaque(false);
+        button.setBorderPainted(false);
+
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setForeground(ITEM_SELECTED);
+        button.setIcon(new ImageIcon(MENU_ITEM_S));
+
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(jTextArea,700,700,700)
+                        .addComponent(button, largeurBtn, largeurBtn, largeurBtn)
+                )
+                .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGap(10, 10, Short.MAX_VALUE)
+                .addComponent(jTextArea)
+                .addGap(15)
+                .addComponent(button, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(10, 10, 40)
+        );
+
+        panelPrinc.setLayout(layout);
+
+        return panelPrinc;
+    }
+
 
 
 
