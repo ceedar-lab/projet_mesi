@@ -223,15 +223,46 @@ public class DialoguePanel extends JDialog {
 
 
     public JPanel getQuestionPanel() {
-        // passe le fond en transparent
+
+
+
+        JTextArea jTextArea = new JTextArea(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getMessage());
+        jTextArea.setFont(ITEM_FONT.deriveFont(20f));
+        jTextArea.setBackground(new Color(0,0,0,0));
+        jTextArea.setLineWrap(true);
+        jTextArea.setWrapStyleWord(true);
+
+        GroupLayout layout = new GroupLayout(questionPanel);
         questionPanel.setBackground(new Color(0,0,0,0));
 
-        questionPanel.setLayout(new GridBagLayout());
-        // creer un jlabel avec le contenu de la question
-        JLabel jLabel = new JLabel();
-        jLabel.setText(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getMessage());
-        //ajoute le label au panel
-        questionPanel.add(jLabel);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTextArea,600,600,600)
+                .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGap(50)
+                .addComponent(jTextArea)
+                .addGap(50)
+        );
+
+        questionPanel.setLayout(layout);
+
+
+//        // passe le fond en transparent
+//        questionPanel.setBackground(new Color(0,0,0,0));
+//
+//        questionPanel.setLayout(new GridBagLayout());
+//        // creer un jlabel avec le contenu de la question
+//        JLabel jLabel = new JLabel();
+//        jLabel.setFont(ITEM_FONT.deriveFont(30f));
+//        jLabel.setText(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getMessage());
+//        //ajoute le label au panel
+//        questionPanel.add(jLabel);
+
+
         return questionPanel;
     }
 
@@ -284,6 +315,7 @@ public class DialoguePanel extends JDialog {
         GroupLayout layout = new GroupLayout(panelPrincPopup);
 
         JLabel labelText = new JLabel(text ,SwingConstants.CENTER);
+        labelText.setFont(ITEM_FONT.deriveFont(20f));
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -310,11 +342,11 @@ public class DialoguePanel extends JDialog {
         int largeurBtn = 220;
         int hauteurBtn = 40;
 
-        JLabel labelText = new JLabel(text ,SwingConstants.CENTER);
-        labelText.setFont(ITEM_FONT.deriveFont(30f));
+//        JLabel labelText = new JLabel(text ,SwingConstants.CENTER);
+//        labelText.setFont(ITEM_FONT.deriveFont(30f));
 
         JTextArea jTextArea = new JTextArea(text);
-        jTextArea.setFont(ITEM_FONT.deriveFont(30f));
+        jTextArea.setFont(ITEM_FONT.deriveFont(20f));
         jTextArea.setBackground(new Color(0,0,0,0));
         jTextArea.setLineWrap(true);
         jTextArea.setWrapStyleWord(true);

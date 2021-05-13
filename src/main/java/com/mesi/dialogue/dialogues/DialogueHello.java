@@ -19,6 +19,7 @@ public class DialogueHello extends Dialogue {
     private void initDialogue(){
 
         Question question0 = new Question(0,1);
+//        question0.setMessage("<html>Bonjour aventurier<br>allez voir le chef dans la tente</html>");
         question0.setMessage("Bonjour aventurier allez voir le chef dans la tente");
         HashMap<String,String> responsesList = new HashMap<>();
         responsesList.put("END","fin");
@@ -26,7 +27,7 @@ public class DialogueHello extends Dialogue {
         getQuestionsList().add(question0);
 
         Question question1 = new Question(1,1);
-        question1.setMessage("Etes vous allez voir le chef ?");
+        question1.setMessage("Etes-vous aller voir le chef ?");
         responsesList = new HashMap<>();
         responsesList.put("END","fin");
         question1.setResponseList(responsesList);

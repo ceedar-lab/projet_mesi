@@ -174,6 +174,18 @@ public class Backup {
         for (int i = 14; i < 17; i++) {
             map1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
+        /** ajout panneau de signalisation **/
+        Sign sign = new Sign(44,23);
+        sign.setText("village 2 km");
+        map1.getDecorObjectArraylist().add(sign);
+        sign = new Sign(79,16);
+        sign.setText("village 1 km");
+        map1.getDecorObjectArraylist().add(sign);
+
+
+
+
+
 //        map1.getDecorObjectArraylist().add(new Sword(12, 13, 1));
 //        map1.getDecorObjectArraylist().add(new Sword(9, 13, 2));
 //        map1.getDecorObjectArraylist().add(new Shield(19, 18, 1));
