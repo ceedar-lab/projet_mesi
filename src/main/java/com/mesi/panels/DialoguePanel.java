@@ -13,6 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class DialoguePanel extends JDialog {
 
@@ -45,7 +47,6 @@ public class DialoguePanel extends JDialog {
         }
     };
 
-    //    private JPanel panelPrinc = new JPanel();
     private JPanel questionPanel = new JPanel();
     private JPanel responsePanel = new JPanel();
     private Dialogue dialogue;
@@ -54,16 +55,20 @@ public class DialoguePanel extends JDialog {
     private int indexSelection = 0;
 
 
-
+    /**
+     * JDialog popup qui disparaisse automatiquement a la fin du timer
+     * le jeux n'est pas mis en pause pour autant
+     * @param text : texte du popup
+     * @param time : temps en seconde avant disparition du popup
+     */
     public DialoguePanel(String text,Integer time){
 
         setFocusableWindowState(false);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         getParent().requestFocus();
         setAlwaysOnTop(true);
-        setSize(1000,200);
-//        setLocationRelativeTo(null);
-        setLocation((screen.width-1000)/2,screen.height/12);
+        setSize(800,200);;
+        setLocation((screen.width-800)/2,screen.height/12);
         setUndecorated(true);
         setFocusable(false);
 
@@ -75,9 +80,16 @@ public class DialoguePanel extends JDialog {
 
         setVisible(true);
 
+        CompletableFuture.delayedExecutor(time, TimeUnit.SECONDS).execute(()->{
+            dispose();
+        });
 
     }
 
+    /**
+     * JDialog qui met le jeux en pause en attendant une action du joueur soit pas la touche entrer soit par la touche ESC
+     * @param text : texte de la fenêtre
+     */
     public DialoguePanel(String text){
 
         Game.setPause(true);
@@ -87,7 +99,7 @@ public class DialoguePanel extends JDialog {
         setUndecorated(true);
         setFocusable(true);
         getRootPane().setOpaque(false);
-        setModal(false);
+        setModal(true);
         setBackground(new Color(0, 0, 0, 0));
 
         add(getPanelPrincText(text));
@@ -116,19 +128,23 @@ public class DialoguePanel extends JDialog {
 
     }
 
-
+    /**
+     * JDialog de dialogue avec les PNJ
+     * le jeux est mis en pause durant le temps de vie de la fenêtre
+     * @param dialogue : sequence de questions réponses
+     */
     public DialoguePanel(Dialogue dialogue) {
         this.dialogue = dialogue;
 
         Game.setPause(true);
 
-        Dimension sizeScreen = Toolkit.getDefaultToolkit().getScreenSize();
-//        setSize(sizeScreen.width,200);
+
 
         setSize(800,400);
+        setLocationRelativeTo(null);
         setUndecorated(true);
         setFocusable(true);
-
+        setBackground(new Color(0, 0, 0, 0));
         setModal(false);
 
         add(getPanelPrinc());
@@ -171,28 +187,18 @@ public class DialoguePanel extends JDialog {
 
             @Override
             public void keyReleased(KeyEvent e) {
-
             }
-
         });
 
-
-
         setVisible(true);
-
-
     }
 
     public JPanel getPanelPrinc() {
-//        panelPrinc = new JPanel();
-        panelPrinc.setBackground(Color.LIGHT_GRAY);
-//        panelPrinc.setBackground(new Color(0,0,255));
+
         GroupLayout layout = new GroupLayout(panelPrinc);
 
-
-
         int largeurBtn = 800;
-        int hauteurBtn = 100;
+        int hauteurBtn = 200;
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -204,11 +210,9 @@ public class DialoguePanel extends JDialog {
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-//                .addGap(10, 10, Short.MAX_VALUE)
-                        .addComponent(questionPanel, hauteurBtn, hauteurBtn, hauteurBtn)
-//                .addGap(20)
-                        .addComponent(responsePanel, hauteurBtn, hauteurBtn, hauteurBtn)
-//                .addGap(10, 10, Short.MAX_VALUE)
+                .addComponent(questionPanel, 180, 180, 180)
+                .addComponent(responsePanel, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGap(10, 10, Short.MAX_VALUE)
         );
 
         panelPrinc.setLayout(layout);
@@ -219,21 +223,22 @@ public class DialoguePanel extends JDialog {
 
 
     public JPanel getQuestionPanel() {
-        questionPanel.setBackground(Color.LIGHT_GRAY);
-//        questionPanel.setBackground(new Color(255,0,0));
+        // passe le fond en transparent
+        questionPanel.setBackground(new Color(0,0,0,0));
+
+        questionPanel.setLayout(new GridBagLayout());
+        // creer un jlabel avec le contenu de la question
         JLabel jLabel = new JLabel();
         jLabel.setText(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getMessage());
+        //ajoute le label au panel
         questionPanel.add(jLabel);
         return questionPanel;
     }
 
-    public void setQuestionPanel(JPanel questionPanel) {
-        this.questionPanel = questionPanel;
-    }
+
 
     public JPanel getResponsePanel() {
-        responsePanel.setBackground(Color.LIGHT_GRAY);
-//        responsePanel.setBackground(new Color(255,255,0));
+        responsePanel.setBackground(new Color(0,0,0,0));
         GridLayout gridLayout = new GridLayout(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getResponseList().size(),1);
 
         for (String mapKey : dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getResponseList().keySet()) {
@@ -252,6 +257,17 @@ public class DialoguePanel extends JDialog {
                     dispose();
                 }
             });
+
+            jButton.setFocusable(false);
+            jButton.setBackground(Color.LIGHT_GRAY);
+            jButton.setFont(ITEM_FONT.deriveFont(15f));
+            jButton.setOpaque(false);
+            jButton.setBorderPainted(false);
+
+            jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            jButton.setForeground(ITEM_SELECTED);
+            jButton.setIcon(new ImageIcon(MENU_ITEM_S));
+
             responsePanel.add(jButton);
             listeBtn.add(jButton);
         }
@@ -261,21 +277,13 @@ public class DialoguePanel extends JDialog {
         return responsePanel;
     }
 
-    public void setResponsePanel(JPanel responsePanel) {
-        this.responsePanel = responsePanel;
-    }
-
 
 
     public JPanel getPanelPrincPopup(String text){
 
         GroupLayout layout = new GroupLayout(panelPrincPopup);
 
-        int largeurBtn = 220;
-        int hauteurBtn = 40;
-
         JLabel labelText = new JLabel(text ,SwingConstants.CENTER);
-
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -285,7 +293,7 @@ public class DialoguePanel extends JDialog {
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(10, 10, Short.MAX_VALUE)
-                .addComponent(labelText, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addComponent(labelText)
                 .addGap(10, 10, Short.MAX_VALUE)
         );
 
@@ -293,6 +301,7 @@ public class DialoguePanel extends JDialog {
 
         return panelPrincPopup;
     }
+
 
     public JPanel getPanelPrincText(String text){
 
@@ -310,7 +319,6 @@ public class DialoguePanel extends JDialog {
         jTextArea.setLineWrap(true);
         jTextArea.setWrapStyleWord(true);
 
-
         JButton button = new JButton("Fin");
         button.addActionListener(e -> {
             Game.setPause(false);
@@ -318,7 +326,7 @@ public class DialoguePanel extends JDialog {
         });
 
         button.setFocusable(false);
-        button.setBackground(Color.LIGHT_GRAY);
+        button.setBackground(new Color(0,0,0,0));
         button.setFont(ITEM_FONT.deriveFont(15f));
         button.setOpaque(false);
         button.setBorderPainted(false);
@@ -360,10 +368,10 @@ public class DialoguePanel extends JDialog {
      */
     public void selectButton(int buttonNumber) {
         for (int i = 0; i < listeBtn.size(); i++) {
-            listeBtn.get(i).setBackground(Color.LIGHT_GRAY);
+            listeBtn.get(i).setForeground(null);
         }
 
-        listeBtn.get(buttonNumber).setBackground(Color.GREEN);
+        listeBtn.get(buttonNumber).setForeground(ITEM_SELECTED);
     }
 
 

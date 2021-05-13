@@ -511,10 +511,12 @@ public class Game extends JPanel {
 
 
 //                    new DialoguePanel("text court");
-//                    new DialoguePanel("ceci est un text de test vraiment long pour tester la fenetre");
-//                    DialoguePanel dialoguePanel =   new DialoguePanel("test",2);
+                    new DialoguePanel("ceci est un text de test vraiment long pour tester la fenetre");
 
-                    new DialoguePanel(pnj.getDialogue());
+//                    DialoguePanel dialoguePanel =   new DialoguePanel("test",2);
+//                    DialoguePanel dialoguePanel =   new DialoguePanel("ceci est un text de test vraiment long pour tester la fenetre",2);
+
+//                    new DialoguePanel(pnj.getDialogue());
 
 
                     isActing = false;
