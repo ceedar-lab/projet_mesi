@@ -500,6 +500,7 @@ public class Map1 extends MapModel {
         getTileList().get("89,12").setTraversable(false);
         getTileList().get("89,28").setTraversable(false);
 
+
         /** Coordonnées des blocs de téléportation et tuile de destination **/
         final String MAP2 = "MAP_2";
         addTeleport(getTileList().get("17,14"), true, MAP2 + " " + (MainZeldo.mapList.get(MAP2).getMapWidth()/2 - 1) + "," + (MainZeldo.mapList.get(MAP2).getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
@@ -509,6 +510,12 @@ public class Map1 extends MapModel {
         addTeleport(getTileList().get("89,17"), true, "MAP_3 0,39", Hitbox.EAST_BORD);
         addTeleport(getTileList().get("89,18"), true, "MAP_3 0,40", Hitbox.EAST_BORD);
         addTeleport(getTileList().get("89,19"), true, "MAP_3 0,41", Hitbox.EAST_BORD);
+
+        /** blocage entré tente **/
+        getTileList().get("17,14").setTraversable(false);
+        getTileList().get("18,14").setTraversable(false);
+
+
 
     }
 }

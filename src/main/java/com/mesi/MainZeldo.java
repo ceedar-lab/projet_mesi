@@ -1,5 +1,7 @@
 package com.mesi;
 
+import com.mesi.dialogue.Dialogue;
+import com.mesi.dialogue.DialogueGenerator;
 import com.mesi.panels.Game;
 import com.mesi.panels.GameTitle;
 import com.mesi.panels.StartMenu;
@@ -36,7 +38,9 @@ public class MainZeldo extends JPanel {
     private static final Logger logger = LogManager.getLogger(MainZeldo.class);
 
     public static final Map<String, MapModel> mapList = new HashMap<>();
+    public static final Map<String, Dialogue> dialogueList = new HashMap<>();
     public static final Map<String, Pnj> pnjList = new HashMap<>();
+
 
     public enum GameState {
         GAME_TITLE, START_MENU, MAP_1, MAP_2, MAP_3
@@ -130,6 +134,7 @@ public class MainZeldo extends JPanel {
      */
     public static void main(String[] args) throws IOException, ParseException {
         generic = new Player(Sounds.GENERIC_START, true);
+        new DialogueGenerator();
         new PnjGenerator();//genere les PNJs
         new MapGenerator();//genere les maps
         JFrame f = new JFrame();

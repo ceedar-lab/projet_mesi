@@ -5,6 +5,7 @@ import com.mesi.animation.*;
 import com.mesi.decor.Bush;
 import com.mesi.decor.Chest;
 import com.mesi.decor.DecorObject;
+import com.mesi.decor.Sign;
 import com.mesi.decor.collectable.CollectableItem;
 import com.mesi.equipement.*;
 import com.mesi.panels.maps.MapModel;
@@ -19,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -89,7 +91,7 @@ public class Game extends JPanel {
                         setCharCoordinates();
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                         getActionArea();
-                        teleportChecker();
+                        teleportChecker(charBounds,map.getTeleportList());
                         if (isHiting || isActing) {
                             hitChecker(charActionArea);
                         }
@@ -321,6 +323,18 @@ public class Game extends JPanel {
 //        /** met en surbrillance orange la zone d'action du personnage **/
 //        g.setColor(new Color(255, 128, 0, 100));
 //        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
+//
+//        /** affichage des coordonnées des tiles de la map **/
+//        for (String key:map.getTileList().keySet()) {
+//            Tile tile = map.getTileList().get(key);
+//            JLabel jLabel = new JLabel("X");
+//            tile.add(jLabel);
+//            Font fonte = new Font("TimesRoman ",Font.BOLD,10);
+//            g.setFont(fonte);
+//            g.setColor(new Color(255, 255, 0, 180));
+//            g.drawString(tile.getTileX()/32+"-"+tile.getTileY()/32, tile.getTileX()+4,tile.getTileY()+20);
+//        }
+
     }
 
     /**
@@ -401,25 +415,25 @@ public class Game extends JPanel {
         // Utilisation du setter static conseillée pour la mise à jour des coordonnées en private static
         if (isMovingRight) {
             Rectangle test = new Rectangle(characterCoordinates[0] + Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0] += Constant.STRIDE, getCharacterCoordinates()[1] });
             }
         }
         if (isMovingLeft) {
             Rectangle test = new Rectangle(characterCoordinates[0] - Constant.STRIDE, characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0] -= Constant.STRIDE, getCharacterCoordinates()[1] });
             }
         }
         if (isMovingUp) {
             Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] - Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0], getCharacterCoordinates()[1] -= Constant.STRIDE });
             }
         }
         if (isMovingDown) {
             Rectangle test = new Rectangle(characterCoordinates[0], characterCoordinates[1] + Constant.STRIDE, Constant.TILE_SIZE, Constant.TILE_SIZE);
-            if (!collisionChecker(test)) {
+            if (!collisionChecker(test,map.getHitboxList())) {
                 setCharacterCoordinates(new Integer[] { getCharacterCoordinates()[0], getCharacterCoordinates()[1] += Constant.STRIDE });
             }
         }
@@ -453,11 +467,11 @@ public class Game extends JPanel {
     /**
      * Teste si le personnage entre en collision avec un des blocs de collision de la map.
      */
-    public boolean collisionChecker(Rectangle rectangle) {
+    public boolean collisionChecker(Rectangle character, List<Rectangle>rectangleList) {
         boolean collision = false;
 
-        for (Rectangle block : map.getHitboxList()) {
-            if (rectangle.intersects(block)) {
+        for (Rectangle block : rectangleList) {
+            if (character.intersects(block)) {
                 collision = true;
                 break;
             }
@@ -468,9 +482,9 @@ public class Game extends JPanel {
     /**
      * Teste si le personnage entre sur une case de téléportation de la map.
      */
-    public void teleportChecker() throws IOException {
-        Rectangle charCenter = new Rectangle(charBounds.x + 15, charBounds.y + 15, 2, 2);
-        for (Tile tile : map.getTeleportList()) {
+    public void teleportChecker(Rectangle character, List<Tile>tileList) {
+        Rectangle charCenter = new Rectangle(character.x + 15, character.y + 15, 2, 2);
+        for (Tile tile : tileList) {
             if (charCenter.intersects(tile.getTeleportBounds())) {
                 music.stop();
                 String teleportMap = tile.getBindedTile().split(" ")[0];
@@ -504,9 +518,23 @@ public class Game extends JPanel {
      * Teste si l'action du personnage entre en collision avec un des blocs d'interaction de la map.
      */
     public void hitChecker(Rectangle rectangle) {
-        for (Pnj pnj : map.getPnjList()) {
-            if (rectangle.intersects(pnj.getHitbox())) {
-                logger.debug("Speaking to " + pnj.getName());
+        if(isActing){
+            for (Pnj pnj : map.getPnjList()) {
+                if (rectangle.intersects(pnj.getHitbox())) {
+//                    logger.info("Je parle au pnj " + pnj.getName());
+                    logger.debug("Speaking to " + pnj.getName());
+
+
+//                    new DialoguePanel("text court");
+//                    new DialoguePanel("ceci est un text de test vraiment long pour tester la fenetre");
+
+//                    DialoguePanel dialoguePanel =   new DialoguePanel("test",2);
+//                    DialoguePanel dialoguePanel =   new DialoguePanel("ceci est un text de test vraiment long pour tester la fenetre",2);
+
+                    new DialoguePanel(pnj.getDialogue());
+
+                    isActing = false;
+                }
             }
         }
 
@@ -526,6 +554,12 @@ public class Game extends JPanel {
                             objectToAdd.add(new Chest("open", decorObject.getX() / Constant.TILE_SIZE, decorObject.getY() / Constant.TILE_SIZE));
                             objectToRemove.add(decorObject);
                         }
+
+                        if (decorObject instanceof Sign) {
+                            new DialoguePanel(((Sign) decorObject).getText());
+                            isActing = false;
+                        }
+
                     }
                 }
             }

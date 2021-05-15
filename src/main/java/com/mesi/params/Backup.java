@@ -174,6 +174,18 @@ public class Backup {
         for (int i = 14; i < 17; i++) {
             map1.getDecorObjectArraylist().add(new Bush(i, 24));
         }
+        /** ajout panneau de signalisation **/
+        Sign sign = new Sign(44,23);
+        sign.setText("village 2 km");
+        map1.getDecorObjectArraylist().add(sign);
+        sign = new Sign(79,16);
+        sign.setText("village 1 km");
+        map1.getDecorObjectArraylist().add(sign);
+
+
+
+
+
 //        map1.getDecorObjectArraylist().add(new Sword(12, 13, 1));
 //        map1.getDecorObjectArraylist().add(new Sword(9, 13, 2));
 //        map1.getDecorObjectArraylist().add(new Shield(19, 18, 1));
@@ -189,6 +201,11 @@ public class Backup {
         map2.getDecorObjectArraylist().add(new BootsLeather(map2.getMapWidth()/2 - 2, map2.getMapHeight()/2 + -2, 1));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2, map2.getMapHeight()/2 + -2));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + -2));
+
+        Pnj pnjTest2 = MainZeldo.pnjList.get("pnjTest2");
+        pnjTest2.setCharacterCoordinates(new Integer[]{map2.getMapWidth()/2 * Constant.TILE_SIZE, map2.getMapHeight()/2 * Constant.TILE_SIZE});
+        pnjTest2.setDirection(1);
+        map2.getPnjList().add(pnjTest2);
 
         Game.setKillThread(false);
         MainZeldo.setGameState(MainZeldo.GameState.MAP_1);
