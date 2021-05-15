@@ -3,6 +3,7 @@ package com.mesi.panels.maps;
 import com.mesi.MainZeldo;
 import com.mesi.params.Hitbox;
 import com.mesi.resources.Images;
+import com.mesi.resources.Sounds;
 
 import java.io.IOException;
 
@@ -503,6 +504,11 @@ public class Map1 extends MapModel {
         final String MAP2 = "MAP_2";
         addTeleport(getTileList().get("17,14"), true, MAP2 + " " + (MainZeldo.mapList.get(MAP2).getMapWidth()/2 - 1) + "," + (MainZeldo.mapList.get(MAP2).getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
         addTeleport(getTileList().get("18,14"), true, MAP2 + " " + (MainZeldo.mapList.get(MAP2).getMapWidth()/2) + "," + (MainZeldo.mapList.get(MAP2).getMapHeight()/2 + 6), Hitbox.NORTH_BORD);
+        addTeleport(getTileList().get("89,15"), true, "MAP_3 0,37", Hitbox.EAST_BORD);
+        addTeleport(getTileList().get("89,16"), true, "MAP_3 0,38", Hitbox.EAST_BORD);
+        addTeleport(getTileList().get("89,17"), true, "MAP_3 0,39", Hitbox.EAST_BORD);
+        addTeleport(getTileList().get("89,18"), true, "MAP_3 0,40", Hitbox.EAST_BORD);
+        addTeleport(getTileList().get("89,19"), true, "MAP_3 0,41", Hitbox.EAST_BORD);
 
     }
 }

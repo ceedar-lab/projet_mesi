@@ -8,6 +8,7 @@ import com.mesi.pnj.Pnj;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 
@@ -21,6 +22,8 @@ public abstract class MapModel extends JPanel {
 
     private Integer mapWidth;
     private Integer mapHeight;
+
+    private File music;
 
     private boolean scrollable;
 
@@ -105,6 +108,8 @@ public abstract class MapModel extends JPanel {
     public void setPnjList(List<Pnj> pnjList) {
         this.pnjList = pnjList;
     }
+    public File getMusic() { return music; }
+    public void setMusic(File music) { this.music = music; }
 
     /**
      * Récupère la liste des hitbox.
