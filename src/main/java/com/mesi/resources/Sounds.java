@@ -18,6 +18,7 @@ public class Sounds {
     private static File musicForest;
     private static File musicStart;
     private static File musicTent;
+    private static File musicTown;
 
     static {
         logger.info("Start loading files");
@@ -28,9 +29,10 @@ public class Sounds {
         equipWeapon = checkIfFileExists(new File("src/main/resources/sounds/effects/equip_weapon.ogg"));
         menu = checkIfFileExists(new File("src/main/resources/sounds/effects/menu.ogg"));
         menuClic = checkIfFileExists(new File("src/main/resources/sounds/effects/menu_clic.ogg"));
-        musicForest = checkIfFileExists(new File("src/main/resources/sounds/music/forest.ogg"));
+        musicForest = checkIfFileExists(new File("src/main/resources/sounds/music/awkward.ogg"));
         musicStart = checkIfFileExists(new File("src/main/resources/sounds/music/start.ogg"));
         musicTent = checkIfFileExists(new File("src/main/resources/sounds/music/tent.ogg"));
+        musicTown = checkIfFileExists(new File("src/main/resources/sounds/music/overworld.ogg"));
 
         logger.info("Files loaded");
     }
@@ -46,6 +48,7 @@ public class Sounds {
     public static final File FOREST = musicForest;
     public static final File TENT = musicTent;
     public static final File GENERIC_START = musicStart;
+    public static final File TOWN = musicTown;
 
     private static File checkIfFileExists(File file) {
         if (!file.canRead()) logger.error("File doesn't exists : " + file.toString());

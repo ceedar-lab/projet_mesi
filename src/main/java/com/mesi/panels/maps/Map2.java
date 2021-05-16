@@ -2,6 +2,7 @@ package com.mesi.panels.maps;
 
 import com.mesi.params.Hitbox;
 import com.mesi.resources.Images;
+import com.mesi.resources.Sounds;
 
 import java.io.IOException;
 

@@ -81,6 +81,8 @@ public class Images {
     private static BufferedImage map1Foreground;
     private static BufferedImage map2Background;
     private static BufferedImage map2Foreground;
+    private static BufferedImage map3Background;
+    private static BufferedImage map3Foreground;
 
     static {
         try {
@@ -154,6 +156,8 @@ public class Images {
             map1Foreground = toCompatibleImage(new File("src/main/resources/images/maps/map_1-foreground.png"));
             map2Background = toCompatibleImage(new File("src/main/resources/images/maps/map_2-background.jpg"));
             map2Foreground = toCompatibleImage(new File("src/main/resources/images/maps/map_2-foreground.png"));
+            map3Background = toCompatibleImage(new File("src/main/resources/images/maps/map_3-background.jpg"));
+            map3Foreground = toCompatibleImage(new File("src/main/resources/images/maps/map_3-foreground.png"));
 
             logger.info("Files loaded");
         } catch (IOException e) {
@@ -231,6 +235,8 @@ public class Images {
     public static final BufferedImage MAP_1_FG = map1Foreground;
     public static final BufferedImage MAP_2_BG = map2Background;
     public static final BufferedImage MAP_2_FG = map2Foreground;
+    public static final BufferedImage MAP_3_BG = map3Background;
+    public static final BufferedImage MAP_3_FG = map3Foreground;
 
     /**
      * Test si l'image est optimisé pour le système, et la convertit dans le cas contraire.

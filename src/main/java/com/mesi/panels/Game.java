@@ -132,6 +132,7 @@ public class Game extends JPanel {
         switch (map.getClass().getSimpleName()) {
             case "Map1": music = new Player(Sounds.FOREST, true); break;
             case "Map2": music = new Player(Sounds.TENT, true); break;
+            case "Map3": music = new Player(Sounds.TOWN, true); break;
         }
         charBounds = new Rectangle(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
         getActionArea();

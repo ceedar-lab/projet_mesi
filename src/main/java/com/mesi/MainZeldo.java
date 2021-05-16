@@ -43,7 +43,7 @@ public class MainZeldo extends JPanel {
 
 
     public enum GameState {
-        GAME_TITLE, START_MENU, MAP_1, MAP_2
+        GAME_TITLE, START_MENU, MAP_1, MAP_2, MAP_3
     }
 
     private static GameState gameState = GameState.GAME_TITLE;

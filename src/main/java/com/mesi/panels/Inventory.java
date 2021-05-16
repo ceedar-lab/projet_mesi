@@ -8,7 +8,6 @@ import com.mesi.equipement.RightHand;
 import com.mesi.equipement.Torso;
 import com.mesi.params.Constant;
 import com.mesi.params.KeyMap;
-import com.mesi.pojo.Item;
 import com.mesi.resources.Images;
 import com.mesi.resources.Player;
 import com.mesi.resources.Sounds;
