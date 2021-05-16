@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -45,6 +46,13 @@ public class Game extends JPanel {
     private static boolean killThread = false;
     private static boolean stopDebug = false;
     public static boolean changePicture = false;
+
+
+
+    public static boolean sound = true;
+    public static boolean collision = false;
+    public static boolean tileNumber = false;
+
 
     private BufferedImage[] sprites;
 //    public static BufferedImage charPic;
@@ -272,6 +280,14 @@ public class Game extends JPanel {
             walkSpriteY = 2;
         }
 
+        /** affiche les PNJ au premier plan **/
+        for (Pnj pnj : map.getPnjList()) {
+
+            if (pnj.getCharacterCoordinates()[1] > characterCoordinates[1]) {
+                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
+            }
+        }
+
         /** affiche les elements de la carte au premier plan **/
         if (map.isScrollable()) {
             g.drawImage(foregroundImage, 0, 0, this);
@@ -288,52 +304,51 @@ public class Game extends JPanel {
             }
         }
 
-        /** affiche les PNJ au premier plan **/
-        for (Pnj pnj : map.getPnjList()) {
 
-            if (pnj.getCharacterCoordinates()[1] > characterCoordinates[1]) {
-                g.drawImage(pnj.stand(pnj.getDirection())[0], pnj.getCharacterCoordinates()[0] + offsetXChar, pnj.getCharacterCoordinates()[1] + offsetYChar, this);
+        if(collision){
+            /** Affichage des cases de téléportation en jaune **/
+            for (Tile teleport : map.getTeleportList()) {
+                g.setColor(new Color(255, 255, 0, 180));
+                g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
+            }
+
+            /** met en surbrillance rouge les zone de collision **/
+            for (Rectangle hitbox : map.getHitboxList()) {
+                g.setColor(new Color(255, 0, 0, 100));
+                g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+            }
+
+            /** met en surbrillance rouge les zone de collision **/
+            for (DecorObject object : map.getDecorObjectArraylist()) {
+                if (object instanceof CollectableItem) {
+                    g.setColor(new Color(0, 0, 255, 100));
+                    g.fillRect(object.getX(), object.getY(), Constant.TILE_SIZE, Constant.TILE_SIZE);
+                }
+            }
+
+            /** met en surbrillance violete la zone de collision du perso **/
+            g.setColor(new Color(255, 0, 255, 100));
+            g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
+
+            /** met en surbrillance orange la zone d'action du personnage **/
+            g.setColor(new Color(255, 128, 0, 100));
+            g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
+        }
+
+
+        /** affichage des coordonnées des tiles de la map **/
+        if(tileNumber){
+            for (String key:map.getTileList().keySet()) {
+                Tile tile = map.getTileList().get(key);
+                JLabel jLabel = new JLabel("X");
+                tile.add(jLabel);
+                Font fonte = new Font("TimesRoman ",Font.BOLD,10);
+                g.setFont(fonte);
+                g.setColor(new Color(255, 255, 0, 180));
+                g.drawString(tile.getTileX()/32+"-"+tile.getTileY()/32, tile.getTileX()+4,tile.getTileY()+20);
             }
         }
 
-//        /** Affichage des cases de téléportation en jaune **/
-//        for (Tile teleport : map.getTeleportList()) {
-//            g.setColor(new Color(255, 255, 0, 180));
-//            g.fillRect(teleport.getTeleportBounds().x, teleport.getTeleportBounds().y, teleport.getTeleportBounds().width, teleport.getTeleportBounds().height);
-//        }
-//
-//        /** met en surbrillance rouge les zone de collision **/
-//        for (Rectangle hitbox : map.getHitboxList()) {
-//            g.setColor(new Color(255, 0, 0, 100));
-//            g.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-//        }
-//
-//        /** met en surbrillance rouge les zone de collision **/
-//        for (DecorObject object : map.getDecorObjectArraylist()) {
-//            if (object instanceof CollectableItem) {
-//                g.setColor(new Color(0, 0, 255, 100));
-//                g.fillRect(object.getX(), object.getY(), Constant.TILE_SIZE, Constant.TILE_SIZE);
-//            }
-//        }
-//
-//        /** met en surbrillance violete la zone de collision du perso **/
-//        g.setColor(new Color(255, 0, 255, 100));
-//        g.fillRect(charBounds.x, charBounds.y, charBounds.width, charBounds.height);
-//
-//        /** met en surbrillance orange la zone d'action du personnage **/
-//        g.setColor(new Color(255, 128, 0, 100));
-//        g.fillRect(charActionArea.x, charActionArea.y, charActionArea.width, charActionArea.height);
-//
-//        /** affichage des coordonnées des tiles de la map **/
-//        for (String key:map.getTileList().keySet()) {
-//            Tile tile = map.getTileList().get(key);
-//            JLabel jLabel = new JLabel("X");
-//            tile.add(jLabel);
-//            Font fonte = new Font("TimesRoman ",Font.BOLD,10);
-//            g.setFont(fonte);
-//            g.setColor(new Color(255, 255, 0, 180));
-//            g.drawString(tile.getTileX()/32+"-"+tile.getTileY()/32, tile.getTileX()+4,tile.getTileY()+20);
-//        }
 
     }
 
@@ -376,6 +391,12 @@ public class Game extends JPanel {
         }
         if (keyCode == KeyMap.ACTION) {
             isActing = true;
+        }
+        // KeyEvent.VK_I
+        if (keyCode == KeyMap.INVENTORY) {
+            logger.debug("Clic on 'Inventaire'");
+            setPause(true);
+            new Inventory();
         }
 
 
@@ -486,7 +507,9 @@ public class Game extends JPanel {
         Rectangle charCenter = new Rectangle(character.x + 15, character.y + 15, 2, 2);
         for (Tile tile : tileList) {
             if (charCenter.intersects(tile.getTeleportBounds())) {
-                music.stop();
+                if(music!=null){
+                    music.stop();
+                }
                 String teleportMap = tile.getBindedTile().split(" ")[0];
                 setCharacterCoordinates(new Integer[]{
                         Integer.parseInt(tile.getBindedTile().split(" ")[1].split(",")[0]) * Constant.TILE_SIZE,

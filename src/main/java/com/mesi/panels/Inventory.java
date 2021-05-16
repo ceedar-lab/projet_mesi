@@ -194,7 +194,8 @@ public class Inventory extends JDialog {
 
                 if (e.getKeyCode() == KeyMap.ESCAPE) {
                     logger.debug("Inventory closed");
-                    new GameMenu();
+//                    new GameMenu();
+                    Game.setPause(false);
                     dispose();
                 }
                 if (e.getKeyCode() == KeyMap.LEFT) {

@@ -1,9 +1,10 @@
 package com.mesi.panels;
 
 import com.mesi.MainZeldo;
+import com.mesi.params.Backup;
+import com.mesi.params.KeyMap;
 import com.mesi.resources.Fonts;
 import com.mesi.resources.Images;
-import com.mesi.params.*;
 import com.mesi.resources.Player;
 import com.mesi.resources.Sounds;
 import org.apache.logging.log4j.LogManager;
@@ -19,11 +20,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GameMenu extends JDialog {
+public class OptionMenu extends JDialog {
 
     /**********  Attributes  **********/
 
-    private static final Logger logger = LogManager.getLogger(GameMenu.class);
+    private static final Logger logger = LogManager.getLogger(OptionMenu.class);
 
     private final Integer MENU_WIDTH = 360;
     private final Integer MENU_HEIGHT = 480;
@@ -42,12 +43,13 @@ public class GameMenu extends JDialog {
         }
     };
 
-    private JButton btnRetourAuJeu = new JButton("RETOUR AU JEU");
-    private JButton btnEnregistrer = new JButton("ENREGISTRER");
-    private JButton btnCharger = new JButton("CHARGER");
-    private JButton btnOption = new JButton("OPTION");
-    private JButton btnMenuPrincipal = new JButton("MENU PRINCIPAL");
-    private JButton btnQuitter = new JButton("QUITTER");
+    private JButton btnMusic = new JButton("MUSIC");
+    private JButton btnCollision = new JButton("COLLISION");
+    private JButton btnTileNumber = new JButton("TILE NUMBER");
+
+    private JLabel statutMusic = new JLabel(Game.sound ? "ON" :"OFF");
+    private JLabel statutCollision = new JLabel(Game.collision ? "ON" :"OFF");
+    private JLabel statutTileNumber = new JLabel(Game.tileNumber ? "ON" :"OFF");
 
     private ArrayList<JButton> listeBtn = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class GameMenu extends JDialog {
 
     /**********  Constructors  **********/
 
-    public GameMenu() {
+    public OptionMenu() {
 
         setSize(MENU_WIDTH, MENU_HEIGHT);
         getRootPane().setOpaque(false);
@@ -65,12 +67,10 @@ public class GameMenu extends JDialog {
         setLocationRelativeTo(null);
         setBackground(new Color(0, 0, 0, 0));
 
-        listeBtn.add(btnRetourAuJeu);
-        listeBtn.add(btnEnregistrer);
-        listeBtn.add(btnCharger);
-        listeBtn.add(btnOption);
-        listeBtn.add(btnMenuPrincipal);
-        listeBtn.add(btnQuitter);
+        listeBtn.add(btnMusic);
+        listeBtn.add(btnCollision);
+        listeBtn.add(btnTileNumber);
+
 
         for (int i = 0; i < listeBtn.size(); i++) {
             listeBtn.get(i).setFocusable(false);
@@ -128,9 +128,9 @@ public class GameMenu extends JDialog {
 
         setVisible(true);
 
-        btnRetourAuJeu.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnRetourAuJeu.setForeground(ITEM_SELECTED);
-        btnRetourAuJeu.setIcon(new ImageIcon(MENU_ITEM_S));
+        btnMusic.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnMusic.setForeground(ITEM_SELECTED);
+        btnMusic.setIcon(new ImageIcon(MENU_ITEM_S));
     }
 
     /**********  Methods  **********/
@@ -149,29 +149,34 @@ public class GameMenu extends JDialog {
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(getBtnRetourAuJeu(), largeurBtn, largeurBtn, largeurBtn)
-                        .addComponent(getBtnEnregistrer(), largeurBtn, largeurBtn, largeurBtn)
-                        .addComponent(getBtnCharger(), largeurBtn, largeurBtn, largeurBtn)
-                        .addComponent(getBtnOption(), largeurBtn, largeurBtn, largeurBtn)
-                        .addComponent(getBtnMenuPrincipal(), largeurBtn, largeurBtn, largeurBtn)
-                        .addComponent(getBtnQuitter(), largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnMusic(), largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnCollision(), largeurBtn, largeurBtn, largeurBtn)
+                        .addComponent(getBtnTileNumber(), largeurBtn, largeurBtn, largeurBtn)
+                )
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(statutMusic)
+                        .addComponent(statutCollision)
+                        .addComponent(statutTileNumber)
                 )
                 .addGap(0, 0, Short.MAX_VALUE)
         );
 
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(10, 10, Short.MAX_VALUE)
-                .addComponent(btnRetourAuJeu, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(btnMusic, hauteurBtn, hauteurBtn, hauteurBtn)
+                        .addComponent(statutMusic, hauteurBtn, hauteurBtn, hauteurBtn)
+                )
                 .addGap(15)
-                .addComponent(btnEnregistrer, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(btnCollision, hauteurBtn, hauteurBtn, hauteurBtn)
+                        .addComponent(statutCollision, hauteurBtn, hauteurBtn, hauteurBtn)
+                )
                 .addGap(15)
-                .addComponent(btnCharger, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(15)
-                .addComponent(btnOption, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(15)
-                .addComponent(btnMenuPrincipal, hauteurBtn, hauteurBtn, hauteurBtn)
-                .addGap(15)
-                .addComponent(btnQuitter, hauteurBtn, hauteurBtn, hauteurBtn)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(btnTileNumber, hauteurBtn, hauteurBtn, hauteurBtn)
+                        .addComponent(statutTileNumber, hauteurBtn, hauteurBtn, hauteurBtn)
+                )
                 .addGap(10, 10, Short.MAX_VALUE)
         );
 
@@ -185,20 +190,20 @@ public class GameMenu extends JDialog {
      *
      * @return
      */
-    public JButton getBtnRetourAuJeu() {
+    public JButton getBtnMusic() {
 
-        btnRetourAuJeu.addActionListener(new ActionListener() {
+        btnMusic.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logger.debug("Clic on 'Retour au jeu'");
-
-                logger.info("Game resumed");
-                Game.setPause(false);
-                dispose();
+                Game.sound = !Game.sound;
+                if(!Game.sound && Game.music!=null){
+                    Game.music.stop();
+                }
+                statutMusic.setText(statutMusic.getText().equals("ON") ? "OFF" :"ON");
             }
         });
 
-        return btnRetourAuJeu;
+        return btnMusic;
     }
 
     /**
@@ -206,25 +211,17 @@ public class GameMenu extends JDialog {
      *
      * @return
      */
-    public JButton getBtnMenuPrincipal() {
-        btnMenuPrincipal.addActionListener(new ActionListener() {
+    public JButton getBtnCollision() {
+        btnCollision.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logger.debug("Clic on 'Menu principal'");
-
-                Game.setPause(false);
-                Game.setKillThread(true);
-                dispose();
-                if(Game.music!=null){
-                    Game.music.stop();
-                }
-                MainZeldo.generic = new Player(Sounds.GENERIC_START, true);
-                MainZeldo.setGameState(MainZeldo.GameState.GAME_TITLE);
-                MainZeldo.setGameStateChange(true);
+//                logger.debug("Clic on 'Menu principal'");
+                Game.collision = !Game.collision;
+                statutCollision.setText(statutCollision.getText().equals("ON") ? "OFF" :"ON");
             }
         });
 
-        return btnMenuPrincipal;
+        return btnCollision;
     }
 
     /**
@@ -232,80 +229,19 @@ public class GameMenu extends JDialog {
      *
      * @return
      */
-    public JButton getBtnEnregistrer() {
-        btnEnregistrer.addActionListener(new ActionListener() {
+    public JButton getBtnTileNumber() {
+        btnTileNumber.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logger.debug("Clic on 'Enregistrer'");
-
-                try {
-                    new Backup().save("save_1");
-                } catch (IOException ioException) {
-                    logger.error("Error while saving : " + ioException.getMessage());
-                }
+                Game.tileNumber = !Game.tileNumber;
+                statutTileNumber.setText(statutTileNumber.getText().equals("ON") ? "OFF" :"ON");
             }
         });
 
-        return btnEnregistrer;
+        return btnTileNumber;
     }
 
-    /**
-     * Charge la dernière partie sauvegardée.
-     *
-     * @return
-     */
-    public JButton getBtnCharger() {
-        btnCharger.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                logger.debug("Clic on 'Charger'");
 
-                Game.setPause(false);
-                Game.setKillThread(true);
-                dispose();
-                new Backup().load("save_1");
-            }
-        });
-
-        return btnCharger;
-    }
-
-    /**
-     * Ouvre l'inventaire.
-     *
-     * @return
-     */
-    public JButton getBtnOption() {
-        btnOption.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                new OptionMenu();
-                dispose();
-            }
-        });
-
-        return btnOption;
-    }
-
-    /**
-     * Retourne à Windows.
-     *
-     * @return
-     */
-    public JButton getBtnQuitter() {
-        btnQuitter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                logger.debug("Clic on 'Quitter'");
-
-                logger.info("<--------------- GAME END --------------->");
-                System.exit(0);
-            }
-        });
-
-        return btnQuitter;
-    }
 
     /**
      * Fais défiler le sélecteur lorsqu'on appuie sur les flèches de direction.

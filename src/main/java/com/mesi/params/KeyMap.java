@@ -14,6 +14,8 @@ public class KeyMap {
     public static final Integer ATTACK = 32; //touche espace
     public static final Integer STOP = 83; //touche S
     public static final Integer ACTION = 65; //touche A
+    public static final Integer INVENTORY = 73; //touche I
+
 
     private KeyMap() {
         // Constructeur privé utilisé pour cacher le constructeur implicite crée par Java.

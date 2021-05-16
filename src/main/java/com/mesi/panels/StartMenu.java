@@ -1,6 +1,7 @@
 package com.mesi.panels;
 
 import com.mesi.MainZeldo;
+import com.mesi.dialogue.dialogues.DialogueTuto;
 import com.mesi.panels.maps.MapGenerator;
 import com.mesi.resources.Fonts;
 import com.mesi.resources.Images;
@@ -131,9 +132,12 @@ public class StartMenu extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 logger.debug("Clic on 'Nouvelle Partie'");
 
-                MainZeldo.generic.stop();
+                if (MainZeldo.generic!=null){
+                    MainZeldo.generic.stop();
+                }
                 try {
                     new Backup().startNewGame();
+                    new DialoguePanel(new DialogueTuto());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -169,6 +173,7 @@ public class StartMenu extends JPanel {
         btnOptions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 logger.debug("Clic on 'Options'");
+                new OptionMenu();
             }
         });
 

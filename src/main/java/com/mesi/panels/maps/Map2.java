@@ -37,20 +37,20 @@ public class Map2 extends MapModel {
         getTileList().get(getMapWidth()/2 - 8 + "," + (getMapHeight()/2 + 4)).setTraversable(false);
         getTileList().get(getMapWidth()/2 - 7 + "," + (getMapHeight()/2 - 2)).setTraversable(false);
         getTileList().get(getMapWidth()/2 - 5 + "," + (getMapHeight()/2 - 1)).setTraversable(false);
-        getTileList().get(getMapWidth()/2 - 5 + "," + getMapHeight()/2).setTraversable(false);
+        getTileList().get(getMapWidth()/2 - 5 + "," + getMapHeight()/2      ).setTraversable(false);
         getTileList().get(getMapWidth()/2 - 5 + "," + (getMapHeight()/2 + 1)).setTraversable(false);
         getTileList().get(getMapWidth()/2 - 4 + "," + (getMapHeight()/2 - 1)).setTraversable(false);
-        getTileList().get(getMapWidth()/2 - 4 + "," + getMapHeight()/2).setTraversable(false);
+        getTileList().get(getMapWidth()/2 - 4 + "," + getMapHeight()/2      ).setTraversable(false);
         getTileList().get(getMapWidth()/2 - 4 + "," + (getMapHeight()/2 + 1)).setTraversable(false);
         getTileList().get(getMapWidth()/2 - 1 + "," + (getMapHeight()/2 + 7)).setTraversable(true);
-        getTileList().get(getMapWidth()/2 + "," + (getMapHeight()/2 + 7)).setTraversable(true);
+        getTileList().get(getMapWidth()/2 +     "," + (getMapHeight()/2 + 7)).setTraversable(true);
         getTileList().get(getMapWidth()/2 + 2 + "," + (getMapHeight()/2 + 2)).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 4 + "," + (getMapHeight()/2 + 6)).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 5 + "," + (getMapHeight()/2 + 5)).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 6 + "," + (getMapHeight()/2 - 2)).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 6 + "," + (getMapHeight()/2 - 1)).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 6 + "," + (getMapHeight()/2 + 4)).setTraversable(false);
-        getTileList().get(getMapWidth()/2 + 7 + "," + getMapHeight()/2).setTraversable(false);
+        getTileList().get(getMapWidth()/2 + 7 + "," + getMapHeight()/2     ).setTraversable(false);
         getTileList().get(getMapWidth()/2 + 7 + "," + (getMapHeight()/2 + 4)).setTraversable(false);
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
