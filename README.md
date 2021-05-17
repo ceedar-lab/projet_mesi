@@ -3,6 +3,7 @@
 Touches par défaut :
   - Flèches de direction : déplacement
   - A : action / parler à un perso / ramasser un objet
+  - I : accéder à l'inventaire
   - ESPACE : attaque
   - ECHAP : sortir d'un menu
 
