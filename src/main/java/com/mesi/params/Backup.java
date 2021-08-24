@@ -242,10 +242,10 @@ public class Backup {
         pnjFisherman.setDirection(1);
         map3.getPnjList().add(pnjFisherman);
 
-//        Pnj pnjHunter = MainZeldo.pnjList.get("pnjHunter");
-//        pnjHunter.setCharacterCoordinates(new Integer[]{20 * Constant.TILE_SIZE, 13 * Constant.TILE_SIZE});
-//        pnjHunter.setDirection(1);
-//        map3.getPnjList().add(pnjHunter);
+        Pnj pnjHunter = MainZeldo.pnjList.get("pnjHunter");
+        pnjHunter.setCharacterCoordinates(new Integer[]{45 * Constant.TILE_SIZE, 41 * Constant.TILE_SIZE});
+        pnjHunter.setDirection(1);
+        map3.getPnjList().add(pnjHunter);
 
 
 

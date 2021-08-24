@@ -85,6 +85,7 @@ public class DialogueRoyalGards1 extends Dialogue {
         else if(questionId == 1 && response.equals("END"))
         {
             setCurrentQuestion(0);
+            MainZeldo.pnjList.get("pnjBlacksmith").setDialogue(new DialogueBlacksmith());
             hasNext = false;
         }
 

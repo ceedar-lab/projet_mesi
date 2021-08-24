@@ -100,7 +100,7 @@ public class PnjGenerator {
                 );
         pnjRoyalGards2.setName(name);
         pnjRoyalGards2.setHitbox(Hitbox.FULL);
-        pnjRoyalGards2.setDialogue(MainZeldo.dialogueList.get("bonjour"));
+        pnjRoyalGards2.setDialogue(MainZeldo.dialogueList.get("royalGard2"));
 
         MainZeldo.pnjList.put(name, pnjRoyalGards2);
     }

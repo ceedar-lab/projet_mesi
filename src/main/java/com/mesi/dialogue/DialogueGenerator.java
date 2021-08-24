@@ -11,6 +11,7 @@ public class DialogueGenerator {
         MainZeldo.dialogueList.put("hello", new DialogueHello());
         MainZeldo.dialogueList.put("tente", new DialoguePnjTente());
         MainZeldo.dialogueList.put("royalGard1", new DialogueRoyalGards1());
+        MainZeldo.dialogueList.put("royalGard2", new DialogueRoyalGards2());
 
     }
 }

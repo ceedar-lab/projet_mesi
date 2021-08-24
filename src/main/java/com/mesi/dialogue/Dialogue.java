@@ -1,5 +1,7 @@
 package com.mesi.dialogue;
 
+import com.mesi.pnj.Pnj;
+
 import java.util.ArrayList;
 
 public class Dialogue {
@@ -7,6 +9,7 @@ public class Dialogue {
     private Integer id;
     private Integer currentQuestion = 0;
     private ArrayList<Question> questionsList = new ArrayList<>();
+    private Pnj pnj;
 
 
     public Dialogue() {
@@ -34,6 +37,14 @@ public class Dialogue {
 
     public void setQuestionsList(ArrayList<Question> questionsList) {
         this.questionsList = questionsList;
+    }
+
+    public Pnj getPnj() {
+        return pnj;
+    }
+
+    public void setPnj(Pnj pnj) {
+        this.pnj = pnj;
     }
 
     public Boolean checkNext(Integer questionId, String response ){
