@@ -1,6 +1,7 @@
-package com.mesi.panels.maps;
+package com.mesi.panels.maps.Map3;
 
 import com.mesi.MainZeldo;
+import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Hitbox;
 import com.mesi.resources.Images;
 import com.mesi.resources.Sounds;
@@ -404,6 +405,18 @@ public class Map3 extends MapModel {
         getTileList().get("78,38").setTraversable(false);
         getTileList().get("78,41").setTraversable(false);
         getTileList().get("79,5").setTraversable(false);
+
+
+        /** blocage entré chateau **/
+        getTileList().get("56,10").addHitbox(Hitbox.SOUTH_BORD);
+        getTileList().get("57,10").addHitbox(Hitbox.SOUTH_BORD);
+        getTileList().get("58,10").addHitbox(Hitbox.SOUTH_BORD);
+
+        /** ajout evenement declencheur **/
+        addTileEvent(getTileList().get("56,11"),new TileEventCastleEntrance());
+        addTileEvent(getTileList().get("57,11"),new TileEventCastleEntrance());
+        addTileEvent(getTileList().get("58,11"),new TileEventCastleEntrance());
+
 
         /** Coordonnées des blocs de téléportation et tuile de destination **/
         addTeleport(getTileList().get("0,37"), true, "MAP_1 89,15", Hitbox.WEST_BORD);

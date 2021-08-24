@@ -138,6 +138,7 @@ public class DialoguePanel extends JDialog {
 
         Game.setPause(true);
 
+        dialogue.checkChange();
 
 
         setSize(800,400);
@@ -249,19 +250,6 @@ public class DialoguePanel extends JDialog {
         );
 
         questionPanel.setLayout(layout);
-
-
-//        // passe le fond en transparent
-//        questionPanel.setBackground(new Color(0,0,0,0));
-//
-//        questionPanel.setLayout(new GridBagLayout());
-//        // creer un jlabel avec le contenu de la question
-//        JLabel jLabel = new JLabel();
-//        jLabel.setFont(ITEM_FONT.deriveFont(30f));
-//        jLabel.setText(dialogue.getQuestionsList().get(dialogue.getCurrentQuestion()).getMessage());
-//        //ajoute le label au panel
-//        questionPanel.add(jLabel);
-
 
         return questionPanel;
     }

@@ -1,8 +1,9 @@
 package com.mesi.panels.maps;
 
 import com.mesi.MainZeldo;
+import com.mesi.panels.maps.Map1.Map1;
+import com.mesi.panels.maps.Map3.Map3;
 import com.mesi.params.Constant;
-import com.mesi.resources.Fonts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

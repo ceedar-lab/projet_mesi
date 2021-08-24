@@ -100,6 +100,7 @@ public class Game extends JPanel {
                         charBounds.setBounds(characterCoordinates[0], characterCoordinates[1], Constant.TILE_SIZE, Constant.TILE_SIZE);
                         getActionArea();
                         teleportChecker(charBounds,map.getTeleportList());
+                        tileEventChecker(charBounds,map.getTileEventList());
                         if (isHiting || isActing) {
                             hitChecker(charActionArea);
                         }
@@ -523,6 +524,19 @@ public class Game extends JPanel {
         }
     }
 
+    /**
+     * Teste si le personnage entre sur une case qui déclenche un évenement.
+     */
+    public void tileEventChecker(Rectangle character, List<Tile>tileList) {
+        Rectangle charCenter = new Rectangle(character.x + 15, character.y + 15, 2, 2);
+        for (Tile tile : tileList) {
+            if (tile.getTileEvent()!=null && charCenter.intersects(new Rectangle(tile.getTileX(),tile.getTileY(),Constant.TILE_SIZE,Constant.TILE_SIZE))) {
+                resetMove();
+                tile.getTileEvent().action();
+            }
+        }
+    }
+
     public void getActionArea() {
         Integer actionWidth = 23;
 
@@ -553,7 +567,7 @@ public class Game extends JPanel {
 
 //                    DialoguePanel dialoguePanel =   new DialoguePanel("test",2);
 //                    DialoguePanel dialoguePanel =   new DialoguePanel("ceci est un text de test vraiment long pour tester la fenetre",2);
-
+                    resetMove();
                     new DialoguePanel(pnj.getDialogue());
 
                     isActing = false;
@@ -628,6 +642,10 @@ public class Game extends JPanel {
 //            }
 //        });
 //    }
+
+    public void resetMove(){
+        isMovingUp=isMovingDown=isMovingLeft=isMovingRight=false;
+    }
 
     public static BufferedImage setCharPic() {
         return character.stand(KeyMap.DOWN)[0];

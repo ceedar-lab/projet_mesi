@@ -1,9 +1,9 @@
-package com.mesi.panels.maps;
+package com.mesi.panels.maps.Map1;
 
 import com.mesi.MainZeldo;
+import com.mesi.panels.maps.MapModel;
 import com.mesi.params.Hitbox;
 import com.mesi.resources.Images;
-import com.mesi.resources.Sounds;
 
 import java.io.IOException;
 
@@ -515,7 +515,10 @@ public class Map1 extends MapModel {
         getTileList().get("17,14").setTraversable(false);
         getTileList().get("18,14").setTraversable(false);
 
-
+        /** ajout evenement declencheur **/
+        addTileEvent(getTileList().get("14,25"),new TileEventForestExit());
+        addTileEvent(getTileList().get("15,25"),new TileEventForestExit());
+        addTileEvent(getTileList().get("16,25"),new TileEventForestExit());
 
     }
 }

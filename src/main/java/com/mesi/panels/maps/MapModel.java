@@ -35,6 +35,7 @@ public abstract class MapModel extends JPanel {
     private List<DecorObject> decorObjectArraylist = new ArrayList<>();
     private List<Pnj> pnjList = new ArrayList<>();
     private List<Tile> teleportList = new ArrayList<>();
+    private List<Tile> tileEventList = new ArrayList<>();
 
     /**********  Constructors  **********/
 
@@ -98,6 +99,9 @@ public abstract class MapModel extends JPanel {
     public List<Tile> getTeleportList() {
         return teleportList;
     }
+    public List<Tile> getTileEventList() {
+        return tileEventList;
+    }
     public List<DecorObject> getDecorObjectArraylist() {
         return decorObjectArraylist;
     }
@@ -157,5 +161,13 @@ public abstract class MapModel extends JPanel {
         teleport.setTraversable(true);
         teleport.getHitBoxs().clear();
         teleportList.add(teleport);
+    }
+
+    /**
+     * Ajoute les cases d'evenement à la liste.
+     **/
+    public void addTileEvent(Tile tile, TileEvent event) {
+        tile.setTileEvent(event);
+        tileEventList.add(tile);
     }
 }

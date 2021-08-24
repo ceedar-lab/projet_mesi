@@ -62,6 +62,7 @@ public class Inventory extends JDialog {
 
     private List<CollectableItem> weaponList = Game.getCharacter().weaponsList;
     private List<CollectableItem> armorList = Game.getCharacter().armorsList;
+    private List<CollectableItem> foodList = Game.getCharacter().foodList;
 
     private Integer cursorLevel;
     private Integer indexLevel0 = 0;
@@ -369,8 +370,22 @@ public class Inventory extends JDialog {
     public void selectEquipement() {
         cursor = (cursorLevel - 1) * 6 + indexLevel1;
 
-        if (indexLevel0 == 0) getEquipementList("weapon");
-        else if (indexLevel0 == 1) getEquipementList("armor");
+//        if (indexLevel0 == 0) getEquipementList("weapon");
+//        else if (indexLevel0 == 1) getEquipementList("armor");
+        switch (indexLevel0){
+            case 0:{
+                getEquipementList("weapon");
+                break;
+            }
+            case 1:{
+                getEquipementList("armor");
+                break;
+            }
+            case 2:{
+                getEquipementList("food");
+                break;
+            }
+        }
 
         for (int y = i; y < cols[0] * rows[0]; y++) {
             if (y == cursor) listItemBtn.get(y).setIcon(setItemIcon("null", true));
@@ -389,6 +404,8 @@ public class Inventory extends JDialog {
                 for (i = 0; i < weaponList.size(); i++) getItemPicture(i, weaponList); break;
             case "armor":
                 for (i = 0; i < armorList.size(); i++) getItemPicture(i, armorList); break;
+            case "food":
+                for (i = 0; i < foodList.size(); i++) getItemPicture(i, foodList); break;
         }
     }
 

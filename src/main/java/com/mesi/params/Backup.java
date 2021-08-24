@@ -40,6 +40,7 @@ public class Backup {
     private static final String MAPS = "maps";
     private static final String MAP_1 = "MAP_1";
     private static final String MAP_2 = "MAP_2";
+    private static final String MAP_3 = "MAP_3";
     private static final String STATE = "state";
 
     /**********  Constructors  **********/
@@ -202,10 +203,54 @@ public class Backup {
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2, map2.getMapHeight()/2 + -2));
         map2.getDecorObjectArraylist().add(new Chest("closed", map2.getMapWidth()/2 + 3, map2.getMapHeight()/2 + -2));
 
-        Pnj pnjTest2 = MainZeldo.pnjList.get("pnjTest2");
-        pnjTest2.setCharacterCoordinates(new Integer[]{map2.getMapWidth()/2 * Constant.TILE_SIZE, map2.getMapHeight()/2 * Constant.TILE_SIZE});
-        pnjTest2.setDirection(1);
-        map2.getPnjList().add(pnjTest2);
+//        Pnj pnjTest2 = MainZeldo.pnjList.get("pnjTest2");
+//        pnjTest2.setCharacterCoordinates(new Integer[]{map2.getMapWidth()/2 * Constant.TILE_SIZE, map2.getMapHeight()/2 * Constant.TILE_SIZE});
+//        pnjTest2.setDirection(1);
+//        map2.getPnjList().add(pnjTest2);
+
+
+
+        MapModel map3 = MainZeldo.mapList.get(MAP_3);
+
+        Pnj pnjRoyalGards1 = MainZeldo.pnjList.get("pnjRoyalGards1");
+        pnjRoyalGards1.setCharacterCoordinates(new Integer[]{59 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE});
+        pnjRoyalGards1.setDirection(1);
+        map3.getPnjList().add(pnjRoyalGards1);
+
+        Pnj pnjRoyalGards2 = MainZeldo.pnjList.get("pnjRoyalGards2");
+        pnjRoyalGards2.setCharacterCoordinates(new Integer[]{55 * Constant.TILE_SIZE, 11 * Constant.TILE_SIZE});
+        pnjRoyalGards2.setDirection(1);
+        map3.getPnjList().add(pnjRoyalGards2);
+
+        Pnj pnjBlacksmith = MainZeldo.pnjList.get("pnjBlacksmith");
+        pnjBlacksmith.setCharacterCoordinates(new Integer[]{68 * Constant.TILE_SIZE, 38 * Constant.TILE_SIZE});
+        pnjBlacksmith.setDirection(1);
+        map3.getPnjList().add(pnjBlacksmith);
+
+        Pnj pnjPeasant = MainZeldo.pnjList.get("pnjPeasant");
+        pnjPeasant.setCharacterCoordinates(new Integer[]{32 * Constant.TILE_SIZE, 39 * Constant.TILE_SIZE});
+        pnjPeasant.setDirection(KeyMap.LEFT);
+        map3.getPnjList().add(pnjPeasant);
+
+        Pnj pnjFruitVendor = MainZeldo.pnjList.get("pnjFruitVendor");
+        pnjFruitVendor.setCharacterCoordinates(new Integer[]{39 * Constant.TILE_SIZE, 19 * Constant.TILE_SIZE});
+        pnjFruitVendor.setDirection(1);
+        map3.getPnjList().add(pnjFruitVendor);
+
+        Pnj pnjFisherman = MainZeldo.pnjList.get("pnjFisherman");
+        pnjFisherman.setCharacterCoordinates(new Integer[]{20 * Constant.TILE_SIZE, 13 * Constant.TILE_SIZE});
+        pnjFisherman.setDirection(1);
+        map3.getPnjList().add(pnjFisherman);
+
+//        Pnj pnjHunter = MainZeldo.pnjList.get("pnjHunter");
+//        pnjHunter.setCharacterCoordinates(new Integer[]{20 * Constant.TILE_SIZE, 13 * Constant.TILE_SIZE});
+//        pnjHunter.setDirection(1);
+//        map3.getPnjList().add(pnjHunter);
+
+
+
+
+
 
         Game.setKillThread(false);
         MainZeldo.setGameState(MainZeldo.GameState.MAP_1);

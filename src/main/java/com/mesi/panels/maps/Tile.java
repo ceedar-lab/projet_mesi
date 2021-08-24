@@ -16,6 +16,7 @@ public class Tile extends JPanel {
     private List<Rectangle> hitBoxs = new ArrayList<>();
     private boolean teleport;
     private Rectangle teleportBounds;
+    private TileEvent tileEvent;
 
 
     private String bindedTile = null;
@@ -66,6 +67,13 @@ public class Tile extends JPanel {
         return hitBoxs;
     }
 
+    public TileEvent getTileEvent() {
+        return tileEvent;
+    }
+
+    public void setTileEvent(TileEvent tileEvent) {
+        this.tileEvent = tileEvent;
+    }
     /**********  Methods  **********/
 
     /**
@@ -75,5 +83,11 @@ public class Tile extends JPanel {
         hitBoxs.add(new Rectangle(tileX + hitbox.x, tileY + hitbox.y, hitbox.width, hitbox.height));
     }
 
+    /**
+     * Suppression des hitboxs de la tile
+     **/
+    public void removeHitboxs(){
+        hitBoxs = new ArrayList<>();
+    }
 
 }
