@@ -14,9 +14,11 @@ public class TileEventForestExit implements TileEvent {
 
         if(Game.getCharacter().getLegs() == Legs.NONE || Game.getCharacter().getTorso() == Torso.NONE){
             MainZeldo.dialogueList.get("hello").setCurrentQuestion(5);
+
+            new DialoguePanel(MainZeldo.dialogueList.get("hello"));
         }
 
-        new DialoguePanel(MainZeldo.dialogueList.get("hello"));
+
 
         MainZeldo.mapList.get("MAP_1").getTileList().get("14,25").setTileEvent(null);
         MainZeldo.mapList.get("MAP_1").getTileList().get("15,25").setTileEvent(null);
