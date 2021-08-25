@@ -55,7 +55,6 @@ public class DialoguePromo extends Dialogue {
         if(questionId == 1 && response.equals("END"))
         {
             setCurrentQuestion(2);
-            hasNext = false;
         }
         if(questionId == 2 && response.equals("END"))
         {
