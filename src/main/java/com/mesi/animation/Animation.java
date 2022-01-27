@@ -145,13 +145,22 @@ public abstract class Animation {
      * @return BufferedImage[]
      * @throws IOException
      */
-    public BufferedImage[] loadSprites(Integer firstRowIndex, Integer lastRowIndex, Integer firstColIndex, Integer lastColIndex) {
+    public BufferedImage[] loadSprites(
+            Integer firstRowIndex,
+            Integer lastRowIndex,
+            Integer firstColIndex,
+            Integer lastColIndex
+    ) {
         int index = 0;
         BufferedImage[] sprites = new BufferedImage[(lastRowIndex - firstRowIndex + 1) * (lastColIndex - firstColIndex + 1)];
 
         for (int i = firstRowIndex; i <= lastRowIndex; i++) {
             for (int j = firstColIndex; j <= lastColIndex; j++) {
-                sprites[index] = characterImage.getSubimage(j * Constant.SPRITE_SIZE, i * Constant.SPRITE_SIZE, Constant.SPRITE_SIZE, Constant.SPRITE_SIZE);
+                sprites[index] = characterImage.getSubimage(
+                        j * Constant.SPRITE_SIZE,
+                        i * Constant.SPRITE_SIZE,
+                        Constant.SPRITE_SIZE,
+                        Constant.SPRITE_SIZE);
                 index++;
             }
         }

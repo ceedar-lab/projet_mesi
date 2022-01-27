@@ -8,6 +8,6 @@ jdk:
 #    token:
 #      secure: "**************************" # encrypted value of your token
 #script:
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+#   the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
 #  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=projet_mesi
 #  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=olivierargaud_Projet_MESI
